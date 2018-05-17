@@ -1,7 +1,8 @@
-from django.conf.urls import url, include
+from .views import *
+from django.conf.urls import include
+from django.conf.urls import url
 from django.contrib import admin
 from django.contrib.flatpages import views
-from .views import *
 
 urlpatterns = [
 
