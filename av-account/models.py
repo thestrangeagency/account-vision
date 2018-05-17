@@ -70,7 +70,6 @@ class AvUser(Person, AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(verbose_name='email address', max_length=255, unique=True)
     phone = PhoneNumberField(null=True, blank=True)
 
-    is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_cpa = models.BooleanField(default=False)
 
@@ -82,9 +81,6 @@ class AvUser(Person, AbstractBaseUser, PermissionsMixin):
     is_email_verified = models.BooleanField(default=False)
     email_verification_code = models.CharField(max_length=16, null=True, blank=True)
     previous_email = models.EmailField(verbose_name='previous email address', max_length=255, null=True, blank=True)
-
-    # onboarding progress
-    is_paid = models.BooleanField(default=False)
 
     objects = AvUserManager()
 
@@ -107,9 +103,6 @@ class AvUser(Person, AbstractBaseUser, PermissionsMixin):
     def get_short_name(self):
         # The user is identified by their email address
         return self.email
-
-    def is_cpa(self):
-        return self.groups.filter(name='cpa').exists()
 
     def send_verification_code(self):
         if self.phone is None or self.phone is '':
@@ -204,5 +197,5 @@ class Communications(models.Model):
 
 class Bank(models.Model):
     user = models.OneToOneField(AvUser, on_delete=models.CASCADE)
-    routing = models.CharField("Routing number", max_length=9, blank=False, null=True, help_text="Your routing number is a 9 digit number and can typically be found on the bottom left corner of your personal checks (the first set of numbers)")
-    account = models.CharField("Account number", max_length=16, blank=False, null=True, help_text="Your account number is usually a 10-12 digit number that is specific to your personal bank account. It's typically the second set of numbers printed on the bottom of your personal checks, just to the right of the bank routing number. You can also find your account number on your monthly bank statement.")
+    routing = models.CharField("Routing number", max_length=9, blank=False, null=True, help_text="9 digits")
+    account = models.CharField("Account number", max_length=16, blank=False, null=True, help_text="Usually 10 to 12 digits")
