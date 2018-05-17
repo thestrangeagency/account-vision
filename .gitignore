@@ -1,0 +1,11 @@
+venv
+*.pyc
+staticfiles
+.env
+.DS_Store
+db.sqlite3
+/.idea
+node_modules
+av_core/static/js
+av_core/static/css
+.eslintcache

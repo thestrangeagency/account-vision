@@ -1,0 +1,34 @@
+[[source]]
+
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+
+
+[packages]
+
+dj-database-url = "*"
+Django = "==1.11.8"
+gunicorn = "*"
+"psycopg2" = "*"
+whitenoise = "*"
+requests = "*"
+django-debug-toolbar = "*"
+django-phonenumber-field = "*"
+django-ip-restriction = "*"
+django-bootstrap-breadcrumbs = "*"
+django-crispy-forms = "*"
+django-extensions = "*"
+Werkzeug = "*"
+djangorestframework = "*"
+"boto3" = "*"
+twilio = "*"
+django-menu-generator = {git = "git://github.com/lucaskuzma/django-menu-generator.git"}
+django-messages = {git = "git://github.com/lucaskuzma/django-messages.git"}
+django-agent-trust = "==0.3.0"
+django-ipware = "==1.1.6"
+stripe = "*"
+
+
+[requires]
+
+python_version = "3.6"

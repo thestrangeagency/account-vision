@@ -1,0 +1,72 @@
+{
+  "name": "account-vision",
+  "version": "1.0.0",
+  "description": "## Deployment",
+  "main": "av_core/static/js/app.js",
+  "dependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-react": "^6.24.1",
+    "bootstrap": "^4.0.0-beta.2",
+    "classnames": "^2.2.5",
+    "evaporate": "^2.1.4",
+    "js-cookie": "^2.1.4",
+    "node-sass": "^4.5.3",
+    "prop-types": "^15.6.0",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-dropzone": "^4.2.1",
+    "sha.js": "^2.4.9",
+    "spark-md5": "^3.0.0",
+    "uglifyjs-webpack-plugin": "^1.1.0",
+    "webpack": "^3.6.0",
+    "webpack-merge": "^4.1.1",
+    "whatwg-fetch": "^2.0.3"
+  },
+  "scripts": {
+    "postinstall": "npm run build && npm run sass",
+    "start": "webpack --config webpack.dev.js --watch ",
+    "build": "webpack",
+    "sass": "node-sass av_core/static-src/scss/base.scss av_core/static/css/base.css --output-style compressed --source-map true",
+    "sass:watch": "node-sass av_core/static-src/scss/base.scss av_core/static/css/base.css --output-style compressed --source-map true -w -r",
+    "eslint": "eslint av_core/static-src/js --cache --ext .js,.jsx",
+    "eslint:fix": "eslint av_core/static-src/js --cache --ext .js,.jsx --fix",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "precommit": "npm run eslint"
+  },
+  "jest": {
+    "setupFiles": [
+      "./test/raf-shim.js",
+      "./test/jestsetup.js"
+    ],
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thestrangeagency/account-vision.git"
+  },
+  "author": "Kuzma",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thestrangeagency/account-vision/issues"
+  },
+  "homepage": "https://github.com/thestrangeagency/account-vision#readme",
+  "devDependencies": {
+    "enzyme": "^3.1.0",
+    "enzyme-adapter-react-16": "^1.0.2",
+    "enzyme-to-json": "^3.1.4",
+    "eslint": "^4.10.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-react": "^7.4.0",
+    "husky": "^0.14.3",
+    "jest": "^21.2.1"
+  }
+}

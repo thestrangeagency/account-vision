@@ -1,0 +1,19 @@
+{
+  "rules": {
+    "no-else-return": "warn",
+    "max-len": "off",
+    "camelcase": "off",
+    "radix": [2, "as-needed"],
+    "jsx-a11y/label-has-for": [2, {
+      "required": {
+          "some": ["nesting", "id"]
+      },
+      "allowChildren": false,
+    }]
+  },
+  "extends": "airbnb",
+  "env": {
+    "browser": true,
+    "jest": true
+  }
+}
