@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load flatpages static %}
+
+{% block nav_styles %}navbar--overlaid{% endblock nav_styles %}
+
+{% block render_breadcrumbs %}{% endblock %}
+
+{% block content_class %}container{% endblock content_class %}
+
+{% block content %}
+  <div class="tx-home__hero tx-full-width">
+    <div class="container">
+      <h1 class="h1 tx-home__hero-header">Sign up now<br/> free trial</h1>
+      {% if not user.is_authenticated %}
+        <a href="{% url 'register' %}" class="btn btn-primary">
+          Register
+        </a>
+      {% endif %}
+    </div>
+  </div>
+  <div class="tx-home__subhero tx-full-width">
+    <div class="container">
+      <h2 class="h3 tx-home__subhero__header">Your client portal in the cloud. <span class="text-success">Let your clients do the work</span></h2>
+    </div>
+  </div>
+  <div class="tx-steps tx-full-width">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <h2 class="tx-steps-header">Lorem</h2>
+          <h3 class="tx-steps-header h4">Ipsum</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% comment %}
+  {% get_flatpages as flatpages %}
+
+  <div class="tx-home__flatpages tx-full-width">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <h5 class="tx-home__flatpages__header h6">
+            About
+          </h5>
+          <ul class="tx-home__flatpages__list list-unstyled">
+            {% for page in flatpages %}
+              <li class="tx-home__flatpages__item">
+                <a class="tx-home__flatpages__link" href="{{ page.url }}">{{ page.title }}</a>
+              </li>
+            {% endfor %}
+            <li class="tx-home__flatpages__item">
+              <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
+            </li>
+            <li class="tx-home__flatpages__item">
+              <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
+            </li>
+            <li class="tx-home__flatpages__item">
+              <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-md-4">
+          <h5 class="tx-home__flatpages__header h6">
+            Tips
+          </h5>
+          <ul class="tx-home__flatpages__list list-unstyled">
+            <li class="tx-home__flatpages__item">
+              <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
+            </li>
+            <li class="tx-home__flatpages__item">
+              <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
+            </li>
+            <li class="tx-home__flatpages__item">
+              <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
+            </li>
+            <li class="tx-home__flatpages__item">
+              <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
+            </li>
+            <li class="tx-home__flatpages__item">
+              <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-md-4">
+          <h5 class="tx-home__flatpages__header h6">
+            Help
+          </h5>
+          <ul class="tx-home__flatpages__list list-unstyled">
+            <li class="tx-home__flatpages__item">
+              <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
+            </li>
+            <li class="tx-home__flatpages__item">
+              <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
+            </li>
+            <li class="tx-home__flatpages__item">
+              <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
+            </li>
+            <li class="tx-home__flatpages__item">
+              <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
+            </li>
+            <li class="tx-home__flatpages__item">
+              <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endcomment %}
+{% endblock content %}

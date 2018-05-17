@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block body_styles %}"tx-body--modal"{% endblock body_styles %}
+
+{% block header %}
+  <h1 class="tx-modal__header">
+    <a href="{% url 'home' %}">
+      <img src="{%  static  "svg/logo.svg"  %}" alt="logo" class="navbar__logo" width="228" height="76" />
+    </a>
+  </h1>
+{% endblock header %}
+
+{% block render_breadcrumbs %}
+{% endblock render_breadcrumbs %}
+
+{% block content_class %}container{% endblock content_class %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-12 col-md-9 col-lg-7 col-xl-6 mx-auto">
+      <div class="tx-modal__content">
+        <h2 class="tx-modal__content__header h2">
+          {% block content_title %}
+            {{ title }}
+          {% endblock content_title %}
+        </h2>
+        {% block modal_content %}
+        {% endblock modal_content %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block footer_class %}"tx-footer tx-footer--modal"{% endblock footer_class %}
+{% block footer_inner_class %}"tx-footer__container tx-footer__container--modal container"{% endblock footer_inner_class %}
+{% block footer_address_class %}"d-none"{% endblock footer_address_class %}
+{% block footer_badge_class %}"ml-4 rounded bg-white px-2 py-1"{% endblock footer_badge_class %}

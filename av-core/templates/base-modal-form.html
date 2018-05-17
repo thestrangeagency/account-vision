@@ -1,0 +1,11 @@
+{% extends 'base-modal.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block modal_content %}
+  <div class="tx-modal__form-container">
+    {% block modal_form_content %}
+      {% crispy form %}
+    {% endblock modal_form_content %}
+  </div>
+{% endblock modal_content %}

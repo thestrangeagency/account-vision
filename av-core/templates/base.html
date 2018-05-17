@@ -1,0 +1,138 @@
+{% load static django_bootstrap_breadcrumbs menu_generator inbox %}
+
+{% inbox_count as count %}
+
+{% block breadcrumbs %}
+  {% clear_breadcrumbs %}
+  {% breadcrumb "Home" "/" %}
+{% endblock %}
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="msapplication-config" content="{% static 'favicon/browserconfig.xml' %}">
+  <meta name="theme-color" content="#ffffff">
+
+  <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
+
+  <link rel="manifest" href="{% static 'favicon/manifest.json' %}">
+  <link rel="apple-touch-icon" sizes="120x120" href="{% static 'favicon/apple-touch-icon.png' %}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon/favicon-32x32.png' %}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon/favicon-16x16.png' %}">
+  <link rel="mask-icon" href="{% static 'favicon/safari-pinned-tab.svg' %}" color="#5bbad5">
+  <link rel="shortcut icon" href="{% static 'favicon/favicon.ico' %}">
+</head>
+<body class={% block body_styles %}tx-body{% endblock body_styles %}>
+{% block header %}
+  <nav class="{% block nav_styles %}{% endblock nav_styles %} navbar navbar-dark navbar-expand-md pt-md-1 pb-md-0">
+    <div class="navbar__logo-wrapper d-flex justify-content-between">
+      <a href="{% url 'home' %}">
+        <img src="{%  static  "svg/logo.svg"  %}" alt="logo" class="navbar__logo" width="228" height="76" />
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+
+        {% get_menu "NAV_MENU_LEFT" as left_menu %}
+        {% for item in left_menu %}
+          <li class="nav-item">
+            <a class="tx-nav-link {% if item.selected %} active {% endif %}" href="{{ item.url }}">
+              {{ item.name }}{% if item.name == 'Messages' and count > 0 %}<sup>{% inbox_count %}</sup>{% endif %}
+            </a>
+          </li>
+        {% endfor %}
+
+      </ul>
+      {% if user.is_authenticated %}
+        <div class="tx-navbar__account tx-navbar__account--signed-in">
+        <img src="{%  static  "svg/icon-ez-user-white.svg"  %}" alt="logo" class="tx-navbar__account-icon" width="30" height="30" />
+        <span class="tx-navbar__account-username">
+              Hi,
+          {% if user.first_name %}
+            {{ user.first_name }}
+          {% else %}
+            {{ user.email|upper }}
+          {% endif %}
+            </span>
+      {% else %}
+        <div class="tx-navbar__account">
+      {% endif %}
+      {% get_menu "NAV_MENU_RIGHT" as right_menu %}
+      {% for item in right_menu %}
+        <a class="tx-nav-link {% if user.is_authenticated %}tx-nav-link--no-padding{% endif %}" href="{{ item.url }}">{{ item.name }}</a>
+      {% endfor %}
+      </div>
+      </div>
+  </nav>
+{% endblock header %}
+
+<main class="main" role="main">
+  <div class="container">
+    {% block render_breadcrumbs %}{% render_breadcrumbs %}{% endblock render_breadcrumbs %}
+    {% block tabs %}{% endblock tabs %}
+    {%  block messages %}
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-success mt-4" role="alert">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {%  endblock messages %}
+  </div>
+  <div class="{% block content_class %}container py-3{% endblock content_class %}">
+    {% block content %}{% endblock content %}
+  </div>
+</main>
+
+{% block footer %}
+  <div class={% block footer_class %}"tx-footer"{% endblock footer_class %}>
+    <div class={% block footer_inner_class %}"tx-footer__container container"{% endblock footer_inner_class %}>
+      <div class="tx-footer__copyright">&copy; 2018 Account Vision</div>
+      <ul class="tx-footer__navbar-nav">
+        <li class="tx-footer__nav-item">
+          <a href="{% url 'security' %}" class="tx-footer__nav-link">Security</a>
+        </li>
+        <li class="tx-footer__nav-item">
+          <a href="{% url 'legal' %}" class="tx-footer__nav-link">Legal</a>
+        </li>
+        {% comment %}
+          <li class="tx-footer__nav-item">
+            <a href="{% url 'privacy' %}" class="tx-footer__nav-link">Privacy</a>
+          </li>
+        {% endcomment %}
+        <li class="tx-footer__nav-item">
+          <a href="{% url 'contact' %}" class="tx-footer__nav-link">Contact</a>
+        </li>
+        <li class="tx-footer__nav-item">
+          <a href="{% url 'faq' %}" class="tx-footer__nav-link">FAQ</a>
+        </li>
+      </ul>
+      <div class={% block footer_address_class %}"tx-footer__address"{% endblock footer_address_class %}>
+        818 SW 3rd Ave #221-5989,
+        Portland OR 97204-2405
+      </div>
+      <div class={% block footer_badge_class %}"ml-auto rounded bg-white px-2 py-1"{% endblock footer_badge_class %}>
+        {% if debug %}
+          <img src="{% static "img/getseal.png" %}">
+        {% else %}
+          <script type="text/javascript" src="https://seal.websecurity.norton.com/getseal?host_name=account.vision&amp;size=XS&amp;use_flash=NO&amp;use_transparent=YES&amp;lang=en"></script>
+        {% endif %}
+      </div>
+    </div>
+
+  </div>
+{% endblock footer %}
+
+{% if user.is_authenticated and not debug %}
+  <div id="auto-logout"></div>
+{% endif %}
+
+{% comment %}
+  <pre>{% debug %}</pre>
+{% endcomment %}
+
+<script type="text/javascript" src="{%  static  "js/bundle.js"  %}"></script>
+</body>
+</html>
