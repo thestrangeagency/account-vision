@@ -28,7 +28,7 @@ from av_account.models import UserLogin
 from av_account.models import UserSecurity
 from av_account.utils import ReadyRequiredMixin
 from av_core import logger
-from utils.utils import get_object_or_None
+from av_utils.utils import get_object_or_None
 
 
 class RegistrationView(FormView):
@@ -218,7 +218,7 @@ class EmailVerificationView(TemplateView):
         # find user matching verification code
         code = self.kwargs['code']
         try:
-            user = TaxUser.objects.get(email_verification_code=code)
+            user = AvUser.objects.get(email_verification_code=code)
             user.is_email_verified = True
             user.save()
             context['verified'] = True

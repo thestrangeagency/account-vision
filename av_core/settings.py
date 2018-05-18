@@ -43,7 +43,7 @@ else:
 
 TESTING = sys.argv[1:2] == ['test']
 
-AUTH_USER_MODEL = 'account.AvUser'
+AUTH_USER_MODEL = 'av_account.AvUser'
 
 LOGIN_REDIRECT_URL = reverse_lazy('login_redirect')
 LOGOUT_REDIRECT_URL = "/"
@@ -90,7 +90,7 @@ INSTALLED_APPS = [
     'django_agent_trust',
 
     # account vision
-    'account',
+    'av_account',
 ]
 
 SITE_ID = 1
@@ -112,7 +112,7 @@ MIDDLEWARE = [
     'django_agent_trust.middleware.AgentMiddleware',
 ]
 
-ROOT_URLCONF = 'av-core.urls'
+ROOT_URLCONF = 'av_core.urls'
 
 TEMPLATES = [
     {
@@ -133,7 +133,7 @@ TEMPLATES = [
 
 FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
 
-WSGI_APPLICATION = 'av-core.wsgi.application'
+WSGI_APPLICATION = 'av_core.wsgi.application'
 
 
 # Database
@@ -275,7 +275,7 @@ AWS_DESTINATIONS = {
 }
 
 # ses
-EMAIL_BACKEND = 'av-core.backends.boto.EmailBackend'
+EMAIL_BACKEND = 'av_core.backends.boto.EmailBackend'
 AWS_SES_REGION = os.environ.get('AWS_SES_REGION', 'us-east-1')
 
 # phonenumber_field

@@ -8,8 +8,6 @@ from .models import Address
 from .models import AvUser
 from .models import Bank
 from .models import SecurityQuestion
-from returns.models import Return
-from utils.utils import ExcludeDateMixin
 
 
 class UserCreationForm(forms.ModelForm):
@@ -57,15 +55,6 @@ class UserChangeForm(forms.ModelForm):
         return self.initial["password"]
 
 
-class ReturnInline(ExcludeDateMixin, admin.StackedInline):
-    model = Return
-    fk_name = "user"
-    # for now only show one return inline
-    max_num = 1
-    readonly_fields = ('user', 'year', 'is_dependent', 'filing_status', 'county')
-    show_change_link = True
-
-
 class AddressInline(admin.StackedInline):
     model = Address
 
@@ -79,7 +68,7 @@ class UserAdmin(BaseUserAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
 
-    inlines = (AddressInline, BankInline, ReturnInline,)
+    inlines = (AddressInline, BankInline,)
 
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserAdmin

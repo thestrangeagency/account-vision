@@ -1,8 +1,34 @@
-from .views import *
 from django.conf.urls import include
 from django.conf.urls import url
 from django.contrib import admin
+from django.contrib.auth.decorators import login_required
 from django.contrib.flatpages import views
+from django.http import HttpResponseRedirect, HttpResponse
+from django.urls import reverse
+from django.views.generic import TemplateView
+from django_agent_trust import trust_agent
+
+from av_core import settings
+
+
+@login_required
+def login_redirect(request):
+    if request.user.is_staff:
+        return HttpResponseRedirect(reverse('admin:index'))
+    else:
+        return HttpResponseRedirect(reverse('returns'))
+
+
+def force_trust(request):
+    """
+    Used only during testing to trust test user agent
+    """
+    if settings.TESTING:
+        trust_agent(request)
+        return HttpResponse('ok')
+    else:
+        return HttpResponseRedirect(reverse('home'))
+
 
 urlpatterns = [
 
