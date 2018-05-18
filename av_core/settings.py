@@ -4,6 +4,11 @@ import dj_database_url
 import os
 from django.urls import reverse_lazy
 from os.path import join
+from dotenv import load_dotenv, find_dotenv
+
+
+# Optionally store env vars in a .env file
+load_dotenv(find_dotenv(), verbose=True)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

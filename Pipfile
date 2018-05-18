@@ -7,7 +7,7 @@ verify_ssl = true
 [packages]
 
 dj-database-url = "*"
-Django = "==1.11.8"
+django = "==1.11.8"
 gunicorn = "*"
 "psycopg2" = "*"
 whitenoise = "*"
@@ -18,7 +18,7 @@ django-ip-restriction = "*"
 django-bootstrap-breadcrumbs = "*"
 django-crispy-forms = "*"
 django-extensions = "*"
-Werkzeug = "*"
+werkzeug = "*"
 djangorestframework = "*"
 "boto3" = "*"
 twilio = "*"
@@ -27,6 +27,7 @@ django-messages = {git = "git://github.com/lucaskuzma/django-messages.git"}
 django-agent-trust = "==0.3.0"
 django-ipware = "==1.1.6"
 stripe = "*"
+python-dotenv = "*"
 
 
 [requires]
