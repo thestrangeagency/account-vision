@@ -1,15 +1,11 @@
 [[source]]
-
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 
-
 [packages]
-
 dj-database-url = "*"
 django = "==1.11.8"
 gunicorn = "*"
-"psycopg2" = "*"
 whitenoise = "*"
 requests = "*"
 django-debug-toolbar = "*"
@@ -28,8 +24,7 @@ django-agent-trust = "==0.3.0"
 django-ipware = "==1.1.6"
 stripe = "*"
 python-dotenv = "*"
-
+"psycopg2-binary" = "*"
 
 [requires]
-
 python_version = "3.6"
