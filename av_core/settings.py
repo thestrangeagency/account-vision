@@ -40,7 +40,6 @@ if not DEBUG:
 else:
     ALLOWED_HOSTS = ['*']
 
-
 TESTING = sys.argv[1:2] == ['test']
 
 AUTH_USER_MODEL = 'av_account.AvUser'
@@ -91,6 +90,7 @@ INSTALLED_APPS = [
 
     # account vision
     'av_account',
+    'av_contact',
 ]
 
 SITE_ID = 1
