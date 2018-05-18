@@ -4,13 +4,13 @@ NAV_MENU_LEFT = [
     {
         "name": "Returns",
         "url": "returns",
-        "validators": ["menu_generator.validators.is_authenticated", "core.menus.is_not_cpa"],
+        "validators": ["menu_generator.validators.is_authenticated", "av_core.menus.is_not_cpa"],
         "root": True,
     },
     {
         "name": "Pricing",
         "url": "pricing",
-        "validators": ["menu_generator.validators.is_anonymous", "core.menus.is_not_cpa"],
+        "validators": ["menu_generator.validators.is_anonymous", "av_core.menus.is_not_cpa"],
     },
     {
         "name": "Messages",
@@ -21,17 +21,17 @@ NAV_MENU_LEFT = [
     {
         "name": "Account",
         "url": "edit",
-        "validators": ["menu_generator.validators.is_authenticated", "core.menus.is_not_cpa"],
+        "validators": ["menu_generator.validators.is_authenticated", "av_core.menus.is_not_cpa"],
     },
     {
         "name": "About Us",
         "url": "about",
-        "validators": ["menu_generator.validators.is_anonymous", "core.menus.is_not_cpa"],
+        "validators": ["menu_generator.validators.is_anonymous", "av_core.menus.is_not_cpa"],
     },
     # {
     #     "name": "Uploads",
     #     "url": reverse_lazy('cpa-user'),
-    #     "validators": ["core.menus.is_cpa"],
+    #     "validators": ["av_core.menus.is_cpa"],
     # },
 ]
 

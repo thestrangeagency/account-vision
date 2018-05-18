@@ -8,6 +8,7 @@ from django.urls import reverse
 from django.views.generic import TemplateView
 from django_agent_trust import trust_agent
 
+from av_contact.views import ContactView
 from av_core import settings
 
 
@@ -35,6 +36,11 @@ urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='home.html'), name='home'),
 
     url(r'^account/', include('av_account.urls')),
+
+    url(r'^legal/$', TemplateView.as_view(template_name='legal.html'), name='legal'),
+    url(r'^security/$', TemplateView.as_view(template_name='security.html'), name='security'),
+    url(r'^contact/$', ContactView.as_view(), name='contact'),
+    url(r'^faq/$', TemplateView.as_view(template_name='faq.html'), name='faq'),
 
     url(r'^admin/', admin.site.urls),
     url(r'^login_redirect/$', login_redirect, name='login_redirect'),
