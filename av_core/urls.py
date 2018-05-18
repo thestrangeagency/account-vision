@@ -34,6 +34,8 @@ urlpatterns = [
 
     url(r'^$', TemplateView.as_view(template_name='home.html'), name='home'),
 
+    url(r'^account/', include('av_account.urls')),
+
     url(r'^admin/', admin.site.urls),
     url(r'^login_redirect/$', login_redirect, name='login_redirect'),
     url(r'^force_trust/$', force_trust, name='force_trust'),

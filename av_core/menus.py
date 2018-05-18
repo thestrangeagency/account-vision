@@ -28,11 +28,11 @@ NAV_MENU_LEFT = [
         "url": "about",
         "validators": ["menu_generator.validators.is_anonymous", "core.menus.is_not_cpa"],
     },
-    {
-        "name": "Uploads",
-        "url": reverse_lazy('cpa-user'),
-        "validators": ["core.menus.is_cpa"],
-    },
+    # {
+    #     "name": "Uploads",
+    #     "url": reverse_lazy('cpa-user'),
+    #     "validators": ["core.menus.is_cpa"],
+    # },
 ]
 
 NAV_MENU_RIGHT = [

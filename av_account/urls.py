@@ -1,17 +1,10 @@
 from django.conf.urls import url
 from django.contrib.auth.views import logout, PasswordResetDoneView, PasswordResetView, PasswordResetConfirmView, \
-    PasswordResetCompleteView, PasswordChangeView, LoginView
-from django.urls import reverse_lazy
-from django.views.generic import TemplateView
+    PasswordResetCompleteView, PasswordChangeView
 
-from account.forms import AccountPasswordResetForm, AccountSetPasswordForm, AccountLoginForm, AccountPasswordChangeForm
-from .views import (
-    RegistrationView,
-    SecurityQuestionsView,
-    VerificationView,
-    EditView,
-    PhoneNumberView, TrustView, DevicesView,
-    LoginsView, EmailVerificationView, NewEmailView, BankingView)
+from av_account.forms import AccountPasswordResetForm, AccountSetPasswordForm, AccountLoginForm, \
+    AccountPasswordChangeForm
+from .views import *
 
 urlpatterns = [
     url(
