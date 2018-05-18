@@ -21,20 +21,19 @@ from .forms import DevicesForm
 from .forms import PhoneNumberForm
 from .forms import ResendVerificationEmailForm
 from .forms import SecurityQuestionsForm
-from .forms import TaxUserCreationForm
+from .forms import AvUserCreationForm
 from .forms import VerificationForm
-from account.models import Bank
-from account.models import TaxUser
-from account.models import UserLogin
-from account.models import UserSecurity
-from account.utils import ReadyRequiredMixin
-from taxsite import logger
+from av_account.models import Bank
+from av_account.models import UserLogin
+from av_account.models import UserSecurity
+from av_account.utils import ReadyRequiredMixin
+from av_core import logger
 from utils.utils import get_object_or_None
 
 
 class RegistrationView(FormView):
     template_name = 'register.html'
-    form_class = TaxUserCreationForm
+    form_class = AvUserCreationForm
 
     def form_valid(self, form):
         user = form.save()

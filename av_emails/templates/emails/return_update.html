@@ -1,0 +1,19 @@
+{% extends 'emails/base.html' %}
+
+{% block content %}
+
+  <p {% include "emails/p_style_snippet.html" %}>
+    {{ user.email }} updated his or her tax return.
+  </p>
+
+  {% if state_changed %}
+    <p {% include "emails/p_style_snippet.html" %}>
+      The return's state has changed to: {{ state_changed }}
+    </p>
+  {% endif %}
+
+  <p {% include "emails/p_style_snippet.html" %}>
+    {{ site_url }}{% url 'admin:returns_return_change' return.id %}
+  </p>
+
+{% endblock content %}

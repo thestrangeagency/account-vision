@@ -1,0 +1,7 @@
+{% extends 'emails/base.html' %}
+
+{% block content %}
+  <p {% include "emails/p_style_snippet.html" %}>
+    This is your payment confirmation email.
+  </p>
+{% endblock content %}

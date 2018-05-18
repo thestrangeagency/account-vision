@@ -13,21 +13,21 @@ from django.forms import ModelForm
 from django.forms import forms
 
 from .models import Bank
-from .models import TaxUser
+from .models import AvUser
 from .models import UserSecurity
-from utils.utils import FormSubmit
+from av_utils.utils import FormSubmit
 
 
-class TaxUserCreationForm(UserCreationForm):
+class AvUserCreationForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs):
-        super(TaxUserCreationForm, self).__init__(*args, **kwargs)
+        super(AvUserCreationForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.add_input(Submit('submit', 'Register'))
         self.fields['password1'].help_text = 'Your password can\'t be too similar to your other information / must contain at least 8 characters / can\'t be a commonly used password / can\'t be entirely numeric.'
 
     class Meta(UserCreationForm.Meta):
-        model = TaxUser
+        model = AvUser
         fields = ('email',)
 
 
@@ -59,7 +59,7 @@ class PhoneNumberForm(ModelForm):
         self.fields['phone'].widget.attrs.update({'autofocus': 'autofocus', 'placeholder': '123-555-1212'})
 
     class Meta:
-        model = TaxUser
+        model = AvUser
         fields = ['phone', ]
         labels = {
             'phone': 'Please enter your mobile number',
@@ -140,7 +140,7 @@ class AccountForm(ModelForm):
         self.helper.add_input(FormSubmit('submit', 'Save'))
 
     class Meta:
-        model = TaxUser
+        model = AvUser
         fields = ['email', 'phone']
 
 

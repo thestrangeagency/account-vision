@@ -1,0 +1,15 @@
+{% extends 'emails/base.html' %}
+
+{% block content %}
+  {{ block.super }}
+  <p {% include "emails/p_style_snippet.html" %}>
+    Uh oh! It looks like someone has attempted to access your account from an untrusted device. If this was you, please disregard this message. If this was not you and you suspect suspicious activity, please click <a href="{{ site_url }}{% url 'password_reset' %}">HERE</a> to reset your password.
+  </p>
+  <p {% include "emails/p_style_snippet.html" %}>
+    If you would like to learn more about our security policies, you can visit our <a href="{{ site_url }}{% url 'security' %}">security</a> page.
+  </p>
+{% endblock content %}
+
+{% comment %}
+  Someone has attempted to use your account from an untrusted device with IP address: {{ ip }}
+{% endcomment %}

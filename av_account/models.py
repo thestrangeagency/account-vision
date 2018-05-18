@@ -15,10 +15,10 @@ from ipware.ip import get_ip
 from phonenumber_field.modelfields import PhoneNumberField
 from twilio.rest import Client
 
-from emails.utils import send_verification_email
-from taxsite import logger
-from taxsite import settings
-from utils.utils import TimeStampedModel
+from av_emails.utils import send_verification_email
+from av_core import logger
+from av_core import settings
+from av_utils.utils import TimeStampedModel
 
 
 class Person(TimeStampedModel):
@@ -124,7 +124,7 @@ class AvUser(Person, AbstractBaseUser, PermissionsMixin):
         client.messages.create(
             to="+{}{}".format(self.phone.country_code, self.phone.national_number),
             from_=from_number,
-            body="Your EZTax101 verification code is: " + self.verification_code
+            body="Your Account Vision verification code is: " + self.verification_code
         )
 
     def send_email_verification_code(self):

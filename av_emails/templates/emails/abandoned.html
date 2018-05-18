@@ -1,0 +1,8 @@
+{% extends 'emails/base.html' %}
+
+{% block content %}
+  <p {% include "emails/p_style_snippet.html" %}>
+    Please click <a href="{{ site_url }}{% url 'terms' %}">HERE</a> to complete your registration.
+  </p>
+
+{% endblock content %}

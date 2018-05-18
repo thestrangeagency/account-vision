@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% load django_bootstrap_breadcrumbs crispy_forms_tags  %}
+
+{% block breadcrumbs %}
+  {{ block.super }}
+  {% breadcrumb "Contact" "contact" %}
+{% endblock %}
+
+{% block content %}
+  <h1>Contact Us</h1>
+
+  {% crispy form %}
+
+  <h4 class="h4 mt-4">1-971-717-3399</h4>
+{% endblock %}
