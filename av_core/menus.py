@@ -2,15 +2,20 @@ from django.urls import reverse, reverse_lazy
 
 NAV_MENU_LEFT = [
     {
-        "name": "Returns",
-        "url": "returns",
-        "validators": ["menu_generator.validators.is_authenticated", "av_core.menus.is_not_cpa"],
-        "root": True,
+        "name": "Features",
+        "url": "features",
+        "validators": ["menu_generator.validators.is_anonymous"],
     },
     {
         "name": "Pricing",
         "url": "pricing",
-        "validators": ["menu_generator.validators.is_anonymous", "av_core.menus.is_not_cpa"],
+        "validators": ["menu_generator.validators.is_anonymous"],
+    },
+    {
+        "name": "Returns",
+        "url": "returns",
+        "validators": ["menu_generator.validators.is_authenticated", "av_core.menus.is_not_cpa"],
+        "root": True,
     },
     {
         "name": "Messages",
@@ -22,11 +27,6 @@ NAV_MENU_LEFT = [
         "name": "Account",
         "url": "edit",
         "validators": ["menu_generator.validators.is_authenticated", "av_core.menus.is_not_cpa"],
-    },
-    {
-        "name": "About Us",
-        "url": "about",
-        "validators": ["menu_generator.validators.is_anonymous", "av_core.menus.is_not_cpa"],
     },
     # {
     #     "name": "Uploads",
