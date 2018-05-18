@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`it renders 1`] = `
+<div
+  className="upload-manager mb-5"
+>
+  <Dropzone
+    activeClassName="bg-light"
+    className="dropzone p-5 my-5 border"
+    disableClick={false}
+    disablePreview={true}
+    disabled={false}
+    disabledClassName="bg-light"
+    maxSize={Infinity}
+    minSize={0}
+    multiple={true}
+    onDrop={[Function]}
+    preventDropOnDocument={true}
+  >
+    <p
+      className="m-0 text-center"
+    >
+      Drag files here or click to upload
+    </p>
+  </Dropzone>
+  <UploadModal
+    isSaveDisabled={false}
+    onHidden={[Function]}
+    onShown={[Function]}
+    onSubmit={[Function]}
+    setDescriptionRef={[Function]}
+  />
+  <DeleteConfirmationModal
+    isActionDisabled={false}
+    onClickConfirm={[Function]}
+  />
+</div>
+`;

@@ -1,0 +1,31 @@
+.breadcrumb {
+  background-color: $green-grey;
+  border-radius: 0;
+  padding: 1.25rem 0;
+  position: relative;
+  margin-bottom: 0;
+
+  &:before {
+    background-color: $green-grey;
+    content: "";
+    height: 100%;
+    left: 50%;
+    margin: 0 -50vw;
+    position: absolute;
+    right: 50%;
+    top: 0;
+    width: 100vw;
+    z-index: -1;
+  }
+}
+
+.breadcrumb-item {
+  @extend %gibson-regular;
+
+  font-size: 0.875rem;
+}
+
+.breadcrumb-item.active,
+.breadcrumb-item + .breadcrumb-item::before {
+  color: $dark-grey;
+}

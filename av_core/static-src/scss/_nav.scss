@@ -1,0 +1,128 @@
+.navbar {
+  background-color: $blue;
+}
+
+.navbar__logo-wrapper {
+  align-items: center;
+  flex: 1 0 auto; 
+
+  @include from-breakpoint(md) {
+    flex: 0 0 auto; 
+    margin: 0 30px 0 0;
+  }
+}
+
+.navbar-dark {
+
+  .navbar-nav {
+
+    @include from-breakpoint(md) {
+      margin-top: 0.5rem;
+
+      &.tx-navbar__nav--no-margin {
+        margin: 0;
+      }
+    }
+  }
+}
+
+.nav-item {
+  @include from-breakpoint(lg) {
+    margin: 0 8px;
+  }
+}
+
+.navbar--overlaid {
+
+  @include from-breakpoint(md) {
+    background-color: transparent;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+
+    &.navbar-dark .navbar-nav .nav-link:hover {
+      color: $green-grey;
+    }
+  }
+}
+
+.navbar__logo {
+  flex: 0 1 auto;
+  height: 60px;
+
+  @include from-breakpoint(md) {
+    height: 76px;
+  }
+}
+
+.tx-nav-link {
+  @extend %gibson-regular;
+
+  color: $white;
+  display: block;
+  font-size: 0.875rem;
+  letter-spacing: 2px;
+  padding: 0.5rem 0;
+  text-transform: uppercase;
+
+  &:hover,
+  &.active {
+    color: $green;
+  }
+
+  @include from-breakpoint(md) {
+    padding: 0 0.5rem;
+  }
+}
+
+.tx-nav-link--no-padding {
+  padding: 0;
+}
+
+.tx-navbar__account {
+
+  @include from-breakpoint(md) {
+    margin: 0.5rem 0 0;
+  }
+}
+
+.tx-navbar__account--signed-in {
+  display: flex;
+  flex-direction: column;
+  margin: 0.75rem 0;
+  padding: 0 0 0 1.875rem;
+  position: relative;
+
+  @include from-breakpoint(md) {
+    align-items: flex-end;
+    margin: -0.25rem 0 0;
+    padding: 0;
+  }
+
+  @include from-breakpoint(lg) {
+    padding: 0 0 0 1.875rem;
+  }
+}
+
+.tx-navbar__account-icon {
+  bottom: -0.125rem;
+  left: -0.3125rem;
+  position: absolute;
+
+  @include from-breakpoint(md) {
+    display: none;
+  }
+
+  @include from-breakpoint(lg) {
+    display: block;
+  }
+}
+
+.tx-navbar__account-username {
+  color: $white;
+  font-size: 0.75rem;
+  line-height: 1;
+  text-transform: capitalize;
+}

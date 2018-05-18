@@ -1,0 +1,24 @@
+.tx-nav-tabs {
+  background-color: $green-grey;
+  margin: 0;
+}
+
+.nav-tabs {
+
+  .nav-item {
+    margin: 0 0.375rem 0 0;
+    text-align: center;
+
+    @include from-breakpoint(md) {
+      min-width: 7.5rem;
+    }
+  }
+
+  .nav-link {
+    @extend %gibson-regular;
+
+    background-color: $green;
+    color: $white;
+    font-size: 0.875rem;
+  }
+}

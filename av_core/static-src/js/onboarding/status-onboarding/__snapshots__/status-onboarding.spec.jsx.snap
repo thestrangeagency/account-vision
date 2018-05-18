@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`it renders 1`] = `
+<OnboardingForm
+  nextPage={[Function]}
+  steps={
+    Array [
+      Object {
+        "inputs": Array [
+          Object {
+            "inputProps": Object {
+              "initial": null,
+              "label": "Filing Status",
+              "name": "filing_status",
+              "required": true,
+              "selectChoices": Array [
+                Object {
+                  "text": "---------",
+                  "value": "",
+                },
+                Object {
+                  "text": "Single",
+                  "value": "SINGLE",
+                },
+                Object {
+                  "text": "Married, filing jointly",
+                  "value": "MARRIED_JOINT",
+                },
+                Object {
+                  "text": "Married, filing separately",
+                  "value": "MARRIED_SEPARATE",
+                },
+                Object {
+                  "text": "Head of household",
+                  "value": "HEAD",
+                },
+                Object {
+                  "text": "Widow",
+                  "value": "WIDOW",
+                },
+              ],
+            },
+            "type": "SELECT",
+          },
+        ],
+      },
+    ]
+  }
+  userId={null}
+/>
+`;

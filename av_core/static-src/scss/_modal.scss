@@ -1,0 +1,41 @@
+.tx-body--modal {
+  background-color: $blue;
+}
+
+.tx-modal-link {
+  color: $green;
+  text-decoration: underline;
+
+  &:hover {
+    color: $green;
+    text-decoration: underline;
+  }
+}
+
+.tx-modal-eyebrow {
+  margin: 0;
+  text-align: center;
+}
+
+.tx-modal__header {
+  margin: 2rem 0;
+  text-align: center;
+}
+
+.tx-modal__content {
+  background-color: $white;
+  padding: 2rem 1rem;
+
+  @include from-breakpoint(md) {
+    padding: 2.5rem 3.375rem 4.25rem;
+  }
+}
+
+.tx-modal__content__header {
+  margin: 0 0 1rem;
+  text-align: center;
+}
+
+.tx-modal__form-container {
+  margin: 2.5rem 0 0;
+}

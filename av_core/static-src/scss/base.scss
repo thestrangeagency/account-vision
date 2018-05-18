@@ -1,0 +1,135 @@
+/*
+typekit font styles
+ */
+@import url("https://use.typekit.net/ipj1ldu.css");
+
+/*
+bootstrap variable overrides come before bootstrap
+ */
+@import './variables';
+
+/*
+cherry-picked bootstrap imports
+ */
+@import './bootstrap';
+
+/*
+the rest of our styles
+ */
+@import './mixins';
+@import './typography';
+@import './breadcrumbs';
+@import './footer';
+@import './nav';
+@import './steps';
+@import './about';
+@import './home';
+@import './modal';
+@import './forms';
+@import './tabs';
+@import './returns';
+@import './security';
+@import '../js/shared/file/file';
+@import '../js/expense-manager/custom-expense-manager';
+@import '../js/shared/step-form/step-form-step/step-form-step';
+
+/*
+global styles
+ */
+
+a:hover {
+  text-decoration: none;
+}
+
+.tx-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  flex: 1 0 auto;
+}
+
+.btn {
+  @extend %gibson-semibold;
+
+  border-radius: 0;
+  letter-spacing: 2px;
+  padding: 10px 30px;
+  text-transform: uppercase;
+}
+
+.btn-primary,
+.btn-warning {
+  color: $light;
+
+  &:hover {
+    color: $light;
+  }
+}
+
+.btn-secondary {
+  @include button-variant($white, $green, lighten($green, 42%), darken($green, 10%), lighten($green, 42%), darken($green, 12.5%));
+
+  @include hover {
+    box-shadow: $btn-secondary-box-shadow;
+    color: darken($green, 10%);
+  }
+
+  box-shadow: $btn-secondary-box-shadow;
+  color: $green;
+
+  &:focus,
+  &.focus {
+    box-shadow: $btn-secondary-box-shadow;
+  }
+
+  &:not([disabled]):not(.disabled):active,
+  &:not([disabled]):not(.disabled).active,
+  .show > &.dropdown-toggle {
+    box-shadow: $btn-secondary-box-shadow;
+    color: darken($green, 10%);
+  }
+}
+
+.alert {
+  font-size: 15px;
+
+  ul {
+    margin: .5rem 0;
+  }
+}
+
+.alert-info {
+  color: $blue;
+}
+
+.alert-danger {
+  @extend %gibson-semibold;
+
+  color: $red;
+  font-size: 13px;
+}
+
+.tx-full-width {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+
+.tx-underline {
+  border-bottom: 2px solid $light;
+}
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.list-group-item-action {
+  color: $blue;
+}

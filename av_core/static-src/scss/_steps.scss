@@ -1,0 +1,70 @@
+.tx-steps {
+  background-color: $green-grey;
+  padding: 2.625rem 0 0;
+
+  @include from-breakpoint(lg) {
+    padding: 2.625rem 0 3.625rem;
+  }
+}
+
+.tx-steps-header {
+  text-align: center;
+  margin: 0 auto 1.875rem;
+
+  @include from-breakpoint(md) {
+    max-width: 650px;
+  }
+
+  @include from-breakpoint(lg) {
+    max-width: 800px;
+  }
+}
+
+.tx-step {
+  margin: 0 0 3.75rem;
+
+  @include from-breakpoint(lg) {
+    margin: 0;
+  }
+}
+
+.tx-step__header {
+  align-items: center;
+  display: flex;
+  margin: 0 0 0.875rem;
+}
+
+.tx-step-label {
+  @extend %filson-soft-book;
+
+  background-color: $blue;
+  border-radius: 50%;
+  color: $white;
+  display: flex;
+  flex: 0 0 80px;
+  flex-direction: column;
+  justify-content: center;
+  height: 80px;
+  margin: 0 0.875rem 0 0;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.tx-step-label__number {
+  @extend %filson-soft-medium;
+
+  font-size: 38px;
+  line-height: 1;
+  margin: -3px 0 0;
+}
+
+.tx-step__body {
+  align-items: flex-start;
+  display: flex;
+}
+
+.tx-step__body__icon {
+  flex: 0 0 80px;
+  margin: 0 0.875rem 0 0;
+  text-align: center;
+}

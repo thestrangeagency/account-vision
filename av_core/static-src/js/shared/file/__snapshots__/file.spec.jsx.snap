@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`it renders 1`] = `
+<div
+  className="file-upload d-flex align-items-center"
+>
+  <div
+    className="md-mx-2"
+  >
+    <img
+      alt="file"
+      height={48}
+      src="/static/svg/icon_file.svg"
+      width={48}
+    />
+  </div>
+  <div
+    className="md-mx-2 truncate w-25"
+  >
+    my-file.txt
+  </div>
+  <div
+    className="ml-2 md-mx-2 d-none d-md-block file-upload__size text-nowrap truncate"
+  >
+    200kb
+  </div>
+  <div
+    className="mx-2"
+  >
+    10/28/2017
+  </div>
+  <span>
+    <button
+      aria-label="Edit"
+      className="file-upload__edit-button px-2"
+      onClick={[Function]}
+      type="button"
+    >
+      <img
+        alt="edit"
+        height={48}
+        src="/static/svg/icon_edit.svg"
+        width={48}
+      />
+    </button>
+    <button
+      aria-label="Remove"
+      className="close px-2"
+      onClick={[Function]}
+      type="button"
+    >
+      <img
+        alt="delete"
+        height={48}
+        src="/static/svg/icon_delete.svg"
+        width={48}
+      />
+    </button>
+  </span>
+</div>
+`;

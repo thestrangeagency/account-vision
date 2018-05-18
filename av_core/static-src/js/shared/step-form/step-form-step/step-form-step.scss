@@ -1,0 +1,10 @@
+.step-form-step {
+  transition: opacity 300ms ease-out;
+
+  &--hidden {
+    height: 0;
+    opacity: 0;
+    transition: none;
+    visibility: hidden;
+  }
+}

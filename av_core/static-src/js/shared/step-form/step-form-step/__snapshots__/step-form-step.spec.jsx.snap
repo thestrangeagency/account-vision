@@ -1,0 +1,271 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StepFormStep it checks for validity 1`] = `
+<StepFormStep
+  hasBackButton={false}
+  hasNextButton={true}
+  id="foo"
+  inputProps={
+    Array [
+      Object {
+        "inputProps": Object {
+          "label": "First Name",
+          "name": "first_name",
+          "required": true,
+        },
+        "type": "TEXT",
+      },
+    ]
+  }
+  inputs={
+    Array [
+      Object {
+        "inputProps": Object {
+          "label": "First Name",
+          "name": "first_name",
+          "required": false,
+        },
+        "type": "TEXT",
+      },
+    ]
+  }
+  isDisabled={false}
+  isFocused={false}
+  nextText="Next"
+  onClickBack={null}
+  onClickNext={[Function]}
+  onSetValues={[Function]}
+  prevText="← Back"
+>
+  <div
+    aria-selected={false}
+    className="step-form-step row step-form-step--hidden"
+    id="foo"
+    onKeyUp={[Function]}
+    role="option"
+    tabIndex="-1"
+  >
+    <div
+      className="col"
+    >
+      <div
+        className="form-group"
+        key="0"
+      >
+        <label
+          htmlFor="input_first_name"
+        >
+          First Name
+        </label>
+        <input
+          className="form-control"
+          defaultValue={undefined}
+          id="input_first_name"
+          name="first_name"
+          pattern={undefined}
+          placeholder={undefined}
+          required={false}
+          type="text"
+        />
+        <div
+          className="invalid-feedback"
+        >
+          This field is required.
+        </div>
+      </div>
+      <div
+        className="row justify-content-end"
+      >
+        <div
+          className="col col-6"
+        >
+          <button
+            className="btn btn-primary w-100"
+            disabled={false}
+            onClick={[Function]}
+            type="button"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</StepFormStep>
+`;
+
+exports[`StepFormStep it checks for validity 2`] = `
+<StepFormStep
+  hasBackButton={false}
+  hasNextButton={true}
+  id="foo"
+  inputProps={
+    Array [
+      Object {
+        "inputProps": Object {
+          "label": "First Name",
+          "name": "first_name",
+          "required": true,
+        },
+        "type": "TEXT",
+      },
+    ]
+  }
+  inputs={
+    Array [
+      Object {
+        "inputProps": Object {
+          "label": "First Name",
+          "name": "first_name",
+          "required": false,
+        },
+        "type": "TEXT",
+      },
+    ]
+  }
+  isDisabled={false}
+  isFocused={false}
+  nextText="Next"
+  onClickBack={null}
+  onClickNext={[Function]}
+  onSetValues={[Function]}
+  prevText="← Back"
+>
+  <div
+    aria-selected={false}
+    className="step-form-step row step-form-step--hidden"
+    id="foo"
+    onKeyUp={[Function]}
+    role="option"
+    tabIndex="-1"
+  >
+    <div
+      className="col"
+    >
+      <div
+        className="form-group"
+        key="0"
+      >
+        <label
+          htmlFor="input_first_name"
+        >
+          First Name
+        </label>
+        <input
+          className="form-control"
+          defaultValue={undefined}
+          id="input_first_name"
+          name="first_name"
+          pattern={undefined}
+          placeholder={undefined}
+          required={false}
+          type="text"
+        />
+        <div
+          className="invalid-feedback"
+        >
+          This field is required.
+        </div>
+      </div>
+      <div
+        className="row justify-content-end"
+      >
+        <div
+          className="col col-6"
+        >
+          <button
+            className="btn btn-primary w-100"
+            disabled={false}
+            onClick={[Function]}
+            type="button"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</StepFormStep>
+`;
+
+exports[`StepFormStep it renders 1`] = `
+<StepFormStep
+  hasBackButton={false}
+  hasNextButton={true}
+  id="foo"
+  inputs={
+    Array [
+      Object {
+        "inputProps": Object {
+          "label": "First Name",
+          "name": "first_name",
+          "required": false,
+        },
+        "type": "TEXT",
+      },
+    ]
+  }
+  isDisabled={false}
+  isFocused={false}
+  nextText="Next"
+  onClickBack={null}
+  onClickNext={[Function]}
+  onSetValues={[Function]}
+  prevText="← Back"
+>
+  <div
+    aria-selected={false}
+    className="step-form-step row step-form-step--hidden"
+    id="foo"
+    onKeyUp={[Function]}
+    role="option"
+    tabIndex="-1"
+  >
+    <div
+      className="col"
+    >
+      <div
+        className="form-group"
+        key="0"
+      >
+        <label
+          htmlFor="input_first_name"
+        >
+          First Name
+        </label>
+        <input
+          className="form-control"
+          defaultValue={undefined}
+          id="input_first_name"
+          name="first_name"
+          pattern={undefined}
+          placeholder={undefined}
+          required={false}
+          type="text"
+        />
+        <div
+          className="invalid-feedback"
+        >
+          This field is required.
+        </div>
+      </div>
+      <div
+        className="row justify-content-end"
+      >
+        <div
+          className="col col-6"
+        >
+          <button
+            className="btn btn-primary w-100"
+            disabled={false}
+            onClick={[Function]}
+            type="button"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</StepFormStep>
+`;

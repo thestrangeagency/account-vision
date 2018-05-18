@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`it renders 1`] = `
+<div
+  aria-hidden="true"
+  className="modal fade"
+  role="dialog"
+  tabIndex="-1"
+>
+  <div
+    className="modal-dialog"
+  >
+    <div
+      className="modal-content"
+    >
+      <div
+        className="modal-body"
+      >
+        <h1>
+          Are you still there?
+        </h1>
+        <p>
+          You are about to be signed out due to inactivity. Please click below to stay signed in.
+        </p>
+        <p>
+          You will be signed out in 
+          60
+           seconds.
+        </p>
+      </div>
+      <div
+        className="modal-footer justify-content-center"
+      >
+        <button
+          className="btn btn-primary"
+          data-dismiss="modal"
+          type="submit"
+        >
+          Stay signed in
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;

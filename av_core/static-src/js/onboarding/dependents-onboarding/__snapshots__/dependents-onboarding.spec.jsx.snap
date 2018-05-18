@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`it renders 1`] = `
+<p>
+  Loading...
+</p>
+`;
+
+exports[`it renders 2`] = `
+<p>
+  Loading...
+</p>
+`;

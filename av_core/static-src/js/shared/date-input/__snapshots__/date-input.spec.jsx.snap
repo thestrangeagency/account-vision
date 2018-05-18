@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DateInput it renders 1`] = `
+<input
+  className="form-control date-input"
+  defaultValue={null}
+  id="date"
+  name="date"
+  pattern="^^(0[1-9]|1[012])[\\\\/](0[1-9]|[12][0-9]|3[01])[\\\\/](19|20)\\\\d\\\\d$"
+  placeholder="enter date here"
+  required={true}
+  type="text"
+/>
+`;

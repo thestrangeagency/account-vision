@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`it renders 1`] = `
+<input
+  className="form-control"
+  defaultValue={null}
+  id="date"
+  name="date"
+  pattern="^\\\\d{9}$"
+  placeholder="enter ssn here"
+  required={true}
+  type="tel"
+/>
+`;

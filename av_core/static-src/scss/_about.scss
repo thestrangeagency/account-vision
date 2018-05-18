@@ -1,0 +1,66 @@
+.tx-about__hero {
+  background: url(../img/about-hero-1440.jpg) no-repeat 50% 50%;
+  background-size: cover;
+  color: $white;
+  padding: 4.375rem 0;
+  text-align: center;
+
+  @include from-breakpoint(md) {
+    padding: 7.5rem 0 6.875rem;
+  }
+
+  @include from-breakpoint(lg) {
+    padding: 13.125rem 0 12.5rem;
+  }
+}
+
+.tx-about__hero-header {
+  margin: 0;
+}
+
+.tx-about__body {
+  padding: 3.125rem 0;
+
+  @include from-breakpoint(md) {
+    padding: 3.125rem 0 0;
+  }
+}
+
+.tx-about__body-header {
+  margin: 0 0 1.125rem;
+  text-align: center;
+}
+
+.tx-about__body-subheader {
+  margin: 0 0 3rem;
+  text-align: center;
+}
+
+.tx-about__body-content {
+  @include from-breakpoint(md) {
+    margin: 0 0 -5.5rem;
+  }
+}
+
+.tx-about__body-img {
+  position: relative;
+  z-index: 1;
+}
+
+.tx-about__body-copy {
+  @include from-breakpoint(md) {
+    margin-bottom: 5.5rem;
+  }
+}
+
+.tx-about__steps {
+  padding-top: 3rem;
+
+  @include from-breakpoint(md) {
+    padding-top: 6.75rem;
+  }
+}
+
+.tx-about__steps-header {
+  margin: 0 0 4.25rem;
+}

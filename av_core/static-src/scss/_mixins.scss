@@ -1,0 +1,7 @@
+@mixin from-breakpoint($bp) {
+  $bp: map-get($grid-breakpoints, $bp);
+
+  @media screen and (min-width: #{$bp}) {
+    @content;
+  }
+}
