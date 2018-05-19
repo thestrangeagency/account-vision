@@ -1,0 +1,18 @@
+{% extends 'av_emails/base.html' %}
+
+{% block content %}
+  <p {% include "av_emails/p_style_snippet.html" %}>
+    New contact form message from: {{ contact.name }} &lt;{{ contact.email }}&gt;
+  </p>
+  <p {% include "av_emails/p_style_snippet.html" %}>
+    On: {{ contact.date_created }}
+  </p>
+
+  <p {% include "av_emails/p_style_snippet.html" %}>
+    {{ contact.subject }}
+  </p>
+
+  <p {% include "av_emails/p_style_snippet.html" %}>
+    {{ contact.message }}
+  </p>
+{% endblock content %}

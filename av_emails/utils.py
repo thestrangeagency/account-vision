@@ -10,7 +10,7 @@ def send_new_message_email(message):
         subject='Account Vision: You have a new message',
         recipient=message.recipient.email,
         context={'message': message, 'user': message.recipient},
-        template='emails/new_message.html',
+        template='av_emails/new_message.html',
     )
 
 
@@ -19,7 +19,7 @@ def send_new_user_email(user):
         subject='Welcome to Account Vision!',
         recipient=user.email,
         context={'user': user},
-        template='emails/new_user.html',
+        template='av_emails/new_user.html',
     )
 
 
@@ -28,7 +28,7 @@ def send_untrusted_device_email(user, ip):
         subject='Account Vision untrusted device login',
         recipient=user.email,
         context={'user': user, 'ip': ip},
-        template='emails/untrusted_device.html',
+        template='av_emails/untrusted_device.html',
     )
 
 
@@ -37,7 +37,7 @@ def send_verification_email(user):
         subject='Welcome to Account Vision - email verification',
         recipient=user.email,
         context={'user': user},
-        template='emails/verification.html',
+        template='av_emails/verification.html',
     )
 
 
@@ -47,7 +47,7 @@ def send_return_update_email(tax_return, state_changed=None):
             subject='A return you are managing was updated',
             recipient=tax_return.cpa.email,
             context={'user': tax_return.user, 'return': tax_return, 'state_changed': state_changed},
-            template='emails/return_update.html',
+            template='av_emails/return_update.html',
         )
 
 
@@ -56,7 +56,7 @@ def send_new_contact_email(contact):
         subject='New contact form message',
         recipient=settings.DEFAULT_CONTACT,
         context={'contact': contact},
-        template='emails/new_contact.html',
+        template='av_emails/new_contact.html',
     )
 
 
@@ -65,7 +65,7 @@ def send_payment_email(user):
         subject='Payment Received',
         recipient=user.email,
         context={'user': user},
-        template='emails/payment.html',
+        template='av_emails/payment.html',
     )
 
 
@@ -74,7 +74,7 @@ def send_abandoned_email(user):
         subject='You\'re So Close!',
         recipient=user.email,
         context={'user': user},
-        template='emails/abandoned.html',
+        template='av_emails/abandoned.html',
     )
 
 
@@ -83,7 +83,7 @@ def send_return_complete_email(user, year):
         subject='Your Account Vision tax return is ready for review',
         recipient=user.email,
         context={'user': user, 'year': year},
-        template='emails/complete.html',
+        template='av_emails/complete.html',
     )
 
 
@@ -92,7 +92,7 @@ def send_new_upload_email(user, year):
         subject='Account Vision New Upload',
         recipient=user.email,
         context={'user': user, 'year': year},
-        template='emails/new_upload.html',
+        template='av_emails/new_upload.html',
     )
 
 
@@ -101,7 +101,7 @@ def send_return_filed_email(user, year):
         subject='Your Account Vision tax return has been E-Filed!',
         recipient=user.email,
         context={'user': user, 'year': year},
-        template='emails/filed.html',
+        template='av_emails/filed.html',
     )
 
 
@@ -114,7 +114,7 @@ def get_url():
     return '%s://%s' % (default_protocol, current_domain)
 
 
-def send_email(subject="Account Vision", recipient=None, context=None, template='emails/base.html'):
+def send_email(subject="Account Vision", recipient=None, context=None, template='av_emails/base.html'):
 
     if context is None:
         context = {}

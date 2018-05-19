@@ -1,7 +1,7 @@
-{% extends 'emails/base.html' %}
+{% extends 'av_emails/base.html' %}
 
 {% block content %}
-  <p {% include "emails/p_style_snippet.html" %}>
+  <p {% include "av_emails/p_style_snippet.html" %}>
     Please click <a href="{{ site_url }}{% url 'terms' %}">HERE</a> to complete your registration.
   </p>
 

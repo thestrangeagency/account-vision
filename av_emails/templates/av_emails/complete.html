@@ -1,8 +1,8 @@
-{% extends 'emails/base.html' %}
+{% extends 'av_emails/base.html' %}
 
 {% block content %}
 
-  <p {% include "emails/p_style_snippet.html" %}>
+  <p {% include "av_emails/p_style_snippet.html" %}>
     It looks like your CPA has completed and uploaded your 2017 tax return. Please login to <a href="{{ site_url }}{% url 'return' year %}">review your return</a> and provide permission to e-file your federal and state return.</p>
 
 {% endblock content %}

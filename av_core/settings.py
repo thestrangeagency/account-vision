@@ -91,6 +91,7 @@ INSTALLED_APPS = [
     # account vision
     'av_account',
     'av_contact',
+    'av_emails',
 ]
 
 SITE_ID = 1

@@ -1,0 +1,17 @@
+{% extends 'base-modal-form.html' %}
+
+{% block content_title %}Sign In{% endblock content_title %}
+
+{% block modal_content %}
+  <p class="tx-modal-eyebrow">Don't have an account? <a class="tx-modal-link" href="{% url 'register' %}">Create an Account</a></p>
+  {% if next %}
+    {% if user.is_authenticated %}
+      <p>Your account doesn't have access to this page. To proceed,
+        please login with an account that has access.</p>
+    {% else %}
+      <p>Please login to see this page.</p>
+    {% endif %}
+  {% endif %}
+  {{ block.super }}
+  <a class="tx-form__link--forgot" href="{% url 'password_reset' %}">Forgot password?</a>
+{% endblock modal_content %}

@@ -1,0 +1,13 @@
+{% extends 'base-modal-form.html' %}
+
+{% block facebook_events %}
+  {{ block.super }}
+  fbq('track', 'Lead');
+{% endblock %}
+
+{% block content_title %}Register{% endblock content_title %}
+
+{% block modal_content %}
+  <p class="tx-modal-eyebrow">Already have an account? <a class="tx-modal-link" href="{% url 'login' %}">Sign In</a></p>
+  {{ block.super }}
+{% endblock modal_content %}

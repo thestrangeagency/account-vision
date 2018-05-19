@@ -1,13 +1,13 @@
-{% extends 'emails/base.html' %}
+{% extends 'av_emails/base.html' %}
 
 {% block content %}
   {{ block.super }}
 
-  <p {% include "emails/p_style_snippet.html" %}>
+  <p {% include "av_emails/p_style_snippet.html" %}>
     <strong>To complete your account set up, please click the link below to verify your account.</strong>
   </p>
 
-  <p {% include "emails/p_style_snippet.html" %}>
+  <p {% include "av_emails/p_style_snippet.html" %}>
     <a href="{{ site_url }}{% url 'confirmation' user.email_verification_code %}">{{ site_url }}{% url 'confirmation' user.email_verification_code %}</a>
   </p>
 

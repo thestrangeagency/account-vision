@@ -64,7 +64,7 @@ class SecurityQuestionsView(LoginRequiredMixin, FormView):
             security = get_object_or_None(UserSecurity, user=self.request.user)
             form = self.form_class(instance=security)
             # hide answers
-            for i in range(1, 4):
+            for i in range(1, 3):
                 if 'answer{}'.format(i) in form.initial:
                     form.initial['answer{}'.format(i)] = '••••••••'
             return form
@@ -75,7 +75,7 @@ class SecurityQuestionsView(LoginRequiredMixin, FormView):
         if security is None:
             security = form.save(commit=False)
             security.user = user
-        for i in range(1, 4):
+        for i in range(1, 3):
             form_answer = form.cleaned_data['answer{}'.format(i)]
             # only save new answers
             if form_answer is not '' and form_answer is not None and '•' not in form_answer:

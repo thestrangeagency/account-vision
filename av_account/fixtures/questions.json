@@ -1,0 +1,25 @@
+[{
+	"model": "av_account.securityquestion",
+	"pk": 1,
+	"fields": {
+		"question": "What is your favorite food?"
+	}
+}, {
+	"model": "av_account.securityquestion",
+	"pk": 2,
+	"fields": {
+		"question": "What is your favorite book?"
+	}
+}, {
+	"model": "av_account.securityquestion",
+	"pk": 3,
+	"fields": {
+		"question": "What is your favorite animal?"
+	}
+}, {
+	"model": "av_account.securityquestion",
+	"pk": 4,
+	"fields": {
+		"question": "What is your favorite place?"
+	}
+}]

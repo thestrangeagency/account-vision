@@ -1,0 +1,11 @@
+{% extends 'base-modal-form.html' %}
+
+{% block content_title %}Account Ready{% endblock content_title %}
+
+{% block modal_content %}
+  <p>Thank you for creating an account. An email confirmation has just been sent.</p>
+  <p>Click <em>OK</em> below to go to your dashboard.</p>
+  {{ block.super }}
+  <a class="btn btn-primary" href="{% url 'home' %}">OK</a>
+{%  endblock modal_content %}
+

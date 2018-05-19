@@ -1,0 +1,10 @@
+{% extends 'base-modal-form.html' %}
+
+{% block content_title %}Account Verification{% endblock content_title %}
+
+{% block modal_content %}
+  <p>Please enter the verification code sent to {{ user.phone }}</p>
+  {{ block.super }}
+  <a href="{% url 'phone' %}">← Back</a>
+{%  endblock modal_content %}
+
