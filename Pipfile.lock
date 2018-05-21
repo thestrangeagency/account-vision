@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "ba7079047adc28b90da704b92a52c156d25e6bff645f26180d002932a8534ef0"
+            "sha256": "b7bdc0e7d0f34db260f326b87505e6025ab6c590eff7f5a011e6a20e2fa2fec7"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -24,17 +24,17 @@
         },
         "boto3": {
             "hashes": [
-                "sha256:2fe73a5fa3a95f6f69d6bc78798cd28b0d5bfdc48181e35c4d9128f413617f5e",
-                "sha256:b0d63353cc166269c0c50dccdfd107cf70f351cc897c7081742952f1e6b2a9ea"
+                "sha256:7911f4b593a268a9b218839af972dbeeca886037e1090fa06aaef94276545a4d",
+                "sha256:c5942bb27d364625be6b0521e88ccfcd60a2d2b58b9b126748fb22d613693260"
             ],
-            "version": "==1.7.23"
+            "version": "==1.7.24"
         },
         "botocore": {
             "hashes": [
-                "sha256:97b2221b914251664dbd413954f820b13cc1fccf49b39b23ed66fc170f146bd3",
-                "sha256:ea3973d13f19075013490634698288f75c29245d9794da8470d4c4b7da1049f2"
+                "sha256:710307a7ad4b150099e82845054c340ad5aae7c0c80c773f39ab9b402720e435",
+                "sha256:b7a23361bcd6ce2d9cf56a3e5bc7c6b2e3233f3d902d41cb2dfb37472ea41986"
             ],
-            "version": "==1.10.23"
+            "version": "==1.10.24"
         },
         "certifi": {
             "hashes": [
@@ -78,6 +78,12 @@
                 "sha256:e1c33e58c68324d9ba5a3f3c60b672311289aa108b0b338de82eefc4efaaaacb"
             ],
             "version": "==0.9.1"
+        },
+        "django-bootstrap4": {
+            "hashes": [
+                "sha256:6db4a27b33851833e68b96344f9df063150dcace8d4787ebfc21eceb55196945"
+            ],
+            "version": "==0.0.6"
         },
         "django-crispy-forms": {
             "hashes": [
@@ -194,10 +200,10 @@
         },
         "pyjwt": {
             "hashes": [
-                "sha256:bca523ef95586d3a8a5be2da766fe6f82754acba27689c984e28e77a12174593",
-                "sha256:dacba5786fe3bf1a0ae8673874e29f9ac497860955c501289c63b15d3daae63a"
+                "sha256:c365c2c92063bdc609a9ef328958a910e249ffcad953895914b87e645412cf81",
+                "sha256:d527c3330d83d7278a0a8ef570b7c9c39fbf2c0c1edbe564a1a8a02d5352322b"
             ],
-            "version": "==1.6.1"
+            "version": "==1.6.3"
         },
         "pysocks": {
             "hashes": [
