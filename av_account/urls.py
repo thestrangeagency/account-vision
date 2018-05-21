@@ -28,6 +28,11 @@ urlpatterns = [
         name='verification',
     ),
     url(
+        regex=r'^firm/$',
+        view=FirmView.as_view(),
+        name='firm',
+    ),
+    url(
         regex=r'^created/$',
         view=TemplateView.as_view(template_name='thanks.html'),
         name='created',

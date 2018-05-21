@@ -21,6 +21,10 @@ from av_core import settings
 from av_utils.utils import TimeStampedModel
 
 
+class Firm(TimeStampedModel):
+    name = models.CharField(verbose_name='firm name, as you would like your clients to see it', max_length=150, blank=True)
+
+
 class Person(TimeStampedModel):
     first_name = models.CharField(_('first name'), max_length=150, blank=True)
     last_name = models.CharField(_('last name'), max_length=150, blank=True)
@@ -69,6 +73,8 @@ class AvUserManager(BaseUserManager):
 class AvUser(Person, AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(verbose_name='email address', max_length=255, unique=True)
     phone = PhoneNumberField(null=True, blank=True)
+
+    firm = models.ForeignKey(Firm, on_delete=models.CASCADE, null=True)
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)

@@ -22,3 +22,9 @@ class ClientInviteView(ReadyRequiredMixin, FormView):
     form_class = InviteForm
     template_name = 'av_clients/invite.html'
 
+    def form_valid(self, form):
+        user = form.save(commit=False)
+
+        user.send_invite_code()
+        return super(ClientInviteView, self).form_valid(form)
+

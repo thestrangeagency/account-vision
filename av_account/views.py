@@ -15,7 +15,7 @@ from django.views.generic import TemplateView
 from django_agent_trust import revoke_other_agents
 from django_agent_trust import trust_agent
 
-from .forms import AccountForm
+from .forms import AccountForm, FirmForm
 from .forms import BankingForm
 from .forms import DevicesForm
 from .forms import PhoneNumberForm
@@ -104,7 +104,7 @@ class PhoneNumberView(LoginRequiredMixin, FormView):
 class VerificationView(LoginRequiredMixin, FormView):
     template_name = 'verification.html'
     form_class = VerificationForm
-    success_url = reverse_lazy('created')
+    success_url = reverse_lazy('firm')
 
     def get_form(self):
         return self.form_class(user=self.request.user, **self.get_form_kwargs())
@@ -114,6 +114,18 @@ class VerificationView(LoginRequiredMixin, FormView):
         self.request.user.save()
         trust_agent(self.request)
         return super(VerificationView, self).form_valid(form)
+
+
+class FirmView(LoginRequiredMixin, FormView):
+    template_name = 'firm.html'
+    form_class = FirmForm
+    success_url = reverse_lazy('created')
+
+    def form_valid(self, form):
+        firm = form.save()
+        self.request.user.firm = firm
+        self.request.user.save()
+        return super(FirmView, self).form_valid(form)
 
 
 class TrustView(LoginRequiredMixin, SuccessURLAllowedHostsMixin, FormView):

@@ -12,7 +12,8 @@ from django.forms import Form
 from django.forms import ModelForm
 from django.forms import forms
 
-from .models import Bank
+from av_core import settings
+from .models import Bank, Firm
 from .models import AvUser
 from .models import UserSecurity
 from av_utils.utils import FormSubmit
@@ -91,10 +92,23 @@ class VerificationForm(Form):
 
     def clean_verification_code(self):
         verification_code = self.cleaned_data.get('verification_code')
+        if settings.DEBUG:
+            return verification_code
         if self.user.verification_code.upper() == verification_code.upper():
             return verification_code
         else:
             raise forms.ValidationError(u'Verification code does not match.')
+
+
+class FirmForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(FirmForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.add_input(Submit('submit', 'Continue'))
+
+    class Meta:
+        model = Firm
+        fields = ('name', )
 
 
 class DevicesForm(Form):
