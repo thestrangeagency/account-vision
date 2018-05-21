@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.forms import ModelForm
 from django.urls import reverse_lazy
 from django.views.generic import ListView, FormView
@@ -9,7 +10,9 @@ from av_account.utils import ReadyRequiredMixin
 class ClientListView(ReadyRequiredMixin, ListView):
     model = AvUser
     template_name = 'av_clients/list.html'
-    queryset = AvUser.objects.order_by('-date_created')[:10]
+
+    def get_queryset(self):
+        return AvUser.objects.filter(firm=self.request.user.firm, is_cpa=False).order_by('-date_created')
 
 
 class InviteForm(ModelForm):
@@ -29,5 +32,6 @@ class ClientInviteView(ReadyRequiredMixin, FormView):
         user.firm = self.request.user.firm
         user.send_invitation_code()
         user.save()
+        messages.success(self.request, 'Invitation sent to {}.'.format(user.email))
         return super(ClientInviteView, self).form_valid(form)
 
