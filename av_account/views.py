@@ -16,7 +16,7 @@ from django.views.generic import TemplateView
 from django_agent_trust import revoke_other_agents
 from django_agent_trust import trust_agent
 
-from .forms import AccountForm, FirmForm
+from .forms import AccountForm, FirmForm, AccountSetPasswordForm
 from .forms import BankingForm
 from .forms import DevicesForm
 from .forms import PhoneNumberForm
@@ -111,9 +111,8 @@ class PhoneNumberView(LoginRequiredMixin, FormView):
 class VerificationView(LoginRequiredMixin, FormView):
     template_name = 'verification.html'
     form_class = VerificationForm
-    success_url = reverse_lazy('firm')
 
-    def get_form(self):
+    def get_form(self, form_class=None):
         return self.form_class(user=self.request.user, **self.get_form_kwargs())
 
     def form_valid(self, form):
@@ -122,11 +121,18 @@ class VerificationView(LoginRequiredMixin, FormView):
         trust_agent(self.request)
         return super(VerificationView, self).form_valid(form)
 
+    def get_success_url(self):
+        # a cpa will need to set up a firm, regular users are done here
+        if self.request.user.is_cpa:
+            return reverse_lazy('firm')
+        else:
+            return reverse_lazy('client_created')
+
 
 class FirmView(LoginRequiredMixin, FormView):
     template_name = 'firm.html'
     form_class = FirmForm
-    success_url = reverse_lazy('created')
+    success_url = reverse_lazy('cpa_created')
 
     def form_valid(self, form):
         firm = form.save()
@@ -137,13 +143,25 @@ class FirmView(LoginRequiredMixin, FormView):
 
 class InvitationView(FormView):
     template_name = 'invitation.html'
-    form_class = SetPasswordForm
+    form_class = AccountSetPasswordForm
+
+    def get_form(self, form_class=None):
+        # find user matching verification code
+        code = self.kwargs['code']
+        try:
+            user = AvUser.objects.get(email_verification_code=code)
+            user.is_email_verified = True
+            user.save()
+            return self.form_class(user=user, **self.get_form_kwargs())
+        except ObjectDoesNotExist:
+            logger.warn('Attempted to verify with bad code')
+            return None
 
     def form_valid(self, form):
         user = form.save()
 
         # automatically log in
-        password = self.request.POST.get('password1', None)
+        password = self.request.POST.get('new_password1', None)
         authenticated = authenticate(
             username=user.email,
             password=password
@@ -159,19 +177,7 @@ class InvitationView(FormView):
 
     def get_context_data(self, **kwargs):
         context = super(InvitationView, self).get_context_data(**kwargs)
-
-        # find user matching verification code
-        code = self.kwargs['code']
-        try:
-            user = AvUser.objects.get(email_verification_code=code)
-            user.is_email_verified = True
-            user.save()
-            context['verified'] = True
-        except ObjectDoesNotExist:
-            logger.warn('Attempted to verify with bad code')
-            context['verified'] = False
-            pass
-
+        context['user'] = self.get_form().user
         return context
 
 

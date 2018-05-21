@@ -35,9 +35,9 @@ urlpatterns = [
         name='firm',
     ),
     url(
-        regex=r'^created/$',
-        view=TemplateView.as_view(template_name='thanks.html'),
-        name='created',
+        regex=r'^finished/$',
+        view=TemplateView.as_view(template_name='cpa_created.html'),
+        name='cpa_created',
     ),
     url(
         regex=r'^confirmation/(?P<code>[\w{}.-]{16})/$',
@@ -50,6 +50,11 @@ urlpatterns = [
         regex=r'^invitation/(?P<code>[\w{}.-]{16})/$',
         view=InvitationView.as_view(),
         name='invitation',
+    ),
+    url(
+        regex=r'^done/$',
+        view=TemplateView.as_view(template_name='client_created.html'),
+        name='client_created',
     ),
 
     # account maintenance

@@ -8,6 +8,11 @@
 {% block content_title %}Register{% endblock content_title %}
 
 {% block modal_content %}
+  <p class="tx-modal-eyebrow">Hello {{ user.first_name }} {{ user.last_name }}!</p>
+  <p class="tx-modal-eyebrow">Please set your password for access to the <br/><strong>{{ user.firm.name }}</strong><br/> Account Vision portal.</p>
+
+
   <p class="tx-modal-eyebrow">Already have an account? <a class="tx-modal-link" href="{% url 'login' %}">Sign In</a></p>
+
   {{ block.super }}
 {% endblock modal_content %}

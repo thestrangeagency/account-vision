@@ -1,4 +1,5 @@
 from django.forms import ModelForm
+from django.urls import reverse_lazy
 from django.views.generic import ListView, FormView
 
 from av_account.models import AvUser
@@ -21,6 +22,7 @@ class InviteForm(ModelForm):
 class ClientInviteView(ReadyRequiredMixin, FormView):
     form_class = InviteForm
     template_name = 'av_clients/invite.html'
+    success_url = reverse_lazy('invite')
 
     def form_valid(self, form):
         user = form.save(commit=False)

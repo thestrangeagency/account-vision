@@ -1,0 +1,10 @@
+{% extends 'base-modal-form.html' %}
+
+{% block content_title %}Account Ready{% endblock content_title %}
+
+{% block modal_content %}
+  <p>Click <em>OK</em> below to go to your Account Vision home page.</p>
+  {{ block.super }}
+  <a class="btn btn-primary" href="{% url 'home' %}">OK</a>
+{%  endblock modal_content %}
+

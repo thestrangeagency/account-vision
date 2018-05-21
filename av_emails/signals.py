@@ -16,7 +16,8 @@ def message_post_save(sender, instance, created, *args, **kwargs):
 @receiver(models.signals.post_save, sender=AvUser)
 def user_post_save(sender, instance, created, *args, **kwargs):
     if created:
-        send_new_user_email(instance)
+        if instance.is_cpa:
+            send_new_user_email(instance)
 
 
 @receiver(models.signals.post_save, sender=Contact)
