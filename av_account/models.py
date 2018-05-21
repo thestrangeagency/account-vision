@@ -15,7 +15,7 @@ from ipware.ip import get_ip
 from phonenumber_field.modelfields import PhoneNumberField
 from twilio.rest import Client
 
-from av_emails.utils import send_verification_email
+from av_emails.utils import send_verification_email, send_invitation_email
 from av_core import logger
 from av_core import settings
 from av_utils.utils import TimeStampedModel
@@ -134,11 +134,18 @@ class AvUser(Person, AbstractBaseUser, PermissionsMixin):
             body="Your Account Vision verification code is: " + self.verification_code
         )
 
-    def send_email_verification_code(self):
+    def generate_email_code(self):
         self.email_verification_code = ''.join([choice(string.ascii_uppercase + string.digits) for _ in range(16)])
         self.is_email_verified = False
         self.save()
+
+    def send_email_verification_code(self):
+        self.generate_email_code()
         send_verification_email(self)
+
+    def send_invitation_code(self):
+        self.generate_email_code()
+        send_invitation_email(self)
 
     def __str__(self):
         return self.email

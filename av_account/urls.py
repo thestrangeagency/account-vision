@@ -7,6 +7,8 @@ from av_account.forms import AccountPasswordResetForm, AccountSetPasswordForm, A
 from .views import *
 
 urlpatterns = [
+
+    # cpa registration flow
     url(
         regex=r'^register/$',
         view=RegistrationView.as_view(),
@@ -38,6 +40,20 @@ urlpatterns = [
         name='created',
     ),
     url(
+        regex=r'^confirmation/(?P<code>[\w{}.-]{16})/$',
+        view=EmailVerificationView.as_view(),
+        name='confirmation',
+    ),
+
+    # new user invitations
+    url(
+        regex=r'^invitation/(?P<code>[\w{}.-]{16})/$',
+        view=InvitationView.as_view(),
+        name='invitation',
+    ),
+
+    # account maintenance
+    url(
         regex=r'^new-device/$',
         view=TrustView.as_view(),
         name='trust',
@@ -66,11 +82,6 @@ urlpatterns = [
         regex=r'^banking-info/$',
         view=BankingView.as_view(),
         name='banking',
-    ),
-    url(
-        regex=r'^confirmation/(?P<code>[\w{}.-]{16})/$',
-        view=EmailVerificationView.as_view(),
-        name='confirmation',
     ),
 
     url(r'^login/$', LoginView.as_view(template_name='login.html', form_class=AccountLoginForm), name='login'),

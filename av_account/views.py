@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.contrib.auth import login
+from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.views import SuccessURLAllowedHostsMixin
@@ -23,7 +24,7 @@ from .forms import ResendVerificationEmailForm
 from .forms import SecurityQuestionsForm
 from .forms import AvUserCreationForm
 from .forms import VerificationForm
-from av_account.models import Bank
+from av_account.models import Bank, AvUser
 from av_account.models import UserLogin
 from av_account.models import UserSecurity
 from av_account.utils import ReadyRequiredMixin
@@ -36,14 +37,20 @@ class RegistrationView(FormView):
     form_class = AvUserCreationForm
 
     def form_valid(self, form):
-        user = form.save()
+        user = form.save(commit=False)
 
+        # default to cpa user in this flow
+        user.is_cpa = True
+        user.save()
+
+        # automatically log in
         password = self.request.POST.get('password1', None)
         authenticated = authenticate(
             username=user.email,
             password=password
         )
 
+        # if login worked, continue cpa signup flow
         if authenticated:
             login(self.request, authenticated)
             user.send_email_verification_code()
@@ -126,6 +133,46 @@ class FirmView(LoginRequiredMixin, FormView):
         self.request.user.firm = firm
         self.request.user.save()
         return super(FirmView, self).form_valid(form)
+
+
+class InvitationView(FormView):
+    template_name = 'invitation.html'
+    form_class = SetPasswordForm
+
+    def form_valid(self, form):
+        user = form.save()
+
+        # automatically log in
+        password = self.request.POST.get('password1', None)
+        authenticated = authenticate(
+            username=user.email,
+            password=password
+        )
+
+        # if login worked, continue client signup flow
+        if authenticated:
+            login(self.request, authenticated)
+            user.send_email_verification_code()
+            return redirect(reverse('questions'))
+        else:
+            logger.error('Automatic authentication failure.')
+
+    def get_context_data(self, **kwargs):
+        context = super(InvitationView, self).get_context_data(**kwargs)
+
+        # find user matching verification code
+        code = self.kwargs['code']
+        try:
+            user = AvUser.objects.get(email_verification_code=code)
+            user.is_email_verified = True
+            user.save()
+            context['verified'] = True
+        except ObjectDoesNotExist:
+            logger.warn('Attempted to verify with bad code')
+            context['verified'] = False
+            pass
+
+        return context
 
 
 class TrustView(LoginRequiredMixin, SuccessURLAllowedHostsMixin, FormView):

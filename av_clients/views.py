@@ -24,7 +24,8 @@ class ClientInviteView(ReadyRequiredMixin, FormView):
 
     def form_valid(self, form):
         user = form.save(commit=False)
-
-        user.send_invite_code()
+        user.firm = self.request.user.firm
+        user.send_invitation_code()
+        user.save()
         return super(ClientInviteView, self).form_valid(form)
 
