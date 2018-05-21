@@ -4,7 +4,7 @@
   {{ block.super }}
 
   <p {% include "av_emails/p_style_snippet.html" %}>
-    <strong>You have received an invitation from {{ user.firm }} to join their Account Vision portal.</strong>
+    <strong>You have received an invitation from {{ user.firm.name }} to join their Account Vision portal.</strong>
   </p>
 
   <p {% include "av_emails/p_style_snippet.html" %}>
