@@ -5,14 +5,23 @@
   fbq('track', 'Lead');
 {% endblock %}
 
-{% block content_title %}Register{% endblock content_title %}
+{% block content_title %}
+  {% if user %}
+    Register
+  {% else %}
+    User not found
+  {% endif %}
+{% endblock content_title %}
 
 {% block modal_content %}
-  <p class="tx-modal-eyebrow">Hello {{ user.first_name }} {{ user.last_name }}!</p>
-  <p class="tx-modal-eyebrow">Please set your password for access to the <br/><strong>{{ user.firm.name }}</strong><br/> Account Vision portal.</p>
+  {% if user %}
+    <p class="tx-modal-eyebrow">Hello {{ user.first_name }} {{ user.last_name }}!</p>
+    <p class="tx-modal-eyebrow">Please set your password for access to the <br/><strong>{{ user.firm.name }}</strong><br/> Account Vision portal.</p>
 
+    <p class="tx-modal-eyebrow">Already have an account? <a class="tx-modal-link" href="{% url 'login' %}">Sign In</a></p>
 
-  <p class="tx-modal-eyebrow">Already have an account? <a class="tx-modal-link" href="{% url 'login' %}">Sign In</a></p>
-
-  {{ block.super }}
+    {{ block.super }}
+  {% else %}
+    <p class="tx-modal-eyebrow">Please check your verification code or ask for a new invitation.</p>
+  {% endif %}
 {% endblock modal_content %}

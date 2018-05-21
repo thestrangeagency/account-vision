@@ -154,7 +154,7 @@ class InvitationView(FormView):
             user.save()
             return self.form_class(user=user, **self.get_form_kwargs())
         except ObjectDoesNotExist:
-            logger.warn('Attempted to verify with bad code')
+            logger.warn('Attempted to accept invite with bad code')
             return None
 
     def form_valid(self, form):
@@ -177,7 +177,11 @@ class InvitationView(FormView):
 
     def get_context_data(self, **kwargs):
         context = super(InvitationView, self).get_context_data(**kwargs)
-        context['user'] = self.get_form().user
+        form = self.get_form()
+        if form is not None:
+            context['user'] = form.user
+        else:
+            context['user'] = None
         return context
 
 
