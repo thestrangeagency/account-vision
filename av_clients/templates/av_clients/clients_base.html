@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+  {{ block.super }}
+  {% breadcrumb "Clients" "clients" %}
+{% endblock %}
+
+{% block tabs %}
+
+  {% url 'clients' as clients%}
+  {% url 'invite' as invite %}
+  {% url 'import' as import %}
+
+  <div class="tx-full-width tx-nav-tabs">
+    <div class="container">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link {% if request.get_full_path == clients %}active{% endif %}" href="{% url 'clients' %} ">List</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.get_full_path == invite %}active{% endif %}" href="{% url 'invite' %} ">Invite</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.get_full_path == import %}active{% endif %}" href="{% url 'import' %} ">Import</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+{% endblock %}

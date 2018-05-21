@@ -36,6 +36,7 @@ urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='home.html'), name='home'),
 
     url(r'^account/', include('av_account.urls')),
+    url(r'^clients/', include('av_clients.urls')),
 
     url(r'^legal/$', TemplateView.as_view(template_name='legal.html'), name='legal'),
     url(r'^security/$', TemplateView.as_view(template_name='security.html'), name='security'),

@@ -92,6 +92,7 @@ INSTALLED_APPS = [
     'av_account',
     'av_contact',
     'av_emails',
+    'av_clients',
 ]
 
 SITE_ID = 1

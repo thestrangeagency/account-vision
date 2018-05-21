@@ -1,0 +1,16 @@
+{% extends 'av_clients/clients_base.html' %}
+
+{% block content %}
+  {{ block.super }}
+
+  <h1>Clients</h1>
+
+  <ol>
+    {% for client in object_list %}
+      <li>{{ client.first_name }} {{ client.last_name }} - {{ client.email}}</li>
+      {% empty %}
+      <li>You haven't invited any clients yet.</li>
+    {% endfor %}
+  </ol>
+
+{% endblock %}

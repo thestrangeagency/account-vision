@@ -20,8 +20,6 @@ class VerifiedAndTrustedRequiredMixin(UserStateRequiredMixin):
     def dispatch(self, request, *args, **kwargs):
         user = request.user
         if user.is_authenticated:
-            if not user.is_onboard:
-                return redirect(reverse('on-uploads'))
             if not user.is_verified:
                 user.send_verification_code()
                 return redirect_to_login(self.request.get_full_path(), settings.VERIFY_URL, self.get_redirect_field_name())
@@ -35,9 +33,9 @@ class VerifiedAndTrustedRequiredMixin(UserStateRequiredMixin):
 class ReadyRequiredMixin(VerifiedAndTrustedRequiredMixin):
     def dispatch(self, request, *args, **kwargs):
         self.required_user_state = 'ready'
-        if request.user.is_authenticated:
-            if not request.user.is_paid:
-                return redirect(reverse('terms'))
+        # if request.user.is_authenticated:
+        #     if not request.user.is_paid:
+        #         return redirect(reverse('terms'))
             # removing email verification as a condition for using the site. turn it back on here if needed
             # if not request.user.is_email_verified:
             #     return redirect(reverse('email_verify'))

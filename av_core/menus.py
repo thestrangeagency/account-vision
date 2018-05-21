@@ -18,6 +18,12 @@ NAV_MENU_LEFT = [
         "root": True,
     },
     {
+        "name": "Clients",
+        "url": "clients",
+        "validators": ["menu_generator.validators.is_authenticated", "av_core.menus.is_cpa"],
+        "root": True,
+    },
+    {
         "name": "Messages",
         "url": "messages_redirect",
         "validators": ["menu_generator.validators.is_authenticated"],
