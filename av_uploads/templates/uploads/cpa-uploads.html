@@ -1,0 +1,15 @@
+{% extends 'uploads/cpa-return.html' %}
+
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+  {{ block.super }}
+  {% breadcrumb year "cpa-uploads" target.id return.year %}
+{% endblock %}
+
+{% block content %}
+  <h1>{{ target.first_name }} {{ target.last_name }}'s {{ year }} Uploads</h1>
+
+  <div id="upload-manager" data-year="{{ year }}" data-target="{{ target.id }}"></div>
+
+{% endblock content %}

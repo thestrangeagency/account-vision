@@ -1,0 +1,23 @@
+{% extends 'uploads/cpa-user.html' %}
+
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+  {{ block.super }}
+  {% with target.first_name|add:' '|add:target.last_name as name %}
+    {% breadcrumb name "cpa-return" target.id %}
+  {% endwith %}
+{% endblock %}
+
+{% block content %}
+  <h1>{{ target.first_name }} {{ target.last_name }}'s Returns</h1>
+
+  <div class="list-group col-md-8 mb-4">
+    {% for return in returns %}
+      <a class="list-group-item list-group-item-action" href="{% url 'cpa-uploads' target.id return.year %}">
+        {{ return.year }}
+      </a>
+    {% endfor %}
+  </div>
+
+{% endblock content %}

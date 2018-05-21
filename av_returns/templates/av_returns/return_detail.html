@@ -1,0 +1,130 @@
+{% extends 'returns/return_list.html' %}
+
+{% load static django_bootstrap_breadcrumbs %}
+
+{% comment %}
+django_bootstrap_breadcrumbs fails with object.year, so had to add 'year' to context
+{% endcomment %}
+{% block breadcrumbs %}
+  {{ block.super }}
+  {% breadcrumb year "return" year %}
+{% endblock %}
+
+{% block content %}
+  <h1>Your {{ object.year }} Return</h1>
+
+  <p class="tx-returns__text mt-4">Return status: <span class="tx-returns__status-text">{{ object.get_return_status_display }}</span></p>
+
+  <div class="row mx-auto">
+    <div class="col-3 p-0">
+      <div class="tx-returns__status-left">
+        <div class="tx-returns__dot mx-auto"></div>
+      </div>
+      <div>
+        <p class="tx-returns__text text-center mt-3">
+          Information Submitted
+        </p>
+      </div>
+    </div>
+    <div class="col-3 p-0">
+      <div class="tx-returns__status-middle {% if status < 2 %}tx-returns__disabled-bar{% endif %}">
+        <div class="tx-returns__dot mx-auto"></div>
+      </div>
+      <div>
+        <p class="tx-returns__text text-center mt-3 {% if status < 2 %}tx-returns__disabled-text{% endif %}">
+          Under CPA Review
+        </p>
+      </div>
+    </div>
+    <div class="col-3 p-0">
+      <div class="tx-returns__status-middle {% if status < 3 %}tx-returns__disabled-bar{% endif %}">
+        <div class="tx-returns__dot mx-auto"></div>
+      </div>
+      <div>
+        <p class="tx-returns__text text-center mt-3 {% if status < 3 %}tx-returns__disabled-text{% endif %}">
+          Completed
+        </p>
+      </div>
+    </div>
+    <div class="col-3 p-0">
+      <div class="tx-returns__status-right {% if status != 4 %}tx-returns__disabled-bar{% endif %}">
+        <div class="tx-returns__dot mx-auto"></div>
+      </div>
+      <div>
+        <p class="tx-returns__text text-center mt-3 {% if status != 4 %}tx-returns__disabled-text{% endif %}">
+          Filed
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="row col-md-10 mx-auto mt-4">
+    <div class="{{ downloads|yesno:"col-md-3,col-md-4" }} col-6">
+      <div class="card border-0">
+        <a class="tx-returns__icon" href="{% url 'info' object.year %}">
+          <img class="card-img-top mb-2" src="{% static 'svg/icon_myinfo.svg' %}">
+          <div class="card-block">
+            <p class="card-text tx-returns__icon-text text-center">Personal Info</p>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="{{ downloads|yesno:"col-md-3,col-md-4" }} col-6">
+      <div class="card border-0">
+        <a class="tx-returns__icon" href="{% url 'expenses-common' object.year %}">
+          <img class="card-img-top mb-2" src="{% static 'svg/icon_expenses.svg' %}">
+          <div class="card-block">
+            <p class="card-text tx-returns__icon-text text-center">Expenses</p>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="{{ downloads|yesno:"col-md-3,col-md-4" }} col-6">
+      <div class="card border-0">
+        <a class="tx-returns__icon" href="{% url 'uploads' object.year %}">
+          <img class="card-img-top mb-2" src="{% static 'svg/icon_uploads.svg' %}">
+          <div class="card-block">
+            <p class="card-text tx-returns__icon-text text-center">Uploads</p>
+          </div>
+        </a>
+      </div>
+    </div>
+    {% if downloads > 0 %}
+      <div class="col-md-3 col-6">
+        <div class="card border-0">
+          <a class="tx-returns__icon" href="{% url 'downloads' object.year %}">
+            <img class="card-img-top mb-2" src="{% static 'svg/icon_taxreturn.svg' %}">
+            <div class="card-block">
+              <p class="card-text tx-returns__icon-text text-center">Tax Return</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+
+  {% if object.return_status == 'DRAFT' %}
+    <div class="text-center mt-5">
+      <h5>Review</h5>
+      <p>Request a CPA review when you are done making edits to your tax return data.</p>
+      <form action="{% url 'return' year %}" method="post">
+        {% csrf_token %}
+        <input class="btn btn-warning mt-3" type="submit" value="Submit for Review" />
+      </form>
+    </div>
+  {% elif object.return_status == 'COMPLETE' %}
+    <div class="text-center mt-5">
+      <h5>File Electronically</h5>
+      <p>Your return is ready to file!</p>
+      <p>You can review your returns on the <a href="{% url 'downloads' object.year %}">Tax Return</a> page.</p>
+      <a class="btn btn-warning mt-3" href="{% url 'efile' year %}">File Electronically</a>
+    </div>
+  {% elif object.return_status == 'FILED' %}
+    <div class="text-center mt-5">
+      <p>
+        <a class="btn btn-warning mt-3" href="https://sa.www4.irs.gov/irfof/lang/en/irfofgetstatus.jsp">Track My Refund</a>
+      </p>
+    </div>
+  {% endif %}
+
+{% endblock content %}

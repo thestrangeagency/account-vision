@@ -14,6 +14,26 @@ class TimeStampedModel(models.Model):
         abstract = True
 
 
+class ReadOnlyMixin:
+    def get_readonly_fields(self, request, obj=None):
+        if request.user.is_superuser:
+            return self.readonly_fields
+
+        return list(
+            [field.name for field in self.opts.local_fields if field.name not in self.get_exclude(request)] +
+            [field.name for field in self.opts.local_many_to_many]
+        )
+
+
+class ExcludeDateMixin:
+    def get_exclude(self, request, obj=None):
+        return ('date_created', 'date_modified')
+
+
+class CPAViewMixin(ExcludeDateMixin, ReadOnlyMixin):
+    pass
+
+
 class FormSubmit(BaseInput):
     """
     Use instead of Crispy submit to add custom styling

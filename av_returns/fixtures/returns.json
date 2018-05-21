@@ -1,0 +1,44 @@
+[
+{
+    "model": "returns.return",
+    "pk": 1,
+    "fields": {
+        "date_created": "2017-10-27T18:38:39.082Z",
+        "date_modified": "2017-10-27T18:38:39.136Z",
+        "user": 1,
+        "year": 2017,
+        "is_dependent": false,
+        "is_first_time": false,
+        "filing_status": "MARRIED_JOINT"
+    }
+},
+{
+    "model": "returns.spouse",
+    "pk": 1,
+    "fields": {
+        "date_created": "2017-10-27T18:38:39.171Z",
+        "date_modified": "2017-10-27T18:38:58.356Z",
+        "first_name": "jane",
+        "last_name": "a",
+        "middle_name": "",
+        "dob": null,
+        "ssn": null,
+        "tax_return": 1
+    }
+},
+{
+    "model": "returns.commonexpenses",
+    "pk": 1,
+    "fields": {
+        "date_created": "2017-10-27T18:38:39.145Z",
+        "date_modified": "2017-10-27T18:38:39.153Z",
+        "tax_return": 1,
+        "union_dues": "0.00",
+        "office_supplies": "0.00",
+        "lorem": "0.00",
+        "ipsum": "0.00",
+        "dolor": "0.00",
+        "sit_amet": "0.00"
+    }
+}
+]

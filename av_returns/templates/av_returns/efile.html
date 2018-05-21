@@ -1,0 +1,16 @@
+{% extends 'base-modal-form.html' %}
+
+{% block content_title %}File Electronically{% endblock content_title %}
+
+{% block modal_content %}
+  <p>
+    By checking the boxes below you give EZtax101 permission to e-file your tax rerun with the IRS. Once we have e-filed
+    your tax return you will be notified and provided with a link to track your return.
+  </p>
+  <p>
+    If you would like your return direct deposited into your bank account, please be sure to enter your bank account
+    info under your <a href="{% url 'banking' %}">account page</a>. Otherwise your return will be mailed via check to
+    the home address you have provided.
+    ​</p>
+  {{ block.super }}
+{% endblock %}

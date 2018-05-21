@@ -1,0 +1,31 @@
+{% extends 'returns/return_detail.html' %}
+
+{% load django_bootstrap_breadcrumbs static %}
+
+{% block breadcrumbs %}
+  {{ block.super }}
+  {% breadcrumb "Tax Return" "downloads" year %}
+{% endblock %}
+
+
+{% block content %}
+  <h1>Tax Return</h1>
+
+  <div class="mb-5">
+    <ul class="list-group">
+
+      {% for download in downloads %}
+        <li class="list-group-item px-1 px-md-2 py-3">
+          <div class="file-upload d-flex align-items-center">
+            <div class="mx-2"><img src="{% static 'svg/icon_file.svg' %}" alt="file" width="48" height="48" /></div>
+            <div class="mx-2 truncate"><a href="{{ download.url }}">{{ download.name }}</a></div>
+            <div class="mx-2 file-upload__size text-nowrap">{{ download.size|filesizeformat }}</div>
+            <div class="mx-2">{{ download.date_created|date:"n/d/Y" }}</div>
+          </div>
+        </li>
+      {% endfor %}
+
+    </ul>
+  </div>
+
+{% endblock content %}
