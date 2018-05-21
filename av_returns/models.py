@@ -3,20 +3,16 @@ from decimal import Decimal
 
 from django.db import models
 from django.dispatch import receiver
-from twilio.rest import Client
 
 from av_account.models import Person, AvUser
-from av_emails.utils import send_return_update_email, send_return_complete_email, send_return_filed_email
-from av_core import settings
 from av_utils.utils import TimeStampedModel
-from av_utils.utils import get_object_or_None
 
 
 class Return(TimeStampedModel):
     user = models.ForeignKey(AvUser, null=False)
     year = models.SmallIntegerField(null=False)
     is_dependent = models.NullBooleanField(null=True)
-    county = models.TextField(blank=True)
+    county = models.CharField(max_length=128, blank=True)
 
     SINGLE = 'SINGLE'
     MARRIED_JOINT = 'MARRIED_JOINT'
@@ -59,6 +55,11 @@ class Return(TimeStampedModel):
 
     def is_frozen(self):
         return self.return_status != self.DRAFT
+
+    @classmethod
+    def year_choices(cls):
+        now = datetime.date.today().year
+        return [(r, r) for r in range(now - 10, now + 1)]
 
 
 @receiver(models.signals.post_save, sender=Return)

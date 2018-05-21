@@ -1,7 +1,7 @@
-from datetime import datetime
+import datetime
 
 from django.core.exceptions import ObjectDoesNotExist
-from django.forms import ModelForm
+from django import forms
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, FormView
@@ -26,14 +26,15 @@ class ReturnsView(ReadyRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super(ReturnsView, self).get_context_data(**kwargs)
         tz_info = self.request.user.date_created.tzinfo
-        age = datetime.now(tz_info) - self.request.user.date_created
+        age = datetime.datetime.now(tz_info) - self.request.user.date_created
         age_hours = age.total_seconds() / 3600
         if age_hours < 24:
             context['new_user'] = True
         return context
 
 
-class ReturnForm(ModelForm):
+class ReturnForm(forms.ModelForm):
+    year = forms.TypedChoiceField(coerce=int, choices=Return.year_choices(), initial=datetime.date.today().year)
 
     class Meta:
         model = Return
