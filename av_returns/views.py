@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.core.exceptions import ObjectDoesNotExist
+from django.forms import ModelForm
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, FormView
@@ -30,6 +31,25 @@ class ReturnsView(ReadyRequiredMixin, ListView):
         if age_hours < 24:
             context['new_user'] = True
         return context
+
+
+class ReturnForm(ModelForm):
+
+    class Meta:
+        model = Return
+        fields = ('year', 'filing_status', 'is_dependent', 'county')
+
+
+class NewReturnView(ReadyRequiredMixin, FormView):
+    form_class = ReturnForm
+    template_name = 'av_returns/new.html'
+    success_url = reverse_lazy('returns')
+
+    def form_valid(self, form):
+        tax_return = form.save(commit=False)
+        tax_return.user = self.request.user
+        tax_return.save()
+        return super(NewReturnView, self).form_valid(form)
 
 
 class ReturnsDetailView(ReadyRequiredMixin, DetailView):

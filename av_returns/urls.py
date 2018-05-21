@@ -3,9 +3,11 @@ from .views import *
 
 urlpatterns = [
     url(r'^$', ReturnsView.as_view(), name='returns'),
-    url(r'^(?P<year>[0-9]{4})/$', ReturnsDetailView.as_view(), name='return'),
-    url(r'^(?P<year>[0-9]{4})/e-file$', EFileView.as_view(), name='efile'),
+    url(r'^new$', NewReturnView.as_view(), name='new'),
 
+    url(r'^(?P<year>[0-9]{4})/$', ReturnsDetailView.as_view(), name='return'),
+
+    url(r'^(?P<year>[0-9]{4})/e-file$', EFileView.as_view(), name='efile'),
     url(r'^(?P<year>[0-9]{4})/info/$', PersonalInfoView.as_view(), name='info'),
 
     url(r'^(?P<year>[0-9]{4})/info/my/$', MyInfoView.as_view(), name='info_my'),
