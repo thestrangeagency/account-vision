@@ -62,7 +62,6 @@ django_bootstrap_breadcrumbs fails with object.year, so had to add 'year' to con
     <div class="{{ downloads|yesno:"col-md-3,col-md-4" }} col-6">
       <div class="card border-0">
         <a class="tx-returns__icon" href="{% url 'info' object.year %}">
-          <img class="card-img-top mb-2" src="{% static 'svg/icon_myinfo.svg' %}">
           <div class="card-block">
             <p class="card-text tx-returns__icon-text text-center">Personal Info</p>
           </div>
@@ -72,7 +71,6 @@ django_bootstrap_breadcrumbs fails with object.year, so had to add 'year' to con
     <div class="{{ downloads|yesno:"col-md-3,col-md-4" }} col-6">
       <div class="card border-0">
         <a class="tx-returns__icon" href="{% url 'expenses-common' object.year %}">
-          <img class="card-img-top mb-2" src="{% static 'svg/icon_expenses.svg' %}">
           <div class="card-block">
             <p class="card-text tx-returns__icon-text text-center">Expenses</p>
           </div>
@@ -82,7 +80,6 @@ django_bootstrap_breadcrumbs fails with object.year, so had to add 'year' to con
     <div class="{{ downloads|yesno:"col-md-3,col-md-4" }} col-6">
       <div class="card border-0">
         <a class="tx-returns__icon" href="{% url 'uploads' object.year %}">
-          <img class="card-img-top mb-2" src="{% static 'svg/icon_uploads.svg' %}">
           <div class="card-block">
             <p class="card-text tx-returns__icon-text text-center">Uploads</p>
           </div>
@@ -93,7 +90,6 @@ django_bootstrap_breadcrumbs fails with object.year, so had to add 'year' to con
       <div class="col-md-3 col-6">
         <div class="card border-0">
           <a class="tx-returns__icon" href="{% url 'downloads' object.year %}">
-            <img class="card-img-top mb-2" src="{% static 'svg/icon_taxreturn.svg' %}">
             <div class="card-block">
               <p class="card-text tx-returns__icon-text text-center">Tax Return</p>
             </div>

@@ -1,0 +1,12 @@
+{% extends 'base-modal-form.html' %}
+
+{% block content_title %}New Browser Verification{% endblock content_title %}
+
+{% block modal_content %}
+  <p>Please enter the verification code sent to your phone.</p>
+  {{ block.super }}
+
+  <p>
+    <a href="{% url 'returns' %}">Resend verification code</a>
+  </p>
+{%  endblock modal_content %}
