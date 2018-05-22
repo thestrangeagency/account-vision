@@ -1,5 +1,6 @@
 import datetime
 
+from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django import forms
 from django.shortcuts import get_object_or_404, redirect, render
@@ -8,6 +9,7 @@ from django.views.generic import TemplateView, FormView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 
+from av_account.models import Address
 from av_account.utils import ReadyRequiredMixin
 from av_returns.forms import MyInfoForm, SpouseForm, DependentsFormSet, AddressForm, DependentsFormSetHelper, \
     EFileForm, FrozenDependentsFormSet, FrozenDependentsFormSetHelper, ReturnForm
@@ -146,6 +148,9 @@ class AddressView(ReadyRequiredMixin, FreezableFormView):
 
     def get_form_kwargs(self):
         kwargs = super(AddressView, self).get_form_kwargs()
+        if not hasattr(self.request.user, 'address'):
+            self.request.user.address = Address.objects.create(user=self.request.user)
+            self.request.user.save()
         kwargs.update({
             'instance': self.request.user.address,
         })
@@ -153,6 +158,7 @@ class AddressView(ReadyRequiredMixin, FreezableFormView):
 
     def form_valid(self, form):
         form.save()
+        messages.success(self.request, 'Your address has been updated.')
         return super(AddressView, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
