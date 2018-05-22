@@ -86,7 +86,7 @@ class ReturnsDetailView(ReadyRequiredMixin, DetailView):
 
 
 class PersonalInfoView(ReadyRequiredMixin, TemplateView):
-    template_name = 'returns/info.html'
+    template_name = 'av_returns/info.html'
 
     def get_context_data(self, **kwargs):
         context = super(PersonalInfoView, self).get_context_data(**kwargs)
@@ -111,7 +111,7 @@ class ReactView(ReadyRequiredMixin, TemplateView):
 
 
 class DownloadsView(ReadyRequiredMixin, TemplateView):
-    template_name = 'returns/downloads.html'
+    template_name = 'av_returns/downloads.html'
 
     def get_context_data(self, **kwargs):
         context = super(DownloadsView, self).get_context_data(**kwargs)
@@ -125,7 +125,7 @@ class DownloadsView(ReadyRequiredMixin, TemplateView):
 
 
 class MyInfoView(ReadyRequiredMixin, FreezableFormView):
-    template_name = 'returns/info_my.html'
+    template_name = 'av_returns/info_my.html'
     form_class = MyInfoForm
 
     def get_form_kwargs(self):
@@ -149,7 +149,7 @@ class MyInfoView(ReadyRequiredMixin, FreezableFormView):
 
 
 class AddressView(ReadyRequiredMixin, FreezableFormView):
-    template_name = 'returns/info_address.html'
+    template_name = 'av_returns/info_address.html'
     form_class = AddressForm
 
     def get_form_kwargs(self):
@@ -173,7 +173,7 @@ class AddressView(ReadyRequiredMixin, FreezableFormView):
 
 
 class SpouseView(ReadyRequiredMixin, FreezableFormView):
-    template_name = 'returns/info_spouse.html'
+    template_name = 'av_returns/info_spouse.html'
     form_class = SpouseForm
 
     def get_form_kwargs(self):
@@ -199,7 +199,7 @@ class SpouseView(ReadyRequiredMixin, FreezableFormView):
 
 
 class DependentsView(ReadyRequiredMixin, TemplateView):
-    template_name = 'returns/info_dependents.html'
+    template_name = 'av_returns/info_dependents.html'
 
     def post(self, request, *args, **kwargs):
         formset = DependentsFormSet(self.request.POST, self.request.FILES)
@@ -243,7 +243,7 @@ class DependentsView(ReadyRequiredMixin, TemplateView):
 
 
 class EFileView(FormView):
-    template_name = 'returns/efile.html'
+    template_name = 'av_returns/efile.html'
     form_class = EFileForm
 
     def dispatch(self, request, *args, **kwargs):

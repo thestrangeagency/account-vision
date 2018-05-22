@@ -45,6 +45,6 @@ class ReadyRequiredMixin(VerifiedAndTrustedRequiredMixin):
 class CPARequiredMixin(LoginRequiredMixin):
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            if not request.user.is_cpa():
+            if not request.user.is_cpa:
                 return redirect(reverse('home'))
         return super(CPARequiredMixin, self).dispatch(request, *args, **kwargs)

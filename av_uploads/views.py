@@ -56,7 +56,7 @@ class UploadParamsView(APIView):
         except ValueError:
             return HttpResponseBadRequest(json.dumps({'error': 'Bad params.'}), content_type='application/json')
 
-        if 'target' in request.POST and request.user.is_cpa():
+        if 'target' in request.POST and request.user.is_cpa:
             try:
                 file_target = AvUser.objects.get(id=request.POST['target'])
             except ObjectDoesNotExist:
@@ -113,7 +113,7 @@ class UploadParamsView(APIView):
             'server_side_encryption': destination.get('server_side_encryption'),
         }
 
-        if request.user.is_cpa():
+        if request.user.is_cpa:
             # cpa uploading a file for a user
             try:
                 tax_return = Return.objects.get(user=file_target, year=year)

@@ -1,3 +1,4 @@
+from django.contrib import auth
 from django.contrib.auth.models import Group
 from django.core.urlresolvers import reverse
 from rest_framework import status
@@ -24,14 +25,11 @@ class UploadAPITestCase(APITestCase):
         )
         self.my_return.save()
 
-        self.group = Group(name='cpa')
-        self.group.save()
-
         self.cpa = AvUser.objects.create_user(
             email='cpa@example.com',
             password='password',
+            is_cpa=True,
         )
-        self.cpa.groups.add(self.group)
         self.cpa.save()
 
     def test_params_protected(self):
@@ -194,6 +192,9 @@ class UploadAPITestCase(APITestCase):
         }
 
         self.client.login(username=self.cpa.email, password='password')
+
+        user = auth.get_user(self.client)
+        assert user.is_authenticated()
 
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)

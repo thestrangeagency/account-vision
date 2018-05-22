@@ -7,10 +7,14 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.views.generic import TemplateView
 from django_agent_trust import trust_agent
+from rest_framework import routers
 
 from av_contact.views import ContactView
 from av_core import settings
 from av_core.views import HomeView
+from av_returns.api import ExpenseViewSet, CommonExpenseViewSet
+from av_uploads.views import UploadParamsView, UploadSignatureView, UploadCompleteView, FileViewSet, CpaFileViewSet, \
+    DownloadsViewSet
 
 
 @login_required
@@ -32,6 +36,14 @@ def force_trust(request):
         return HttpResponseRedirect(reverse('home'))
 
 
+router = routers.DefaultRouter()
+router.register(r'returns/(?P<year>[0-9]{4})/files', FileViewSet)
+router.register(r'returns/(?P<year>[0-9]{4})/(?P<target>\d+)/files', CpaFileViewSet)
+router.register(r'returns/(?P<year>[0-9]{4})/downloads', DownloadsViewSet, base_name='download')
+router.register(r'returns/(?P<year>[0-9]{4})/expenses/custom', ExpenseViewSet)
+router.register(r'returns/(?P<year>[0-9]{4})/expenses/common', CommonExpenseViewSet)
+
+
 urlpatterns = [
 
     url(r'^$', HomeView.as_view(), name='home'),
@@ -45,6 +57,13 @@ urlpatterns = [
     url(r'^security/$', TemplateView.as_view(template_name='security.html'), name='security'),
     url(r'^contact/$', ContactView.as_view(), name='contact'),
     url(r'^faq/$', TemplateView.as_view(template_name='faq.html'), name='faq'),
+
+    url(r'^api/', include('rest_framework.urls', namespace='api')),
+    url(r'^api/', include(router.urls)),
+
+    url(r'^api/uploads/params$', UploadParamsView.as_view(), name='upload_params'),
+    url(r'^api/uploads/signature$', UploadSignatureView.as_view(), name='upload_signature'),
+    url(r'^api/uploads/complete', UploadCompleteView.as_view(), name='upload_complete'),
 
     url(r'^admin/', admin.site.urls),
     url(r'^login_redirect/$', login_redirect, name='login_redirect'),

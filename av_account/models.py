@@ -41,7 +41,7 @@ class Person(TimeStampedModel):
 
 
 class AvUserManager(BaseUserManager):
-    def create_user(self, email, password=None):
+    def create_user(self, email, password=None, is_cpa=False):
         """
         Creates and saves a User with the given email and password.
         """
@@ -50,6 +50,7 @@ class AvUserManager(BaseUserManager):
 
         user = self.model(
             email=self.normalize_email(email),
+            is_cpa=is_cpa,
         )
 
         user.set_password(password)
