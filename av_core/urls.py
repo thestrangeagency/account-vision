@@ -10,6 +10,7 @@ from django_agent_trust import trust_agent
 
 from av_contact.views import ContactView
 from av_core import settings
+from av_core.views import HomeView
 
 
 @login_required
@@ -33,7 +34,7 @@ def force_trust(request):
 
 urlpatterns = [
 
-    url(r'^$', TemplateView.as_view(template_name='home.html'), name='home'),
+    url(r'^$', HomeView.as_view(), name='home'),
 
     url(r'^account/', include('av_account.urls')),
     url(r'^clients/', include('av_clients.urls')),
