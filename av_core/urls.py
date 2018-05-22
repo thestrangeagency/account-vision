@@ -9,10 +9,11 @@ from django.views.generic import TemplateView
 from django_agent_trust import trust_agent
 from rest_framework import routers
 
+from av_account.api import UserViewSet
 from av_contact.views import ContactView
 from av_core import settings
 from av_core.views import HomeView
-from av_returns.api import ExpenseViewSet, CommonExpenseViewSet
+from av_returns.api import ExpenseViewSet, CommonExpenseViewSet, ReturnViewSet
 from av_uploads.views import UploadParamsView, UploadSignatureView, UploadCompleteView, FileViewSet, CpaFileViewSet, \
     DownloadsViewSet
 
@@ -37,6 +38,8 @@ def force_trust(request):
 
 
 router = routers.DefaultRouter()
+router.register(r'users', UserViewSet)
+router.register(r'returns', ReturnViewSet)
 router.register(r'returns/(?P<year>[0-9]{4})/files', FileViewSet)
 router.register(r'returns/(?P<year>[0-9]{4})/(?P<target>\d+)/files', CpaFileViewSet)
 router.register(r'returns/(?P<year>[0-9]{4})/downloads', DownloadsViewSet, base_name='download')
