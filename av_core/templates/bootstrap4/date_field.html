@@ -1,0 +1,7 @@
+{% load crispy_forms_field %}
+<div class="row">
+  {% crispy_field field %}
+  <div class="col-md-4">
+    {% include 'bootstrap4/layout/help_text_and_errors.html' %}
+  </div>
+</div>

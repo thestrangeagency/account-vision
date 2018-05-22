@@ -1,3 +1,5 @@
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit
 from django.contrib import messages
 from django.forms import ModelForm
 from django.urls import reverse_lazy
@@ -20,6 +22,11 @@ class InviteForm(ModelForm):
     class Meta:
         model = AvUser
         fields = ('first_name', 'last_name', 'email')
+
+    def __init__(self, *args, **kwargs):
+        super(InviteForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.add_input(Submit('submit', 'Save'))
 
 
 class ClientInviteView(ReadyRequiredMixin, FormView):

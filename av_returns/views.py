@@ -10,7 +10,7 @@ from django.views.generic.list import ListView
 
 from av_account.utils import ReadyRequiredMixin
 from av_returns.forms import MyInfoForm, SpouseForm, DependentsFormSet, AddressForm, DependentsFormSetHelper, \
-    EFileForm, FrozenDependentsFormSet, FrozenDependentsFormSetHelper
+    EFileForm, FrozenDependentsFormSet, FrozenDependentsFormSetHelper, ReturnForm
 from av_returns.utils import FreezableFormView
 from av_uploads.models import S3File
 from av_uploads.utils import get_s3_url
@@ -31,14 +31,6 @@ class ReturnsView(ReadyRequiredMixin, ListView):
         if age_hours < 24:
             context['new_user'] = True
         return context
-
-
-class ReturnForm(forms.ModelForm):
-    year = forms.TypedChoiceField(coerce=int, choices=Return.year_choices(), initial=datetime.date.today().year)
-
-    class Meta:
-        model = Return
-        fields = ('year', 'filing_status', 'is_dependent', 'county')
 
 
 class NewReturnView(ReadyRequiredMixin, FormView):

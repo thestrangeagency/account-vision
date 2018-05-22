@@ -87,7 +87,6 @@ INSTALLED_APPS = [
     'django_messages',
     'twilio',
     'django_agent_trust',
-    'bootstrap4',
 
     # account vision
     'av_account',

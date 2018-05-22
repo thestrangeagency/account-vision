@@ -1,17 +1,12 @@
 {% extends 'av_clients/clients_base.html' %}
 
-{% load bootstrap4 %}
+{% load crispy_forms_tags %}
 
 {% block content %}
   {{ block.super }}
 
   <h1>Invite</h1>
 
-  <form action="{% url 'invite' %}" method="post">
-    {% csrf_token %}
-    {% bootstrap_form form %}
-    {% bootstrap_form_errors form %}
-    <input type="submit" value="Submit" />
-  </form>
+  {% crispy form %}
 
 {% endblock %}

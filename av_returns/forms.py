@@ -1,12 +1,12 @@
 import datetime
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit, Layout, Div, MultiWidgetField, HTML, Button
-from django.forms import ModelForm, SelectDateWidget, modelformset_factory, Form, DecimalField, BooleanField, forms
-from django.urls import reverse
+from crispy_forms.layout import Submit, Layout, Div, MultiWidgetField, HTML
+from django.forms import ModelForm, SelectDateWidget, modelformset_factory, Form, DecimalField, BooleanField, forms, \
+    TypedChoiceField
 
 from av_account.models import AvUser, Address
-from av_returns.models import Spouse, Dependent
+from av_returns.models import Spouse, Dependent, Return
 from av_returns.utils import FreezableFormView
 from av_utils.utils import FormSubmit
 
@@ -16,6 +16,19 @@ class CustomSelectDateWidget(SelectDateWidget):
         context = super(CustomSelectDateWidget, self).get_context(name, value, attrs)
         context['widget']['subwidgets'][0]['label'] = 'Date of Birth'
         return context
+
+
+class ReturnForm(ModelForm):
+    year = TypedChoiceField(coerce=int, choices=Return.year_choices(), initial=datetime.date.today().year)
+
+    def __init__(self, *args, **kwargs):
+        super(ReturnForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.add_input(Submit('submit', 'Save'))
+
+    class Meta:
+        model = Return
+        fields = ('year', 'filing_status', 'is_dependent', 'county')
 
 
 class MyInfoForm(ModelForm):

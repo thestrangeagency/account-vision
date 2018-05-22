@@ -1,17 +1,12 @@
 {% extends 'base.html' %}
 
-{% load bootstrap4 %}
+{% load crispy_forms_tags %}
 
 {% block content %}
   {{ block.super }}
 
   <h1>New Tax Year</h1>
 
-  <form action="{% url 'new' %}" method="post">
-    {% csrf_token %}
-    {% bootstrap_form form %}
-    {% bootstrap_form_errors form %}
-    <input type="submit" value="Submit" />
-  </form>
+  {% crispy form %}
 
 {% endblock %}

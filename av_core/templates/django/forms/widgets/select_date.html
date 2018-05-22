@@ -1,0 +1,15 @@
+{% for widget in widget.subwidgets %}
+  <div class="col-md-4">
+    <div id="div_id_dob" class="form-group">
+      {% if widget.label %}
+        <label for="id_last_name" class="form-control-label">
+          {{ widget.label }}
+        </label>
+      {% else %}
+        <label for="id_last_name" class="form-control-label invisible">-</label>
+      {% endif %}
+
+      {% include widget.template_name %}
+    </div>
+  </div>
+{% endfor %}
