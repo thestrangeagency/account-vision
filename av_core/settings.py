@@ -289,9 +289,9 @@ PHONENUMBER_DEFAULT_REGION = 'US'
 # twilio
 # @override_settings doesn't seem to work so overriding vars for testing here
 if TESTING:
-    TWILIO_ACCOUNT_SID = ''
-    TWILIO_AUTH_TOKEN = ''
-    TWILIO_FROM_NUMBER = '+19717173399'
+    TWILIO_ACCOUNT_SID = 'AC9d398c13e8e779d8d6acb7d28d4fb8fa'
+    TWILIO_AUTH_TOKEN = '08312ca964c88e1974b33067166db073'
+    TWILIO_FROM_NUMBER = '+15005550006'
 else:
     TWILIO_ACCOUNT_SID = os.environ.get('TWILIO_ACCOUNT_SID', '')
     TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_AUTH_TOKEN', '')
