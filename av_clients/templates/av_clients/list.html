@@ -5,12 +5,23 @@
 
   <h1>Clients</h1>
 
-  <ol>
+  <table>
+    <tr>
+      <th>Last Name</th>
+      <th>First Name</th>
+      <th>Email</th>
+      <th>Registered</th>
+    </tr>
     {% for client in object_list %}
-      <li>{{ client.first_name }} {{ client.last_name }} - {{ client.email}}</li>
+      <tr>
+        <td>{{ client.last_name }}</td>
+        <td>{{ client.first_name }}</td>
+        <td>{{ client.email }}</td>
+        <td>{% if client.password %} √ {% endif %}</td>
+      </tr>
       {% empty %}
-      <li>You haven't invited any clients yet.</li>
+      <tr><td>You haven't invited any clients yet.</td></tr>
     {% endfor %}
-  </ol>
+  </table>
 
 {% endblock %}
