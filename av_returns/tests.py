@@ -350,6 +350,7 @@ class ExpenseAPITestCase(APITestCase):
         }
 
         self.client.post(url, data)
+        # TODO these don't do anything, remove them and actually test for the error
         self.assertRaises(ValidationError)
 
         # create new

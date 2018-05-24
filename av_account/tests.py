@@ -1,20 +1,18 @@
-import django_agent_trust
 from django.conf import settings
 from django.contrib import auth
 from django.core import mail
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
-from django.test import TestCase, override_settings, RequestFactory
+from django.test import TestCase
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from .models import AvUser, Address, SecurityQuestion, UserSecurity
+from .models import AvUser, SecurityQuestion, UserSecurity
 
 
 class AccountTestCase(TestCase):
 
     def setUp(self):
-        self.factory = RequestFactory()
         self.password = 'aT%In<Yo'
         self.user = AvUser.objects.create_user(
             email='test@example.com',

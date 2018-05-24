@@ -1,0 +1,14 @@
+{% extends 'av_clients/clients_base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+  {{ block.super }}
+
+  <h1>Import</h1>
+
+  {% crispy form %}
+
+  {{ preview }}
+
+{% endblock %}
