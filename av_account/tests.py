@@ -302,7 +302,7 @@ class AccountAPITestCase(APITestCase):
         """
         no one should be able to create a user
         """
-        url = reverse('taxuser-list')
+        url = reverse('avuser-list')
         data = {
             'email': 'x@x.com',
         }
@@ -320,7 +320,7 @@ class AccountAPITestCase(APITestCase):
         """
         logged in user should be able to update self
         """
-        url = reverse('taxuser-detail', args=[self.user.id])
+        url = reverse('avuser-detail', args=[self.user.id])
         data = {
             'first_name': 'fred',
         }
@@ -345,7 +345,7 @@ class AccountAPITestCase(APITestCase):
         )
         user2.save()
 
-        url = reverse('taxuser-detail', args=[user2.id])
+        url = reverse('avuser-detail', args=[user2.id])
         data = {
             'first_name': 'fred',
         }
@@ -363,7 +363,7 @@ class AccountAPITestCase(APITestCase):
         """
                 no one should be able to create a user
                 """
-        url = reverse('taxuser-list')
+        url = reverse('avuser-list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -371,7 +371,7 @@ class AccountAPITestCase(APITestCase):
         """
         user should not be able to update email
         """
-        url = reverse('taxuser-detail', args=[self.user.id])
+        url = reverse('avuser-detail', args=[self.user.id])
         data = {
             'email': 'x@x.com',
         }
@@ -385,36 +385,36 @@ class AccountAPITestCase(APITestCase):
         self.assertEqual(user.email, self.user.email)
         self.assertNotEqual(user.email, data['email'])
 
-    def test_address(self):
-        url = reverse('address-list')
-        data = {
-            'address1': 'a',
-            'city': 'a',
-            'state': 'a',
-            'zip': 'a',
-        }
-
-        # try anonymous post
-        response = self.client.post(url, data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-
-        self.client.login(username=self.user.email, password=self.password)
-
-        # try authenticated post
-        response = self.client.post(url, data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-
-        address = Address.objects.get()
-        self.assertEqual(address.address1, data['address1'])
-
-        # change address
-        url = reverse('address-detail', args=[address.id])
-        data = {
-            'address1': 'b',
-        }
-
-        response = self.client.patch(url, data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-        address = Address.objects.get()
-        self.assertEqual(address.address1, data['address1'])
+    # def test_address(self):
+    #     url = reverse('address-list')
+    #     data = {
+    #         'address1': 'a',
+    #         'city': 'a',
+    #         'state': 'a',
+    #         'zip': 'a',
+    #     }
+    #
+    #     # try anonymous post
+    #     response = self.client.post(url, data, format='json')
+    #     self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+    #
+    #     self.client.login(username=self.user.email, password=self.password)
+    #
+    #     # try authenticated post
+    #     response = self.client.post(url, data, format='json')
+    #     self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+    #
+    #     address = Address.objects.get()
+    #     self.assertEqual(address.address1, data['address1'])
+    #
+    #     # change address
+    #     url = reverse('address-detail', args=[address.id])
+    #     data = {
+    #         'address1': 'b',
+    #     }
+    #
+    #     response = self.client.patch(url, data, format='json')
+    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
+    #
+    #     address = Address.objects.get()
+    #     self.assertEqual(address.address1, data['address1'])

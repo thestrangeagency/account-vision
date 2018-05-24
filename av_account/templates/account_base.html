@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+  {{ block.super }}
+  {% breadcrumb "Account" "account" %}
+{% endblock %}
+
+{% block tabs %}
+
+  {% url 'edit' as edit%}
+  {% url 'logins' as logins %}
+  {% url 'devices' as devices %}
+  {% url 'banking' as banking %}
+
+  <div class="tx-full-width tx-nav-tabs">
+    <div class="container">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link {% if request.get_full_path == edit %}active{% endif %}" href="{% url 'edit' %} ">Account</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.get_full_path == banking %}active{% endif %}" href="{% url 'banking' %} ">Banking Info</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.get_full_path == logins %}active{% endif %}" href="{% url 'logins' %} ">Logins</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.get_full_path == devices %}active{% endif %}" href="{% url 'devices' %} ">Devices</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+{% endblock %}
