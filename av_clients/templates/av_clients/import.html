@@ -9,6 +9,23 @@
 
   {% crispy form %}
 
-  {{ preview }}
+  <p>{{ name }}</p>
+
+  <table>
+    <tr>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Email</th>
+    </tr>
+    {% for row in preview %}
+      <tr>
+        <td>{{ row.first_name }}</td>
+        <td>{{ row.last_name }}</td>
+        <td>{{ row.email }}</td>
+      </tr>
+      {% empty %}
+      <tr><td>Nothing yet.</td></tr>
+    {% endfor %}
+  </table>
 
 {% endblock %}

@@ -80,8 +80,14 @@ class ClientImportView(ReadyRequiredMixin, FormView):
         csv_file = self.request.FILES['file']
         decoded_file = csv_file.read().decode('utf-8')
         io_string = io.StringIO(decoded_file)
+        rows = []
         for row in csv.reader(io_string, delimiter=',', quotechar='"'):
-            print(row)
+            if len(row) == 3:
+                rows.append({
+                    'first_name': row[0],
+                    'last_name': row[1],
+                    'email': row[2],
+                })
 
         temp = NamedTemporaryFile(delete=False)
         temp.write(bytes(decoded_file, 'UTF-8'))
@@ -95,6 +101,7 @@ class ClientImportView(ReadyRequiredMixin, FormView):
         # return super(ClientImportView, self).form_valid(form)
 
         context = self.get_context_data()
-        context['preview'] = temp.name
+        context['name'] = temp.name # TODO delete me
+        context['preview'] = rows
         return self.render_to_response(context)
 
