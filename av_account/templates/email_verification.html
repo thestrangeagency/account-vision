@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Email Verification</h1>
+
+  {% if verified %}
+    Your email address has been verified.
+  {% else %}
+    Sorry, please check your verification code and try again.
+  {% endif %}
+{% endblock %}

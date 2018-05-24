@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <h1>Email Verification Needed</h1>
+  <p>
+    A verification email has been sent to {{ user.email }}.
+  </p>
+  {% crispy form %}
+{% endblock %}

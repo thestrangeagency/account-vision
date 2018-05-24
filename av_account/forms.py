@@ -92,7 +92,7 @@ class VerificationForm(Form):
 
     def clean_verification_code(self):
         verification_code = self.cleaned_data.get('verification_code')
-        if settings.DEBUG:
+        if settings.DEBUG and not settings.TESTING:
             return verification_code
         if self.user.verification_code.upper() == verification_code.upper():
             return verification_code
