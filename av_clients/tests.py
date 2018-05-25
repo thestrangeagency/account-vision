@@ -111,7 +111,7 @@ class ImportTestCase(TestCase):
         response = self.client.post(reverse('preview'), follow=True)
         self.assertRedirects(response, reverse('import'))
         # sent to 1 user
-        self.assertContains(response, 'sent to 1 users')
+        self.assertContains(response, 'sent to 2 users')
 
         # ensure invitation emails were sent
-        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(len(mail.outbox), 2)
