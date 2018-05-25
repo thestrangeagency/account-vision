@@ -1,17 +1,16 @@
 import csv
 
-import os
-from tempfile import NamedTemporaryFile
-
 import io
+import os
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
-from django.contrib import messages
 from django import forms
+from django.contrib import messages
 from django.core.exceptions import ValidationError
-from django.http import HttpResponseRedirect
-from django.urls import reverse_lazy, reverse
+from django.core.validators import validate_email
+from django.urls import reverse_lazy
 from django.views.generic import ListView, FormView
+from tempfile import NamedTemporaryFile
 
 from av_account.models import AvUser
 from av_account.utils import ReadyRequiredMixin
@@ -90,11 +89,17 @@ def generate_users(file_name, request):
     for row in csv.reader(io_string, delimiter=',', quotechar='"'):
         print(row)
         if len(row) == 3:
+            email = row[2].strip()
+            try:
+                validate_email(email)
+                valid_email = True
+            except ValidationError:
+                valid_email = False
             print("---- creating user")
             user = AvUser(
                 first_name=row[0].strip(),
                 last_name=row[1].strip(),
-                email=row[2].strip(),
+                email=email,
                 firm=request.user.firm,
             )
             users.append(user)
@@ -104,6 +109,10 @@ def generate_users(file_name, request):
             if existing is not None:
                 print("uh oh")
                 setattr(user, 'existing', True)
+            if not valid_email:
+                print("uh oh malformed")
+                setattr(user, 'malformed', True)
+
     return users
 
 
@@ -148,9 +157,9 @@ class ClientImportPreView(ReadyRequiredMixin, FormView):
         invite_count = 0
         for user in users:
             existing = get_object_or_None(AvUser, email=user.email)
-            if existing is None:
-                # user.send_invitation_code()
-                # user.save()
+            if existing is None and not getattr(user, 'malformed', False):
+                user.send_invitation_code()
+                user.save()
                 invite_count += 1
                 print('invited: ' + user.email)
             else:
@@ -173,5 +182,9 @@ class ClientImportPreView(ReadyRequiredMixin, FormView):
 
         context['name'] = file_name
         context['users'] = generate_users(file_name, self.request)
+
+        if len(context['users']) == 0:
+            context['form'] = None
+            messages.error(self.request, 'Nothing to import.')
 
         return context

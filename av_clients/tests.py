@@ -60,3 +60,29 @@ class ImportTestCase(TestCase):
 
         response = self.client.post(reverse('preview'))
         self.assertRedirects(response, reverse('import'))
+
+    def test_bad_order(self):
+        self.login()
+
+        file = open('av_clients/test_files/bad_order.csv')
+        response = self.client.post(reverse('import'), {'file': file}, follow=True)
+        self.assertRedirects(response, reverse('preview'))
+        self.assertContains(response, 'Incorrect format')
+
+        response = self.client.post(reverse('preview'), follow=True)
+        self.assertRedirects(response, reverse('import'))
+
+        self.assertContains(response, 'sent to 0 users')
+
+    def test_bad_delimiter(self):
+        self.login()
+
+        file = open('av_clients/test_files/bad_delimiter.csv')
+        response = self.client.post(reverse('import'), {'file': file}, follow=True)
+        self.assertRedirects(response, reverse('preview'))
+        self.assertContains(response, 'Nothing')
+
+        response = self.client.post(reverse('preview'), follow=True)
+        self.assertRedirects(response, reverse('import'))
+
+        self.assertContains(response, 'sent to 0 users')
