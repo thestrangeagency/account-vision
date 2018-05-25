@@ -81,6 +81,26 @@ class CommitUploadForm(forms.Form):
         self.helper.add_input(Submit('submit', 'Invite'))
 
 
+def generate_users(file_name, request):
+    csv_file = open(file_name)
+    file_data = csv_file.read()
+    io_string = io.StringIO(file_data)
+    users = []
+    for row in csv.reader(io_string, delimiter=',', quotechar='"'):
+        print(row)
+        if len(row) == 3:
+            print("---- creating user")
+            user = AvUser(
+                first_name=row[0],
+                last_name=row[1],
+                email=row[2],
+                firm=request.user.firm,
+            )
+            users.append(user)
+            print(vars(user))
+    return users
+
+
 class ClientImportView(ReadyRequiredMixin, FormView):
     form_class = UploadFileForm
     template_name = 'av_clients/import.html'
@@ -89,15 +109,6 @@ class ClientImportView(ReadyRequiredMixin, FormView):
     def form_valid(self, form):
         csv_file = self.request.FILES['file']
         decoded_file = csv_file.read().decode('utf-8')
-        io_string = io.StringIO(decoded_file)
-        rows = []
-        for row in csv.reader(io_string, delimiter=',', quotechar='"'):
-            if len(row) == 3:
-                rows.append({
-                    'first_name': row[0],
-                    'last_name': row[1],
-                    'email': row[2],
-                })
 
         temp = NamedTemporaryFile(delete=False)
         temp.write(bytes(decoded_file, 'UTF-8'))
@@ -126,30 +137,17 @@ class ClientImportPreView(ReadyRequiredMixin, FormView):
 
         print(file_name)
         print(type(file_name))
-        csv_file = open(file_name)
-        decoded_file = csv_file.read()
-        io_string = io.StringIO(decoded_file)
 
-        count = 0
-        for row in csv.reader(io_string, delimiter=',', quotechar='"'):
-            print(row)
-            if len(row) == 3:
-                print("---- creating")
-                user = AvUser(
-                    first_name=row[0],
-                    last_name=row[1],
-                    email=row[2],
-                )
-                user.firm = self.request.user.firm
-                # user.send_invitation_code()
-                # user.save()
-                print(vars(user))
-                count = count + 1
+        users = generate_users(file_name, self.request)
+        for user in users:
+            # user.send_invitation_code()
+            # user.save()
+            print(vars(user))
 
         os.remove(file_name)
         self.request.session['import_file'] = None
 
-        messages.success(self.request, 'Invitations have been sent to {} users.'.format(count))
+        messages.success(self.request, 'Invitations have been sent to {} users.'.format(len(users)))
         return super(ClientImportPreView, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
@@ -162,18 +160,6 @@ class ClientImportPreView(ReadyRequiredMixin, FormView):
             return context
 
         context['name'] = file_name
-        csv_file = open(file_name)
-        decoded_file = csv_file.read()
-        io_string = io.StringIO(decoded_file)
-
-        rows = []
-        for row in csv.reader(io_string, delimiter=',', quotechar='"'):
-            if len(row) == 3:
-                rows.append({
-                    'first_name': row[0],
-                    'last_name': row[1],
-                    'email': row[2],
-                })
-        context['preview'] = rows
+        context['users'] = generate_users(file_name, self.request)
 
         return context
