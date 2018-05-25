@@ -2,7 +2,7 @@ from django.contrib import auth
 from django.core import mail
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse
 
 from av_account.models import AvUser
 from av_clients.views import UploadFileForm
@@ -65,7 +65,7 @@ class ImportTestCase(TestCase):
         response = self.client.post(reverse('preview'), follow=True)
         self.assertRedirects(response, reverse('import'))
         # sent to 2 out of 3 users
-        self.assertContains(response, 'sent to 2 users')
+        self.assertContains(response, 'sent to 2')
 
         # ensure new user in db
         user = AvUser.objects.get(email='fred@a.com')
@@ -85,7 +85,7 @@ class ImportTestCase(TestCase):
         response = self.client.post(reverse('preview'), follow=True)
         self.assertRedirects(response, reverse('import'))
 
-        self.assertContains(response, 'sent to 0 users')
+        self.assertContains(response, 'sent to 0')
 
     def test_bad_delimiter(self):
         self.login()
@@ -98,7 +98,7 @@ class ImportTestCase(TestCase):
         response = self.client.post(reverse('preview'), follow=True)
         self.assertRedirects(response, reverse('import'))
 
-        self.assertContains(response, 'sent to 0 users')
+        self.assertContains(response, 'sent to 0')
 
     def test_unicode(self):
         self.login()
@@ -110,8 +110,26 @@ class ImportTestCase(TestCase):
 
         response = self.client.post(reverse('preview'), follow=True)
         self.assertRedirects(response, reverse('import'))
-        # sent to 1 user
-        self.assertContains(response, 'sent to 2 users')
+        # sent to 2 users
+        self.assertContains(response, 'sent to 2')
 
         # ensure invitation emails were sent
         self.assertEqual(len(mail.outbox), 2)
+
+    def test_quotes(self):
+        self.login()
+        mail.outbox = []
+
+        file = open('av_clients/test_files/quoted.csv')
+        response = self.client.post(reverse('import'), {'file': file}, follow=True)
+        self.assertRedirects(response, reverse('preview'))
+        # two rows contain incorrect quotes
+        self.assertContains(response, 'format', count=2)
+
+        response = self.client.post(reverse('preview'), follow=True)
+        self.assertRedirects(response, reverse('import'))
+        # sent to 1 user
+        self.assertContains(response, 'sent to 1')
+
+        # ensure invitation emails were sent
+        self.assertEqual(len(mail.outbox), 1)

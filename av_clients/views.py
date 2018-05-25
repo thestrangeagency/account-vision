@@ -86,7 +86,7 @@ def generate_users(file_name, request):
     file_data = csv_file.read()
     io_string = io.StringIO(file_data)
     users = []
-    for row in csv.reader(io_string, delimiter=',', quotechar='"'):
+    for row in csv.reader(io_string, delimiter=',', quotechar='"', skipinitialspace=True):
         print(row)
         if len(row) == 3:
             email = row[2].strip()
