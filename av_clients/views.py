@@ -102,16 +102,24 @@ def generate_users(file_name, request):
                 email=email,
                 firm=request.user.firm,
             )
-            users.append(user)
+
             print(vars(user))
             existing = get_object_or_None(AvUser, email=user.email)
             print(user.email)
             if existing is not None:
                 print("uh oh")
                 setattr(user, 'existing', True)
+
+            for u in users:
+                if u.email == email:
+                    setattr(user, 'duplicate', True)
+                    break
+
             if not valid_email:
                 print("uh oh malformed")
                 setattr(user, 'malformed', True)
+
+            users.append(user)
 
     return users
 

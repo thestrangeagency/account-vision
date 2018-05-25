@@ -133,3 +133,25 @@ class ImportTestCase(TestCase):
 
         # ensure invitation emails were sent
         self.assertEqual(len(mail.outbox), 1)
+
+    def test_dupes(self):
+        self.login()
+        mail.outbox = []
+
+        file = open('av_clients/test_files/dupes.csv')
+        response = self.client.post(reverse('import'), {'file': file}, follow=True)
+        self.assertRedirects(response, reverse('preview'))
+        # self.user already exists in db
+        self.assertContains(response, 'Duplicate', count=2)
+
+        response = self.client.post(reverse('preview'), follow=True)
+        self.assertRedirects(response, reverse('import'))
+        # sent to 1 out of 3 users
+        self.assertContains(response, 'sent to 1')
+
+        # ensure new user in db
+        user = AvUser.objects.get(email='fred@a.com')
+        self.assertTrue(user.email_verification_code)
+
+        # ensure invitation emails were sent
+        self.assertEqual(len(mail.outbox), 1)

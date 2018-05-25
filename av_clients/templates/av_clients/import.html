@@ -18,13 +18,14 @@
         <th>Note</th>
       </tr>
       {% for user in users %}
-        <tr {% if user.existing or user.malformed %}class="text-danger"{% endif %}>
+        <tr {% if user.existing or user.malformed or user.duplicate %}class="text-danger"{% endif %}>
           <td>{{ user.first_name }}</td>
           <td>{{ user.last_name }}</td>
           <td>{{ user.email }}</td>
           <td>
             {% if user.existing %}Previously imported{% endif %}
             {% if user.malformed %}Incorrect format{% endif %}
+            {% if user.duplicate %}Duplicate entry{% endif %}
           </td>
         </tr>
       {% endfor %}
