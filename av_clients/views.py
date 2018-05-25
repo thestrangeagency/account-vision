@@ -1,4 +1,6 @@
 import csv
+
+import os
 from tempfile import NamedTemporaryFile
 
 import io
@@ -71,10 +73,18 @@ class UploadFileForm(forms.Form):
         return file
 
 
+class CommitUploadForm(forms.Form):
+
+    def __init__(self, *args, **kwargs):
+        super(CommitUploadForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.add_input(Submit('submit', 'Invite'))
+
+
 class ClientImportView(ReadyRequiredMixin, FormView):
     form_class = UploadFileForm
     template_name = 'av_clients/import.html'
-    success_url = reverse_lazy('import')
+    success_url = reverse_lazy('preview')
 
     def form_valid(self, form):
         csv_file = self.request.FILES['file']
@@ -98,10 +108,72 @@ class ClientImportView(ReadyRequiredMixin, FormView):
 
         self.request.session['import_file'] = temp.name
 
-        # return super(ClientImportView, self).form_valid(form)
+        return super(ClientImportView, self).form_valid(form)
 
-        context = self.get_context_data()
-        context['name'] = temp.name # TODO delete me
+
+class ClientImportPreView(ReadyRequiredMixin, FormView):
+    form_class = CommitUploadForm
+    template_name = 'av_clients/import.html'
+    success_url = reverse_lazy('import')
+
+    def form_valid(self, form):
+        print("upload time")
+        file_name = self.request.session['import_file']
+
+        if file_name is None:
+            messages.error(self.request, 'Import failed.')
+            return super(ClientImportPreView, self).form_valid(form)
+
+        print(file_name)
+        print(type(file_name))
+        csv_file = open(file_name)
+        decoded_file = csv_file.read()
+        io_string = io.StringIO(decoded_file)
+
+        count = 0
+        for row in csv.reader(io_string, delimiter=',', quotechar='"'):
+            print(row)
+            if len(row) == 3:
+                print("---- creating")
+                user = AvUser(
+                    first_name=row[0],
+                    last_name=row[1],
+                    email=row[2],
+                )
+                user.firm = self.request.user.firm
+                # user.send_invitation_code()
+                # user.save()
+                print(vars(user))
+                count = count + 1
+
+        os.remove(file_name)
+        self.request.session['import_file'] = None
+
+        messages.success(self.request, 'Invitations have been sent to {} users.'.format(count))
+        return super(ClientImportPreView, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(ClientImportPreView, self).get_context_data(**kwargs)
+        file_name = self.request.session['import_file']
+
+        if file_name is None:
+            context['form'] = None
+            messages.error(self.request, 'Nothing to preview.')
+            return context
+
+        context['name'] = file_name
+        csv_file = open(file_name)
+        decoded_file = csv_file.read()
+        io_string = io.StringIO(decoded_file)
+
+        rows = []
+        for row in csv.reader(io_string, delimiter=',', quotechar='"'):
+            if len(row) == 3:
+                rows.append({
+                    'first_name': row[0],
+                    'last_name': row[1],
+                    'email': row[2],
+                })
         context['preview'] = rows
-        return self.render_to_response(context)
 
+        return context

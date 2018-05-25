@@ -56,6 +56,10 @@ class ImportTestCase(TestCase):
 
         file = open('av_clients/test_files/plain.csv')
         response = self.client.post(reverse('import'), {'file': file})
+        form = response.context['form']
+        self.assertTrue(form.is_valid())
+        self.assertEquals(response.status_code, 200)
 
-        self.assertEquals(response.status_code, 302)
-        self.assertRedirects(response, reverse_lazy('import'))
+        response = self.client.post(reverse('import'))
+        form = response.context['form']
+        self.assertTrue(form.is_valid())

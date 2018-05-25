@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from av_clients.views import ClientListView, ClientInviteView, ClientImportView
+from av_clients.views import ClientListView, ClientInviteView, ClientImportView, ClientImportPreView
 
 urlpatterns = [
     url(
@@ -17,5 +17,10 @@ urlpatterns = [
         regex=r'^import$',
         view=ClientImportView.as_view(),
         name='import',
+    ),
+    url(
+        regex=r'^preview$',
+        view=ClientImportPreView.as_view(),
+        name='preview',
     ),
 ]
