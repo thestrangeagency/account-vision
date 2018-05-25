@@ -1,4 +1,5 @@
 from django.contrib import auth
+from django.core import mail
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.urls import reverse, reverse_lazy
@@ -37,7 +38,7 @@ class ImportTestCase(TestCase):
         self.assertFalse(form.is_valid())
 
     def test_form_ok(self):
-        file = open('av_clients/test_files/plain.csv', 'rb')
+        file = open('av_clients/test_files/ok.csv', 'rb')
         file_dict = {'file': SimpleUploadedFile('whatever.csv', file.read())}
         form = UploadFileForm(files=file_dict)
         self.assertTrue(form.is_valid())
@@ -51,15 +52,27 @@ class ImportTestCase(TestCase):
         form = response.context['form']
         self.assertFalse(form.is_valid())
 
-    def test_plain(self):
+    def test_ok(self):
         self.login()
+        mail.outbox = []
 
-        file = open('av_clients/test_files/plain.csv')
-        response = self.client.post(reverse('import'), {'file': file})
+        file = open('av_clients/test_files/ok.csv')
+        response = self.client.post(reverse('import'), {'file': file}, follow=True)
         self.assertRedirects(response, reverse('preview'))
+        # self.user already exists in db
+        self.assertContains(response, 'imported', count=1)
 
-        response = self.client.post(reverse('preview'))
+        response = self.client.post(reverse('preview'), follow=True)
         self.assertRedirects(response, reverse('import'))
+        # sent to 2 out of 3 users
+        self.assertContains(response, 'sent to 2 users')
+
+        # ensure new user in db
+        user = AvUser.objects.get(email='fred@a.com')
+        self.assertTrue(user.email_verification_code)
+
+        # ensure invitation emails were sent
+        self.assertEqual(len(mail.outbox), 2)
 
     def test_bad_order(self):
         self.login()
@@ -86,3 +99,19 @@ class ImportTestCase(TestCase):
         self.assertRedirects(response, reverse('import'))
 
         self.assertContains(response, 'sent to 0 users')
+
+    def test_unicode(self):
+        self.login()
+        mail.outbox = []
+
+        file = open('av_clients/test_files/unicode.csv')
+        response = self.client.post(reverse('import'), {'file': file}, follow=True)
+        self.assertRedirects(response, reverse('preview'))
+
+        response = self.client.post(reverse('preview'), follow=True)
+        self.assertRedirects(response, reverse('import'))
+        # sent to 1 user
+        self.assertContains(response, 'sent to 1 users')
+
+        # ensure invitation emails were sent
+        self.assertEqual(len(mail.outbox), 1)
