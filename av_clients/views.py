@@ -15,6 +15,7 @@ from django.views.generic import ListView, FormView
 
 from av_account.models import AvUser
 from av_account.utils import ReadyRequiredMixin
+from av_utils.utils import get_object_or_None
 
 
 class ClientListView(ReadyRequiredMixin, ListView):
@@ -91,13 +92,18 @@ def generate_users(file_name, request):
         if len(row) == 3:
             print("---- creating user")
             user = AvUser(
-                first_name=row[0],
-                last_name=row[1],
-                email=row[2],
+                first_name=row[0].strip(),
+                last_name=row[1].strip(),
+                email=row[2].strip(),
                 firm=request.user.firm,
             )
             users.append(user)
             print(vars(user))
+            existing = get_object_or_None(AvUser, email=user.email)
+            print(user.email)
+            if existing is not None:
+                print("uh oh")
+                setattr(user, 'existing', True)
     return users
 
 
@@ -139,15 +145,21 @@ class ClientImportPreView(ReadyRequiredMixin, FormView):
         print(type(file_name))
 
         users = generate_users(file_name, self.request)
+        invite_count = 0
         for user in users:
-            # user.send_invitation_code()
-            # user.save()
-            print(vars(user))
+            existing = get_object_or_None(AvUser, email=user.email)
+            if existing is None:
+                # user.send_invitation_code()
+                # user.save()
+                invite_count += 1
+                print('invited: ' + user.email)
+            else:
+                print('skipped: ' + user.email)
 
         os.remove(file_name)
         self.request.session['import_file'] = None
 
-        messages.success(self.request, 'Invitations have been sent to {} users.'.format(len(users)))
+        messages.success(self.request, 'Invitations have been sent to {} users.'.format(invite_count))
         return super(ClientImportPreView, self).form_valid(form)
 
     def get_context_data(self, **kwargs):

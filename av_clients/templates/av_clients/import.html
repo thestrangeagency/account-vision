@@ -15,12 +15,14 @@
         <th>First Name</th>
         <th>Last Name</th>
         <th>Email</th>
+        <th>Note</th>
       </tr>
       {% for user in users %}
-        <tr>
+        <tr {% if user.existing %}class="text-danger"{% endif %}>
           <td>{{ user.first_name }}</td>
           <td>{{ user.last_name }}</td>
           <td>{{ user.email }}</td>
+          <td>{% if user.existing %}Previously imported{% endif %}</td>
         </tr>
       {% endfor %}
     </table>
