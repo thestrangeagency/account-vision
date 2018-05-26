@@ -1,0 +1,42 @@
+{% extends 'av_clients/detail.html' %}
+
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+  {{ block.super }}
+  {% breadcrumb year "return" year %}
+{% endblock %}
+
+{% block tabs %}
+
+  {% url 'client-detail-return-spouse' object.email year as spouse %}
+  {% url 'client-detail-return-dependents' object.email year as dependents%}
+  {% url 'client-detail-return-uploads' object.email year as uploads %}
+  {% url 'client-detail-return-expenses' object.email year as expenses %}
+
+  <div class="tx-full-width tx-nav-tabs">
+    <div class="container">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link {% if request.get_full_path == spouse %}active{% endif %}" href="{{ spouse }} ">Spouse</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.get_full_path == dependents %}active{% endif %}" href="{{ dependents }} ">Dependents</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.get_full_path == uploads %}active{% endif %}" href="{{ uploads }} ">Uploads</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.get_full_path == expenses %}active{% endif %}" href="{{ expenses }} ">Expenses</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block content %}
+
+  <button class="btn btn-primary">Export</button>
+
+{% endblock %}

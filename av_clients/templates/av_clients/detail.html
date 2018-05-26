@@ -5,7 +5,7 @@
 {% block breadcrumbs %}
   {{ block.super }}
   {% breadcrumb "Clients" "clients" %}
-  {% breadcrumb object.get_full_name "clients" %}
+  {% breadcrumb object.get_full_name "client-detail" object.email %}
 {% endblock %}
 
 {% block content %}
@@ -23,7 +23,7 @@
   <h3>Tax Years</h3>
   <ul>
     {% for return in object.return_set.all %}
-      <li>{{ return.year }}</li>
+      <li><a href="{% url 'client-detail-return' object.email return.year %}">{{ return.year }}</a></li>
     {% endfor %}
   </ul>
 

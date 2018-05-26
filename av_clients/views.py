@@ -15,6 +15,7 @@ from tempfile import NamedTemporaryFile
 
 from av_account.models import AvUser
 from av_account.utils import ReadyRequiredMixin
+from av_returns.models import Return
 from av_utils.utils import get_object_or_None
 
 
@@ -32,6 +33,25 @@ class ClientDetailView(ReadyRequiredMixin, DetailView):
 
     def get_object(self, queryset=None):
         return get_object_or_404(AvUser, email=self.kwargs['username'])
+
+
+class ClientDetailReturnView(ReadyRequiredMixin, DetailView):
+    model = AvUser
+    template_name = 'av_clients/return.html'
+
+    def get_object(self):
+        user = get_object_or_404(AvUser, email=self.kwargs['username'])
+        return get_object_or_404(Return, year=self.kwargs['year'], user=user)
+
+    def get_context_data(self, **kwargs):
+        context = super(ClientDetailReturnView, self).get_context_data(**kwargs)
+        year = self.kwargs['year']
+        # even though we have object.year, we need this for breadcrumbs
+        context['year'] = year
+        # base template expects user in 'object' variable
+        context['return'] = context['object']
+        context['object'] = context['object'].user
+        return context
 
 
 class InviteForm(forms.ModelForm):
