@@ -37,6 +37,25 @@
 
 {% block content %}
 
+  {% url 'client-detail-return-spouse' object.email year as spouse %}
+  {% url 'client-detail-return-dependents' object.email year as dependents %}
+  {% url 'client-detail-return-uploads' object.email year as uploads %}
+  {% url 'client-detail-return-expenses' object.email year as expenses %}
+  
+  {% if request.get_full_path == spouse %}
+    <p>Spouse:</p>
+    {% for person in return.spouse_set.all %}
+      <p>{{ person.first_name }} {{ person.last_name }}</p>
+    {% endfor %}
+  {% endif %}
+
+  {% if request.get_full_path == dependents %}
+    <p>Dependents:</p>
+    {% for person in return.dependent_set.all %}
+      <p>{{ person.first_name }} {{ person.last_name }}</p>
+    {% endfor %}
+  {% endif %}
+
   <button class="btn btn-primary">Export</button>
 
 {% endblock %}
