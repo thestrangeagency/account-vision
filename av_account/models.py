@@ -104,8 +104,7 @@ class AvUser(Person, AbstractBaseUser, PermissionsMixin):
         self.email = self.__class__.objects.normalize_email(self.email)
 
     def get_full_name(self):
-        # The user is identified by their email address
-        full_name = '%s %s %s' % (self.first_name, self.last_name, self.email)
+        full_name = '%s %s' % (self.first_name, self.last_name)
         return full_name.strip()
 
     def get_short_name(self):

@@ -8,8 +8,9 @@ from django import forms
 from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import ListView, FormView
+from django.views.generic import ListView, FormView, DetailView
 from tempfile import NamedTemporaryFile
 
 from av_account.models import AvUser
@@ -23,6 +24,14 @@ class ClientListView(ReadyRequiredMixin, ListView):
 
     def get_queryset(self):
         return AvUser.objects.filter(firm=self.request.user.firm, is_cpa=False).order_by('-date_created')
+
+
+class ClientDetailView(ReadyRequiredMixin, DetailView):
+    model = AvUser
+    template_name = 'av_clients/detail.html'
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(AvUser, email=self.kwargs['username'])
 
 
 class InviteForm(forms.ModelForm):

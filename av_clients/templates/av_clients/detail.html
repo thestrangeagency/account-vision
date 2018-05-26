@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+  {{ block.super }}
+  {% breadcrumb "Clients" "clients" %}
+  {% breadcrumb object.get_full_name "clients" %}
+{% endblock %}
+
+{% block content %}
+  {{ block.super }}
+
+  <h1>{{ object.first_name }} {{ object.last_name }}</h1>
+  <h2>{{ object.email }}</h2>
+
+  <p>dob: {{ object.dob|date:'SHORT_DATE_FORMAT' }}</p>
+  <p>ssn: {{ object.ssn }}</p>
+
+  <p>address1: {{ object.address.address1 }}</p>
+  <p>etc.</p>
+
+  <h3>Tax Years</h3>
+  <ul>
+    {% for return in object.return_set.all %}
+      <li>{{ return.year }}</li>
+    {% endfor %}
+  </ul>
+
+  <button class="btn btn-primary">Export</button>
+
+{% endblock %}
