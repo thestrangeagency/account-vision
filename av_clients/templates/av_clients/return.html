@@ -41,7 +41,7 @@
   {% url 'client-detail-return-dependents' object.email year as dependents %}
   {% url 'client-detail-return-uploads' object.email year as uploads %}
   {% url 'client-detail-return-expenses' object.email year as expenses %}
-  
+
   {% if request.get_full_path == spouse %}
     <p>Spouse:</p>
     {% for person in return.spouse_set.all %}

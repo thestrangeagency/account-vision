@@ -4,6 +4,8 @@ from django.core import mail
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.test import TestCase
+from django.utils import timezone
+from freezegun import freeze_time
 from rest_framework import status
 from rest_framework.test import APITestCase
 
@@ -27,7 +29,6 @@ class AccountTestCase(TestCase):
             is_cpa=True,
         )
         self.cpa.phone = '(310) 666-3912'
-        self.cpa.is_paid = True
         self.cpa.save()
 
         self.question1 = SecurityQuestion(question="a?")
@@ -43,6 +44,19 @@ class AccountTestCase(TestCase):
             password=self.password
         )
         self.client.get(reverse('force_trust'))
+        
+    def test_access(self):
+        self.assertTrue(self.user.is_full_cred())
+        self.assertTrue(self.cpa.is_full_cred())
+
+    def test_expired_trial(self):
+        with freeze_time(timezone.now() + timezone.timedelta(days=31)):
+            self.assertTrue(self.user.is_full_cred())
+            self.assertFalse(self.cpa.is_full_cred())
+
+        # pay after expiration
+        self.cpa.is_paid = True
+        self.assertTrue(self.cpa.is_full_cred())
 
     def test_register(self):
         mail.outbox = []

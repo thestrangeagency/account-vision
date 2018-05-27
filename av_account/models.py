@@ -71,6 +71,10 @@ class AvUserManager(BaseUserManager):
         return user
 
 
+def trial_end():
+    return timezone.now() + timezone.timedelta(days=30)
+
+
 class AvUser(Person, AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(verbose_name='email address', max_length=255, unique=True)
     phone = PhoneNumberField(null=True, blank=True)
@@ -79,7 +83,23 @@ class AvUser(Person, AbstractBaseUser, PermissionsMixin):
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    
     is_cpa = models.BooleanField(default=False)
+    is_paid = models.BooleanField(default=False)
+    trial_end = models.DateTimeField(default=trial_end)
+
+    # user is fully active, i.e. paid or during a trial in the case of CPA user
+    def is_full_cred(self):
+        if not self.is_cpa:
+            return self.is_active
+        else:
+            if self.is_paid:
+                return True
+            else:
+                return timezone.now() < self.trial_end
+
+    def trial_time_left(self):
+        return self.trial_end - timezone.now()
 
     # 2FA via SMS
     verification_code = models.CharField(max_length=4, null=True, blank=True)
