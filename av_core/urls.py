@@ -55,6 +55,7 @@ urlpatterns = [
     url(r'^clients/', include('av_clients.urls')),
     url(r'^returns/', include('av_returns.urls')),
     url(r'^uploads/', include('av_uploads.urls')),
+    url(r'^messages/', include('av_messages.urls')),
 
     url(r'^legal/$', TemplateView.as_view(template_name='legal.html'), name='legal'),
     url(r'^security/$', TemplateView.as_view(template_name='security.html'), name='security'),

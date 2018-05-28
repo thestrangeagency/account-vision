@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load i18n django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Messages" "messages" %}
+{% endblock %}
+
+{% block tabs %}
+
+  {% url 'messages_inbox' as inbox %}
+  {% url 'messages_outbox' as outbox %}
+  {% url 'messages_compose' as compose %}
+  {% url 'messages_trash' as trash %}
+
+  <div class="tx-full-width tx-nav-tabs">
+    <div class="container">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link {% if request.get_full_path == inbox %}active{% endif %}" href="{% url 'messages_inbox' %} ">{% trans "Inbox" %}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.get_full_path == outbox %}active{% endif %}" href="{% url 'messages_outbox' %} ">{% trans "Sent" %}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.get_full_path == compose %}active{% endif %}" href="{% url 'messages_compose' %} ">{% trans "New" %}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.get_full_path == trash %}active{% endif %}" href="{% url 'messages_trash' %} ">{% trans "Trash" %}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+{% endblock %}

@@ -127,6 +127,10 @@ class AvUser(Person, AbstractBaseUser, PermissionsMixin):
         full_name = '%s %s' % (self.first_name, self.last_name)
         return full_name.strip()
 
+    def get_full_name_and_email(self):
+        full_name = '%s %s %s' % (self.first_name, self.last_name, self.email)
+        return full_name.strip()
+
     def get_short_name(self):
         # The user is identified by their email address
         return self.email

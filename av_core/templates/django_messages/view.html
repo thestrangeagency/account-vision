@@ -1,0 +1,25 @@
+{% extends "django_messages/base.html" %}
+{% load i18n %}
+
+{% block content %}
+  <h1>{% trans "View Message" %}</h1>
+
+  <div class="card">
+    <div class="card-body">
+      <h4 class="card-title">{{ message.subject }}</h4>
+      <h6 class="card-subtitle mb-2 text-muted">Date: {{ message.sent_at|date:_("DATETIME_FORMAT")}}</h6>
+      {% if user.is_cpa %}
+        <h6 class="card-subtitle mb-2 text-muted">From: {{ message.sender }}</h6>
+        <h6 class="card-subtitle mb-2 text-muted">To: {{ message.recipient }}</h6>
+      {% endif %}
+
+      <p class="card-text">{{ message.body|linebreaksbr }}</p>
+
+      {% ifequal message.recipient.pk user.pk %}
+        <a class="btn btn-primary" href="{% url 'messages_reply' message.id %}">{% trans "Reply" %}</a>
+      {% endifequal %}
+      <a class="btn btn-danger" href="{% url 'messages_delete' message.id %}">{% trans "Delete" %}</a>
+    </div>
+  </div>
+
+{% endblock %}
