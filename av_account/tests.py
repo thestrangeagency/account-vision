@@ -106,9 +106,9 @@ class AccountTestCase(TestCase):
 
         response = self.client.post(url, data)
         # target will redirect because now email needs verification
-        # self.assertRedirects(response, reverse('edit'), status_code=302, target_status_code=302)
+        self.assertRedirects(response, reverse('edit'), status_code=302, target_status_code=302)
         # removed verification!
-        self.assertRedirects(response, reverse('edit'), status_code=302, target_status_code=200)
+        # self.assertRedirects(response, reverse('edit'), status_code=302, target_status_code=200)
 
         # ensure confirmation email was sent
         self.assertEqual(len(mail.outbox), 1)
