@@ -88,6 +88,11 @@ urlpatterns = [
         view=BankingView.as_view(),
         name='banking',
     ),
+    url(
+        regex=r'^disabled/$',
+        view=NotReadyView.as_view(),
+        name='disabled',
+    ),
 
     url(r'^login/$', LoginView.as_view(template_name='login.html', form_class=AccountLoginForm), name='login'),
     url(r'^logout/$', logout, name='logout'),

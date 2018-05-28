@@ -297,3 +297,12 @@ class EmailVerificationView(TemplateView):
             pass
 
         return context
+
+
+class NotReadyView(TemplateView):
+    
+    def get_template_names(self):
+        if self.request.user.is_cpa:
+            return 'cpa_not_ready.html'
+        else:
+            return 'client_not_ready.html'

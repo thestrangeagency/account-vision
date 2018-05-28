@@ -30,19 +30,27 @@ class VerifiedAndTrustedRequiredMixin(UserStateRequiredMixin):
         return super(VerifiedAndTrustedRequiredMixin, self).dispatch(request, *args, **kwargs)
 
 
-class ReadyRequiredMixin(VerifiedAndTrustedRequiredMixin):
+class FullRequiredMixin(VerifiedAndTrustedRequiredMixin):
     def dispatch(self, request, *args, **kwargs):
         self.required_user_state = 'ready'
-        # if request.user.is_authenticated:
-        #     if not request.user.is_paid:
-        #         return redirect(reverse('terms'))
+        if request.user.is_authenticated:
+            if not request.user.is_full_cred():
+                return redirect(reverse('disabled'))
             # removing email verification as a condition for using the site. turn it back on here if needed
-            # if not request.user.is_email_verified:
-            #     return redirect(reverse('email_verify'))
-        return super(ReadyRequiredMixin, self).dispatch(request, *args, **kwargs)
+            if not request.user.is_email_verified:
+                return redirect(reverse('email_verify'))
+        return super(FullRequiredMixin, self).dispatch(request, *args, **kwargs)
 
 
-class CPARequiredMixin(LoginRequiredMixin):
+class ClientRequiredMixin(FullRequiredMixin):
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            if request.user.is_cpa:
+                return redirect(reverse('home'))
+        return super(ClientRequiredMixin, self).dispatch(request, *args, **kwargs)
+
+
+class CPARequiredMixin(FullRequiredMixin):
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             if not request.user.is_cpa:
