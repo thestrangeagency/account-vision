@@ -3,7 +3,6 @@ from django.forms import ModelChoiceField
 from django_messages.forms import ComposeForm
 
 from av_account.models import AvUser
-from av_returns.models import Return
 
 
 class BootstrapComposeForm(ComposeForm):
