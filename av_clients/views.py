@@ -116,7 +116,6 @@ def generate_users(file_name, request):
     io_string = io.StringIO(file_data)
     users = []
     for row in csv.reader(io_string, delimiter=',', quotechar='"', skipinitialspace=True):
-        print(row)
         if len(row) == 3:
             email = row[2].strip()
             try:
@@ -124,19 +123,16 @@ def generate_users(file_name, request):
                 valid_email = True
             except ValidationError:
                 valid_email = False
-            print("---- creating user")
+
             user = AvUser(
                 first_name=row[0].strip(),
                 last_name=row[1].strip(),
                 email=email,
                 firm=request.user.firm,
             )
-
-            print(vars(user))
+            
             existing = get_object_or_None(AvUser, email=user.email)
-            print(user.email)
             if existing is not None:
-                print("uh oh")
                 setattr(user, 'existing', True)
 
             for u in users:
@@ -145,7 +141,6 @@ def generate_users(file_name, request):
                     break
 
             if not valid_email:
-                print("uh oh malformed")
                 setattr(user, 'malformed', True)
 
             users.append(user)
@@ -164,10 +159,7 @@ class ClientImportView(CPARequiredMixin, FormView):
 
         temp = NamedTemporaryFile(delete=False)
         temp.write(bytes(decoded_file, 'UTF-8'))
-
         temp.seek(0)
-        print(temp.read())
-        print(temp.name)
 
         self.request.session['import_file'] = temp.name
 
@@ -180,15 +172,11 @@ class ClientImportPreView(CPARequiredMixin, FormView):
     success_url = reverse_lazy('import')
 
     def form_valid(self, form):
-        print("upload time")
         file_name = self.request.session['import_file']
 
         if file_name is None:
             messages.error(self.request, 'Import failed.')
             return super(ClientImportPreView, self).form_valid(form)
-
-        print(file_name)
-        print(type(file_name))
 
         users = generate_users(file_name, self.request)
         invite_count = 0
@@ -198,9 +186,6 @@ class ClientImportPreView(CPARequiredMixin, FormView):
                 user.send_invitation_code()
                 user.save()
                 invite_count += 1
-                print('invited: ' + user.email)
-            else:
-                print('skipped: ' + user.email)
 
         os.remove(file_name)
         self.request.session['import_file'] = None
