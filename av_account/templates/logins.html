@@ -7,7 +7,7 @@
 
   <ul>
     {% for login in object_list %}
-      <li>{{ login.ip }} - {{ login.date_created }}</li>
+      <li>{{ login.date_created }} EST from IP address {{ login.ip }}</li>
     {% empty %}
       <li>No logins yet.</li>
     {% endfor %}
