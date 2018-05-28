@@ -1,0 +1,16 @@
+{% extends 'account_base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+  {{ block.super }}
+
+  <h1>Banking Info</h1>
+
+  <p>
+    If you would like your return direct deposited into your bank account, please be sure to enter your bank account info. Otherwise your return will be mailed via check to the home address you have provided. ​​
+  </p>
+
+  {% crispy form %}
+
+{% endblock %}

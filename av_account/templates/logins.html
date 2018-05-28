@@ -1,0 +1,16 @@
+{% extends 'account_base.html' %}
+
+{% block content %}
+  {{ block.super }}
+
+  <h1>Recent Logins</h1>
+
+  <ul>
+    {% for login in object_list %}
+      <li>{{ login.ip }} - {{ login.date_created }}</li>
+    {% empty %}
+      <li>No logins yet.</li>
+    {% endfor %}
+  </ul>
+
+{% endblock %}

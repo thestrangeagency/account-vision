@@ -1,0 +1,18 @@
+{% extends 'account_base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+  {{ block.super }}
+
+  <h1>Devices</h1>
+
+  <p>You are logged into a trusted device.</p>
+
+  {% if revoked %}
+    <p>Other devices disabled!</p>
+  {% endif %}
+
+  {% crispy form %}
+
+{% endblock %}

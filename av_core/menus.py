@@ -32,7 +32,7 @@ NAV_MENU_LEFT = [
     {
         "name": "Account",
         "url": "edit",
-        "validators": ["menu_generator.validators.is_authenticated", "av_core.menus.is_not_cpa"],
+        "validators": ["menu_generator.validators.is_authenticated"],
     },
     # {
     #     "name": "Uploads",
