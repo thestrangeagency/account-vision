@@ -14,12 +14,12 @@ from django.views.generic import ListView, FormView, DetailView
 from tempfile import NamedTemporaryFile
 
 from av_account.models import AvUser
-from av_account.utils import ReadyRequiredMixin
+from av_account.utils import CPARequiredMixin
 from av_returns.models import Return
 from av_utils.utils import get_object_or_None
 
 
-class ClientListView(ReadyRequiredMixin, ListView):
+class ClientListView(CPARequiredMixin, ListView):
     model = AvUser
     template_name = 'av_clients/list.html'
 
@@ -27,7 +27,7 @@ class ClientListView(ReadyRequiredMixin, ListView):
         return AvUser.objects.filter(firm=self.request.user.firm, is_cpa=False).order_by('-date_created')
 
 
-class ClientDetailView(ReadyRequiredMixin, DetailView):
+class ClientDetailView(CPARequiredMixin, DetailView):
     model = AvUser
     template_name = 'av_clients/detail.html'
 
@@ -35,7 +35,7 @@ class ClientDetailView(ReadyRequiredMixin, DetailView):
         return get_object_or_404(AvUser, email=self.kwargs['username'])
 
 
-class ClientDetailReturnView(ReadyRequiredMixin, DetailView):
+class ClientDetailReturnView(CPARequiredMixin, DetailView):
     model = AvUser
     template_name = 'av_clients/return.html'
 
@@ -66,7 +66,7 @@ class InviteForm(forms.ModelForm):
         self.helper.add_input(Submit('submit', 'Save'))
 
 
-class ClientInviteView(ReadyRequiredMixin, FormView):
+class ClientInviteView(CPARequiredMixin, FormView):
     form_class = InviteForm
     template_name = 'av_clients/invite.html'
     success_url = reverse_lazy('invite')
@@ -153,7 +153,7 @@ def generate_users(file_name, request):
     return users
 
 
-class ClientImportView(ReadyRequiredMixin, FormView):
+class ClientImportView(CPARequiredMixin, FormView):
     form_class = UploadFileForm
     template_name = 'av_clients/import.html'
     success_url = reverse_lazy('preview')
@@ -174,7 +174,7 @@ class ClientImportView(ReadyRequiredMixin, FormView):
         return super(ClientImportView, self).form_valid(form)
 
 
-class ClientImportPreView(ReadyRequiredMixin, FormView):
+class ClientImportPreView(CPARequiredMixin, FormView):
     form_class = CommitUploadForm
     template_name = 'av_clients/import.html'
     success_url = reverse_lazy('import')

@@ -9,7 +9,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 
 from av_account.models import Address
-from av_account.utils import ReadyRequiredMixin
+from av_account.utils import ClientRequiredMixin
 from av_returns.forms import MyInfoForm, SpouseForm, DependentsFormSet, AddressForm, DependentsFormSetHelper, \
     EFileForm, FrozenDependentsFormSet, FrozenDependentsFormSetHelper, ReturnForm
 from av_returns.utils import FreezableFormView
@@ -18,7 +18,7 @@ from av_uploads.utils import get_s3_url
 from .models import Return, Dependent
 
 
-class ReturnsView(ReadyRequiredMixin, ListView):
+class ReturnsView(ClientRequiredMixin, ListView):
     model = Return
 
     def get_queryset(self):
@@ -34,7 +34,7 @@ class ReturnsView(ReadyRequiredMixin, ListView):
         return context
 
 
-class NewReturnView(ReadyRequiredMixin, FormView):
+class NewReturnView(ClientRequiredMixin, FormView):
     form_class = ReturnForm
     template_name = 'av_returns/new.html'
     success_url = reverse_lazy('returns')
@@ -46,7 +46,7 @@ class NewReturnView(ReadyRequiredMixin, FormView):
         return super(NewReturnView, self).form_valid(form)
 
 
-class ReturnsDetailView(ReadyRequiredMixin, DetailView):
+class ReturnsDetailView(ClientRequiredMixin, DetailView):
     model = Return
 
     def get_object(self):
@@ -78,7 +78,7 @@ class ReturnsDetailView(ReadyRequiredMixin, DetailView):
         return self.get(request)
 
 
-class PersonalInfoView(ReadyRequiredMixin, TemplateView):
+class PersonalInfoView(ClientRequiredMixin, TemplateView):
     template_name = 'av_returns/info.html'
 
     def get_context_data(self, **kwargs):
@@ -92,7 +92,7 @@ class PersonalInfoView(ReadyRequiredMixin, TemplateView):
         return context
 
 
-class ReactView(ReadyRequiredMixin, TemplateView):
+class ReactView(ClientRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(ReactView, self).get_context_data(**kwargs)
@@ -103,7 +103,7 @@ class ReactView(ReadyRequiredMixin, TemplateView):
         return context
 
 
-class DownloadsView(ReadyRequiredMixin, TemplateView):
+class DownloadsView(ClientRequiredMixin, TemplateView):
     template_name = 'av_returns/downloads.html'
 
     def get_context_data(self, **kwargs):
@@ -117,7 +117,7 @@ class DownloadsView(ReadyRequiredMixin, TemplateView):
         return context
 
 
-class MyInfoView(ReadyRequiredMixin, FreezableFormView):
+class MyInfoView(ClientRequiredMixin, FreezableFormView):
     template_name = 'av_returns/info_my.html'
     form_class = MyInfoForm
 
@@ -141,7 +141,7 @@ class MyInfoView(ReadyRequiredMixin, FreezableFormView):
         return reverse_lazy('info_my', args={self.kwargs['year']})
 
 
-class AddressView(ReadyRequiredMixin, FreezableFormView):
+class AddressView(ClientRequiredMixin, FreezableFormView):
     template_name = 'av_returns/info_address.html'
     form_class = AddressForm
 
@@ -169,7 +169,7 @@ class AddressView(ReadyRequiredMixin, FreezableFormView):
         return reverse_lazy('info_address', args={self.kwargs['year']})
 
 
-class SpouseView(ReadyRequiredMixin, FreezableFormView):
+class SpouseView(ClientRequiredMixin, FreezableFormView):
     template_name = 'av_returns/info_spouse.html'
     form_class = SpouseForm
 
@@ -195,7 +195,7 @@ class SpouseView(ReadyRequiredMixin, FreezableFormView):
         return reverse_lazy('info_spouse', args={self.kwargs['year']})
 
 
-class DependentsView(ReadyRequiredMixin, TemplateView):
+class DependentsView(ClientRequiredMixin, TemplateView):
     template_name = 'av_returns/info_dependents.html'
 
     def post(self, request, *args, **kwargs):
@@ -239,7 +239,7 @@ class DependentsView(ReadyRequiredMixin, TemplateView):
         return reverse_lazy('info_dependents', args={self.kwargs['year']})
 
 
-class EFileView(FormView):
+class EFileView(ClientRequiredMixin, FormView):
     template_name = 'av_returns/efile.html'
     form_class = EFileForm
 

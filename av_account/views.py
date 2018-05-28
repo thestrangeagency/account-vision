@@ -1,7 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.contrib.auth import login
-from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.views import SuccessURLAllowedHostsMixin
@@ -16,20 +15,20 @@ from django.views.generic import TemplateView
 from django_agent_trust import revoke_other_agents
 from django_agent_trust import trust_agent
 
+from av_account.models import Bank, AvUser
+from av_account.models import UserLogin
+from av_account.models import UserSecurity
+from av_account.utils import FullRequiredMixin, ClientRequiredMixin
+from av_core import logger
+from av_utils.utils import get_object_or_None
 from .forms import AccountForm, FirmForm, AccountSetPasswordForm
+from .forms import AvUserCreationForm
 from .forms import BankingForm
 from .forms import DevicesForm
 from .forms import PhoneNumberForm
 from .forms import ResendVerificationEmailForm
 from .forms import SecurityQuestionsForm
-from .forms import AvUserCreationForm
 from .forms import VerificationForm
-from av_account.models import Bank, AvUser
-from av_account.models import UserLogin
-from av_account.models import UserSecurity
-from av_account.utils import ReadyRequiredMixin
-from av_core import logger
-from av_utils.utils import get_object_or_None
 
 
 class RegistrationView(FormView):
@@ -217,7 +216,7 @@ class NewEmailView(LoginRequiredMixin, FormView):
         return render(self.request, self.template_name, {'form': form})
 
 
-class DevicesView(ReadyRequiredMixin, FormView):
+class DevicesView(FullRequiredMixin, FormView):
     template_name = 'devices.html'
     form_class = DevicesForm
     success_url = reverse_lazy('devices')
@@ -227,13 +226,13 @@ class DevicesView(ReadyRequiredMixin, FormView):
         return render(self.request, self.template_name, {'form': form, 'revoked': True})
 
 
-class LoginsView(ReadyRequiredMixin, ListView):
+class LoginsView(FullRequiredMixin, ListView):
     model = UserLogin
     template_name = 'logins.html'
     queryset = UserLogin.objects.order_by('-date_created')[:10]
 
 
-class BankingView(ReadyRequiredMixin, FormView):
+class BankingView(ClientRequiredMixin, FormView):
     template_name = 'banking.html'
     form_class = BankingForm
     success_url = reverse_lazy('banking')
@@ -254,7 +253,7 @@ class BankingView(ReadyRequiredMixin, FormView):
         return super(BankingView, self).form_valid(form)
 
 
-class EditView(ReadyRequiredMixin, FormView):
+class EditView(FullRequiredMixin, FormView):
     template_name = 'edit.html'
     form_class = AccountForm
     success_url = reverse_lazy('edit')
