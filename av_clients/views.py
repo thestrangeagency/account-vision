@@ -11,11 +11,13 @@ from django.core.validators import validate_email
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, FormView, DetailView
+from django.views.generic.base import View, ContextMixin
 from tempfile import NamedTemporaryFile
 
 from av_account.models import AvUser
 from av_account.utils import CPARequiredMixin
 from av_returns.models import Return
+from av_uploads.models import S3File
 from av_utils.utils import get_object_or_None
 
 
@@ -35,25 +37,42 @@ class ClientDetailView(CPARequiredMixin, DetailView):
         return get_object_or_404(AvUser, email=self.kwargs['username'])
 
 
-class ClientDetailReturnView(CPARequiredMixin, DetailView):
-    model = AvUser
+class AbstractClientReturnView(CPARequiredMixin, ContextMixin, View):
     template_name = 'av_clients/return.html'
+    
+    def get_user(self):
+        return get_object_or_404(AvUser, email=self.kwargs['username'])
+    
+    def get_year(self):
+        return self.kwargs['year']
 
-    def get_object(self):
-        user = get_object_or_404(AvUser, email=self.kwargs['username'])
-        return get_object_or_404(Return, year=self.kwargs['year'], user=user)
+    def get_return(self):
+        return get_object_or_404(Return, year=self.get_year(), user=self.get_user())
 
     def get_context_data(self, **kwargs):
-        context = super(ClientDetailReturnView, self).get_context_data(**kwargs)
-        year = self.kwargs['year']
+        context = super(AbstractClientReturnView, self).get_context_data(**kwargs)
         # even though we have object.year, we need this for breadcrumbs
-        context['year'] = year
+        context['year'] = self.get_year()
         # base template expects user in 'object' variable
-        context['return'] = context['object']
-        context['object'] = context['object'].user
+        context['return'] = self.get_return()
+        context['object'] = self.get_user()
         return context
 
 
+class ClientDetailReturnView(AbstractClientReturnView, DetailView):
+    model = AvUser
+
+    def get_object(self, queryset=None):
+        return self.get_return()
+
+
+class ClientDetailUploadsView(AbstractClientReturnView, ListView):
+    model = S3File
+    
+    def get_queryset(self):
+        return S3File.objects.filter(user=self.get_user(), tax_return=self.get_return())
+
+        
 class InviteForm(forms.ModelForm):
 
     class Meta:

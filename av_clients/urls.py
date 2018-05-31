@@ -31,7 +31,7 @@ urlpatterns = [
     ),
     url(
         regex=r'^(?P<username>[\w.@+-]+)/(?P<year>[0-9]{4})/uploads/$',
-        view=ClientDetailReturnView.as_view(),
+        view=ClientDetailUploadsView.as_view(),
         name='client-detail-return-uploads',
     ),
     url(
