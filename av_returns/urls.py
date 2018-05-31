@@ -16,7 +16,7 @@ urlpatterns = [
     url(r'^(?P<year>[0-9]{4})/info/dependents/$', DependentsView.as_view(), name='info_dependents'),
     url(r'^(?P<year>[0-9]{4})/tax-return/$', DownloadsView.as_view(), name='downloads'),
     
-    url(r'^(?P<year>[0-9]{4})/expenses/common$', ReactView.as_view(template_name='returns/expenses/common.html'), name='expenses-common'),
-    url(r'^(?P<year>[0-9]{4})/expenses/custom$', ReactView.as_view(template_name='returns/expenses/custom.html'), name='expenses-custom'),
-    url(r'^(?P<year>[0-9]{4})/uploads/$', ReactView.as_view(template_name='returns/uploads.html'), name='uploads'),
+    url(r'^(?P<year>[0-9]{4})/expenses/common$', ReactView.as_view(template_name='av_returns/expenses/common.html'), name='expenses-common'),
+    url(r'^(?P<year>[0-9]{4})/expenses/custom$', ReactView.as_view(template_name='av_returns/expenses/custom.html'), name='expenses-custom'),
+    url(r'^(?P<year>[0-9]{4})/uploads/$', ReactView.as_view(template_name='av_returns/uploads.html'), name='uploads'),
 ]
