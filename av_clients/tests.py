@@ -3,9 +3,13 @@ from django.core import mail
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.urls import reverse
+from rest_framework import status
 
-from av_account.models import AvUser
+from av_account.models import AvUser, Firm
 from av_clients.views import UploadFileForm
+from av_core import settings
+from av_returns.models import Return
+from av_uploads.models import S3File
 
 
 class ImportTestCase(TestCase):
@@ -155,3 +159,107 @@ class ImportTestCase(TestCase):
 
         # ensure invitation emails were sent
         self.assertEqual(len(mail.outbox), 1)
+
+
+class ClientsTestCase(TestCase):
+    
+    def setUp(self):
+        self.password = 'password'
+        
+        self.firm = Firm(
+            name='acme'
+        )
+        self.firm.save()
+        
+        self.user = AvUser.objects.create_user(
+            email='test@example.com',
+            password=self.password,
+        )
+        self.user.firm = self.firm
+        self.user.is_verified = True
+        self.user.is_email_verified = True
+        self.user.save()
+    
+        self.year = 1984
+        self.my_return = Return(
+            user=self.user,
+            year=self.year,
+        )
+        self.my_return.save()
+    
+        self.cpa = AvUser.objects.create_user(
+            email='cpa@example.com',
+            password=self.password,
+            is_cpa=True,
+        )
+        self.cpa.firm = self.firm
+        self.cpa.is_verified = True
+        self.cpa.is_email_verified = True
+        self.cpa.save()
+
+        self.file = S3File(
+            user=self.user,
+            name='x.txt',
+            type='txt',
+            size='444',
+            tax_return=self.my_return,
+        )
+        self.file.save()
+
+    def login(self):
+        self.client.login(
+            username=self.user.email,
+            password=self.password
+        )
+        self.client.get(reverse('force_trust'))
+        user = auth.get_user(self.client)
+        assert user.is_authenticated()
+        
+    def test_url_access(self):
+        url = reverse('upload-url', args=[self.file.id])
+        # should redirect to login
+        response = self.client.get(url, follow=True)
+        self.assertRedirects(response, '{}?next={}'.format(settings.LOGIN_URL, url))
+
+        # attempt to get own file
+        self.login()
+        response = self.client.get(url, follow=True)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        # another's file
+        file = S3File(
+            user=self.cpa,
+            name='x.txt',
+            type='txt',
+            size='444',
+            tax_return=self.my_return,
+        )
+        file.save()
+
+        url = reverse('upload-url', args=[file.id])
+        response = self.client.get(url, follow=True)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_cpa_access(self):
+        self.client.login(
+            username=self.cpa.email,
+            password=self.password
+        )
+        self.client.get(reverse('force_trust'))
+        
+        url = reverse('upload-url', args=[self.file.id])
+        
+        # client is in CPA's firm
+        response = self.client.get(url, follow=True)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        firm = Firm(
+            name='not acme'
+        )
+        firm.save()
+        self.cpa.firm = firm
+        self.cpa.save()
+
+        # client is not in CPA's firm
+        response = self.client.get(url, follow=True)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)

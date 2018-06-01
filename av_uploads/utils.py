@@ -42,6 +42,9 @@ def get_aws_v4_signature(key, message):
 
 
 def get_s3_url(file):
+    if settings.TESTING:
+        return 'http://localhost/'
+    
     if file.s3_bucket is None or file.s3_key is None:
         return None
     if len(file.s3_bucket) == 0 or len(file.s3_key) == 0:

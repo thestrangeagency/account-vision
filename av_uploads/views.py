@@ -17,7 +17,7 @@ from rest_framework import permissions, viewsets, serializers
 from rest_framework.views import APIView
 
 from av_account.models import AvUser
-from av_account.utils import CPARequiredMixin
+from av_account.utils import CPARequiredMixin, FullRequiredMixin
 from av_returns.models import Return
 from av_uploads.models import S3File
 from .utils import get_aws_v4_signature, get_aws_v4_signing_key, get_s3direct_destinations, get_s3_url
@@ -293,8 +293,8 @@ class CpaUploadsView(CPARequiredMixin, TemplateView):
         return context
 
 
-class UploadUrlView(View):
-    # TODO test access
+class UploadUrlView(FullRequiredMixin, View):
+
     def get(self, request, id):
         file = get_object_or_404(S3File, id=id)
         if file.user == self.request.user or (self.request.user.is_cpa and file.user.firm == self.request.user.firm):
