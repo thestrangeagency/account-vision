@@ -7,16 +7,17 @@ import os
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, HttpResponseNotFound, \
-    HttpResponseServerError
+    HttpResponseServerError, HttpResponseRedirect
+from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.utils.datastructures import MultiValueDictKeyError
+from django.views import View
 from django.views.generic import TemplateView
 from rest_framework import permissions, viewsets, serializers
 from rest_framework.views import APIView
 
 from av_account.models import AvUser
 from av_account.utils import CPARequiredMixin
-from av_emails.utils import send_new_upload_email
 from av_returns.models import Return
 from av_uploads.models import S3File
 from .utils import get_aws_v4_signature, get_aws_v4_signing_key, get_s3direct_destinations, get_s3_url
@@ -290,3 +291,14 @@ class CpaUploadsView(CPARequiredMixin, TemplateView):
         context['target'] = target
         context['year'] = year
         return context
+
+
+class UploadUrlView(View):
+    # TODO test access
+    def get(self, request, id):
+        file = get_object_or_404(S3File, id=id)
+        if file.user == self.request.user or (self.request.user.is_cpa and file.user.firm == self.request.user.firm):
+            url = get_s3_url(file)
+            return HttpResponseRedirect(url)
+        else:
+            return HttpResponseForbidden()

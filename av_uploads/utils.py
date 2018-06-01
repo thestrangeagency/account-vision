@@ -51,6 +51,7 @@ def get_s3_url(file):
         's3',
         aws_access_key_id=settings.AWS_ACCESS_KEY,
         aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+        region_name=settings.AWS_REGION,
     )
 
     # Generate the URL to get 'key-name' from 'bucket-name'
@@ -76,5 +77,6 @@ def delete_s3_object(file):
         's3',
         aws_access_key_id=settings.AWS_ACCESS_KEY,
         aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+        region_name=settings.AWS_REGION,
     )
     s3.delete_object(Bucket=file.s3_bucket, Key=file.s3_key)

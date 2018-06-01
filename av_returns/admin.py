@@ -45,7 +45,7 @@ class ReturnAdmin(ExcludeDateMixin, admin.ModelAdmin):
     inlines = (SpouseInline, DependentsInline, CommonExpenseInline, ExpenseInline, UploadsInline)
 
     list_display = ('__str__', 'year', 'return_status')
-    list_filter = ('return_status', ('cpa', admin.RelatedOnlyFieldListFilter))
+    # list_filter = ('return_status', ('cpa', admin.RelatedOnlyFieldListFilter))
     actions = []
 
     # i.e. make return_status and cpa editable

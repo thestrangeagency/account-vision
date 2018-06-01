@@ -70,7 +70,7 @@ class ClientDetailUploadsView(AbstractClientReturnView, ListView):
     model = S3File
     
     def get_queryset(self):
-        return S3File.objects.filter(user=self.get_user(), tax_return=self.get_return())
+        return S3File.objects.filter(user=self.get_user(), tax_return=self.get_return(), uploaded=True)
 
         
 class InviteForm(forms.ModelForm):

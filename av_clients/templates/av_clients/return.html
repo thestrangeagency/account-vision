@@ -59,7 +59,7 @@
   {% if request.get_full_path == uploads %}
     <p>Uploads:</p>
     {% for file in object_list %}
-      <p>{{ file.name}} {{ file.size }} {{ file.type }}</p>
+      <p>{{ file.name}} {{ file.size }} {{ file.type }} <a href="{% url 'upload-url' file.id %}">{% url 'upload-url' file.id %}</a></p>
     {% endfor %}
   {% endif %}
 
