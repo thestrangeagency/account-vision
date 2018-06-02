@@ -1,3 +1,5 @@
+import urllib
+
 from django.contrib import auth
 from django.core import mail
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -8,7 +10,7 @@ from rest_framework import status
 from av_account.models import AvUser, Firm
 from av_clients.views import UploadFileForm
 from av_core import settings
-from av_returns.models import Return
+from av_returns.models import Return, Expense
 from av_uploads.models import S3File
 
 
@@ -186,6 +188,14 @@ class ClientsTestCase(TestCase):
             year=self.year,
         )
         self.my_return.save()
+        
+        self.expense = Expense(
+            tax_return=self.my_return,
+            type='food',
+            amount='6.66',
+            notes='eat'
+        )
+        self.expense.save()
     
         self.cpa = AvUser.objects.create_user(
             email='cpa@example.com',
@@ -214,8 +224,25 @@ class ClientsTestCase(TestCase):
         self.client.get(reverse('force_trust'))
         user = auth.get_user(self.client)
         assert user.is_authenticated()
-        
-    def test_url_access(self):
+    
+    def login_cpa(self):
+        self.client.login(
+            username=self.cpa.email,
+            password=self.password
+        )
+        self.client.get(reverse('force_trust'))
+        user = auth.get_user(self.client)
+        assert user.is_authenticated()
+
+    def change_cpa_firm(self):
+        firm = Firm(
+            name='not acme'
+        )
+        firm.save()
+        self.cpa.firm = firm
+        self.cpa.save()
+
+    def test_file_url_access(self):
         url = reverse('upload-url', args=[self.file.id])
         # should redirect to login
         response = self.client.get(url, follow=True)
@@ -240,12 +267,8 @@ class ClientsTestCase(TestCase):
         response = self.client.get(url, follow=True)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
-    def test_cpa_access(self):
-        self.client.login(
-            username=self.cpa.email,
-            password=self.password
-        )
-        self.client.get(reverse('force_trust'))
+    def test_cpa_file_url_access(self):
+        self.login_cpa()
         
         url = reverse('upload-url', args=[self.file.id])
         
@@ -253,13 +276,30 @@ class ClientsTestCase(TestCase):
         response = self.client.get(url, follow=True)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        firm = Firm(
-            name='not acme'
-        )
-        firm.save()
-        self.cpa.firm = firm
-        self.cpa.save()
+        self.change_cpa_firm()
 
         # client is not in CPA's firm
         response = self.client.get(url, follow=True)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_expense_view(self):
+        url = reverse('client-detail-return-expenses', args=[self.user.email, self.my_return.year])
+
+        # should redirect to login
+        # note that Django url encodes the @ symbol in user email so we have to encode it here to match
+        response = self.client.get(url, follow=True)
+        self.assertRedirects(response, '{}?next={}'.format(settings.LOGIN_URL, urllib.parse.quote(url)))
+
+        self.login_cpa()
+
+        response = self.client.get(url, follow=True)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertContains(response, self.expense.type)
+        self.assertContains(response, self.expense.amount)
+        self.assertContains(response, self.expense.notes)
+
+        self.change_cpa_firm()
+
+        # client is not in CPA's firm
+        response = self.client.get(url, follow=True)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)

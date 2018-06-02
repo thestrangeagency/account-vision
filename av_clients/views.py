@@ -41,7 +41,7 @@ class AbstractClientReturnView(CPARequiredMixin, ContextMixin, View):
     template_name = 'av_clients/return.html'
     
     def get_user(self):
-        return get_object_or_404(AvUser, email=self.kwargs['username'])
+        return get_object_or_404(AvUser, email=self.kwargs['username'], firm=self.request.user.firm)
     
     def get_year(self):
         return self.kwargs['year']
