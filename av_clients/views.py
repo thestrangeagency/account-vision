@@ -29,26 +29,20 @@ class ClientListView(CPARequiredMixin, ListView):
         return AvUser.objects.filter(firm=self.request.user.firm, is_cpa=False).order_by('-date_created')
 
 
-class ClientDetailView(CPARequiredMixin, DetailView):
-    model = AvUser
-    template_name = 'av_clients/detail.html'
-
-    def get_object(self, queryset=None):
-        return get_object_or_404(AvUser, email=self.kwargs['username'])
-
-
-class AbstractClientReturnView(CPARequiredMixin, ContextMixin, View):
+class AbstractClientView(CPARequiredMixin, ContextMixin, View):
     template_name = 'av_clients/return.html'
     
     def get_user(self):
         return get_object_or_404(AvUser, email=self.kwargs['username'], firm=self.request.user.firm)
     
     def get_year(self):
-        return self.kwargs['year']
+        return self.kwargs.get('year', None)
 
     def get_return(self):
         return get_object_or_404(Return, year=self.get_year(), user=self.get_user())
 
+
+class AbstractClientReturnView(AbstractClientView):
     def get_context_data(self, **kwargs):
         context = super(AbstractClientReturnView, self).get_context_data(**kwargs)
         # even though we have object.year, we need this for breadcrumbs
@@ -57,6 +51,14 @@ class AbstractClientReturnView(CPARequiredMixin, ContextMixin, View):
         context['return'] = self.get_return()
         context['object'] = self.get_user()
         return context
+
+
+class ClientDetailView(AbstractClientView, DetailView):
+    model = AvUser
+    template_name = 'av_clients/detail.html'
+    
+    def get_object(self, queryset=None):
+        return self.get_user()
 
 
 class ClientDetailReturnView(AbstractClientReturnView, DetailView):
