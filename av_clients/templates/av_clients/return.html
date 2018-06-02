@@ -63,6 +63,13 @@
     {% endfor %}
   {% endif %}
 
+  {% if request.get_full_path == expenses %}
+    <p>Expenses:</p>
+    {% for expense in object_list %}
+      <p>{{ expense.type }} {{ expense.amount }} {{ expense.notes }}</p>
+    {% endfor %}
+  {% endif %}
+
   <button class="btn btn-primary">Export</button>
 
 {% endblock %}

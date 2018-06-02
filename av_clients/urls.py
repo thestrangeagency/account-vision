@@ -36,7 +36,7 @@ urlpatterns = [
     ),
     url(
         regex=r'^(?P<username>[\w.@+-]+)/(?P<year>[0-9]{4})/expenses/$',
-        view=ClientDetailReturnView.as_view(),
+        view=ClientDetailExpensesView.as_view(),
         name='client-detail-return-expenses',
     ),
 

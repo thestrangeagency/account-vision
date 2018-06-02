@@ -16,7 +16,7 @@ from tempfile import NamedTemporaryFile
 
 from av_account.models import AvUser
 from av_account.utils import CPARequiredMixin
-from av_returns.models import Return
+from av_returns.models import Return, Expense
 from av_uploads.models import S3File
 from av_utils.utils import get_object_or_None
 
@@ -72,7 +72,14 @@ class ClientDetailUploadsView(AbstractClientReturnView, ListView):
     def get_queryset(self):
         return S3File.objects.filter(user=self.get_user(), tax_return=self.get_return(), uploaded=True)
 
-        
+
+class ClientDetailExpensesView(AbstractClientReturnView, ListView):
+    model = Expense
+    
+    def get_queryset(self):
+        return Expense.objects.filter(tax_return=self.get_return())
+
+
 class InviteForm(forms.ModelForm):
 
     class Meta:
