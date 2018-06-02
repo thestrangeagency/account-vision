@@ -4,7 +4,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.db import models
 
-from .models import Address
+from .models import Address, Firm
 from .models import AvUser
 from .models import Bank
 from .models import SecurityQuestion
@@ -95,7 +95,7 @@ class UserAdmin(BaseUserAdmin):
     def get_fieldsets(self, request, obj=None):
         if request.user.is_superuser:
             fieldsets = (
-                (None, {'fields': ('email', 'password')}),
+                (None, {'fields': ('email', 'password', 'firm')}),
                 ('Personal info', {'fields': ('first_name', 'last_name', 'middle_name', 'phone', 'ssn', 'dob')}),
                 ('Permissions', {'fields': ('is_staff', 'groups')}),
             )
@@ -109,3 +109,4 @@ class UserAdmin(BaseUserAdmin):
 
 admin.site.register(AvUser, UserAdmin)
 admin.site.register(SecurityQuestion)
+admin.site.register(Firm)
