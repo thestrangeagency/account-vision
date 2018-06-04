@@ -9,11 +9,11 @@
 
 {% block tabs %}
 
-  {% url 'client-detail-return-expenses' object.email year as expenses %}
-  {% url 'client-detail-return-uploads' object.email year as uploads %}
-  {% url 'client-detail-return-spouse' object.email year as spouse %}
-  {% url 'client-detail-return-dependents' object.email year as dependents%}
-  {% url 'client-detail-return-returns' object.email year as returns %}
+  {% url 'client-detail-return-expenses' client.email year as expenses %}
+  {% url 'client-detail-return-uploads' client.email year as uploads %}
+  {% url 'client-detail-return-spouse' client.email year as spouse %}
+  {% url 'client-detail-return-dependents' client.email year as dependents%}
+  {% url 'client-detail-return-returns' client.email year as returns %}
 
   <div class="tx-full-width tx-nav-tabs">
     <div class="container">
@@ -41,11 +41,11 @@
 
 {% block content %}
 
-  {% url 'client-detail-return-expenses' object.email year as expenses %}
-  {% url 'client-detail-return-uploads' object.email year as uploads %}
-  {% url 'client-detail-return-spouse' object.email year as spouse %}
-  {% url 'client-detail-return-dependents' object.email year as dependents %}
-  {% url 'client-detail-return-returns' object.email year as returns %}
+  {% url 'client-detail-return-expenses' client.email year as expenses %}
+  {% url 'client-detail-return-uploads' client.email year as uploads %}
+  {% url 'client-detail-return-spouse' client.email year as spouse %}
+  {% url 'client-detail-return-dependents' client.email year as dependents %}
+  {% url 'client-detail-return-returns' client.email year as returns %}
 
   {% if request.get_full_path == expenses %}
     <p>Expenses:</p>
@@ -80,7 +80,7 @@
 
   {% if request.get_full_path == returns %}
     <p>Upload prepared returns and vouchers</p>
-    <div id="upload-manager" data-year="{{ year }}" data-target="{{ object.id }}"></div>
+    <div id="upload-manager" data-year="{{ year }}" data-target="{{ client.id }}"></div>
   {% endif %}
 
 {% endblock %}
