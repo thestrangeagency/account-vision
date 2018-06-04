@@ -136,6 +136,8 @@ export default class ExpenseModal extends React.Component {
                         ref={setAmountRef}
                         required
                         type="number"
+                        min="0.00"
+                        step="0.01"
                       />
                     </div>
                     {validationError && validationError.amount &&
