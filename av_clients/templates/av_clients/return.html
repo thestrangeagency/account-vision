@@ -9,25 +9,25 @@
 
 {% block tabs %}
 
+  {% url 'client-detail-return-expenses' object.email year as expenses %}
+  {% url 'client-detail-return-uploads' object.email year as uploads %}
   {% url 'client-detail-return-spouse' object.email year as spouse %}
   {% url 'client-detail-return-dependents' object.email year as dependents%}
-  {% url 'client-detail-return-uploads' object.email year as uploads %}
-  {% url 'client-detail-return-expenses' object.email year as expenses %}
 
   <div class="tx-full-width tx-nav-tabs">
     <div class="container">
       <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link {% if request.get_full_path == spouse %}active{% endif %}" href="{{ spouse }} ">Spouse</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link {% if request.get_full_path == dependents %}active{% endif %}" href="{{ dependents }} ">Dependents</a>
+          <a class="nav-link {% if request.get_full_path == expenses %}active{% endif %}" href="{{ expenses }} ">Expenses</a>
         </li>
         <li class="nav-item">
           <a class="nav-link {% if request.get_full_path == uploads %}active{% endif %}" href="{{ uploads }} ">Uploads</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if request.get_full_path == expenses %}active{% endif %}" href="{{ expenses }} ">Expenses</a>
+          <a class="nav-link {% if request.get_full_path == spouse %}active{% endif %}" href="{{ spouse }} ">Spouse</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.get_full_path == dependents %}active{% endif %}" href="{{ dependents }} ">Dependents</a>
         </li>
       </ul>
     </div>
@@ -37,10 +37,27 @@
 
 {% block content %}
 
+  {% url 'client-detail-return-expenses' object.email year as expenses %}
+  {% url 'client-detail-return-uploads' object.email year as uploads %}
   {% url 'client-detail-return-spouse' object.email year as spouse %}
   {% url 'client-detail-return-dependents' object.email year as dependents %}
-  {% url 'client-detail-return-uploads' object.email year as uploads %}
-  {% url 'client-detail-return-expenses' object.email year as expenses %}
+
+  {% if request.get_full_path == expenses %}
+    <p>Expenses:</p>
+    {% for expense in object_list %}
+      <p>{{ expense.type }} {{ expense.amount }} {{ expense.notes }}</p>
+    {% endfor %}
+
+    <button class="btn btn-primary">Export</button>
+  {% endif %}
+
+  {% if request.get_full_path == uploads %}
+    <p>Uploads:</p>
+    {% for file in object_list %}
+      <p>{{ file.name }} {{ file.size }} {{ file.type }} <a
+              href="{% url 'upload-url' file.id %}">{% url 'upload-url' file.id %}</a></p>
+    {% endfor %}
+  {% endif %}
 
   {% if request.get_full_path == spouse %}
     <p>Spouse:</p>
@@ -55,21 +72,5 @@
       <p>{{ person.first_name }} {{ person.last_name }}</p>
     {% endfor %}
   {% endif %}
-
-  {% if request.get_full_path == uploads %}
-    <p>Uploads:</p>
-    {% for file in object_list %}
-      <p>{{ file.name}} {{ file.size }} {{ file.type }} <a href="{% url 'upload-url' file.id %}">{% url 'upload-url' file.id %}</a></p>
-    {% endfor %}
-  {% endif %}
-
-  {% if request.get_full_path == expenses %}
-    <p>Expenses:</p>
-    {% for expense in object_list %}
-      <p>{{ expense.type }} {{ expense.amount }} {{ expense.notes }}</p>
-    {% endfor %}
-  {% endif %}
-
-  <button class="btn btn-primary">Export</button>
 
 {% endblock %}
