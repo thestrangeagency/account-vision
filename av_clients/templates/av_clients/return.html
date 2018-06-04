@@ -13,6 +13,7 @@
   {% url 'client-detail-return-uploads' object.email year as uploads %}
   {% url 'client-detail-return-spouse' object.email year as spouse %}
   {% url 'client-detail-return-dependents' object.email year as dependents%}
+  {% url 'client-detail-return-returns' object.email year as returns %}
 
   <div class="tx-full-width tx-nav-tabs">
     <div class="container">
@@ -29,6 +30,9 @@
         <li class="nav-item">
           <a class="nav-link {% if request.get_full_path == dependents %}active{% endif %}" href="{{ dependents }} ">Dependents</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.get_full_path == returns %}active{% endif %}" href="{{ returns }} ">Returns</a>
+        </li>
       </ul>
     </div>
   </div>
@@ -41,6 +45,7 @@
   {% url 'client-detail-return-uploads' object.email year as uploads %}
   {% url 'client-detail-return-spouse' object.email year as spouse %}
   {% url 'client-detail-return-dependents' object.email year as dependents %}
+  {% url 'client-detail-return-returns' object.email year as returns %}
 
   {% if request.get_full_path == expenses %}
     <p>Expenses:</p>
@@ -71,6 +76,11 @@
     {% for person in return.dependent_set.all %}
       <p>{{ person.first_name }} {{ person.last_name }}</p>
     {% endfor %}
+  {% endif %}
+
+  {% if request.get_full_path == returns %}
+    <p>Upload prepared returns and vouchers</p>
+    <div id="upload-manager" data-year="{{ year }}" data-target="{{ object.id }}"></div>
   {% endif %}
 
 {% endblock %}

@@ -259,40 +259,6 @@ class DownloadsViewSet(viewsets.ModelViewSet):
         return self.model.objects.filter(tax_return__year=year, target_user=self.request.user)
 
 
-class CpaUserView(CPARequiredMixin, TemplateView):
-    template_name = 'uploads/cpa-user.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(CpaUserView, self).get_context_data(**kwargs)
-        context['users'] = AvUser.objects.exclude(groups__name='cpa')
-        return context
-
-
-class CpaReturnView(CPARequiredMixin, TemplateView):
-    template_name = 'uploads/cpa-return.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(CpaReturnView, self).get_context_data(**kwargs)
-        target_id = kwargs.get('id', None)
-        target = AvUser.objects.get(pk=target_id)
-        context['target'] = target
-        context['returns'] = Return.objects.filter(user=target)
-        return context
-
-
-class CpaUploadsView(CPARequiredMixin, TemplateView):
-    template_name = 'uploads/cpa-uploads.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(CpaUploadsView, self).get_context_data(**kwargs)
-        target_id = kwargs.get('id', None)
-        year = kwargs.get('year', None)
-        target = AvUser.objects.get(pk=target_id)
-        context['target'] = target
-        context['year'] = year
-        return context
-
-
 class UploadUrlView(FullRequiredMixin, View):
 
     def get(self, request, id):

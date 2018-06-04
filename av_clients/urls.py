@@ -39,6 +39,11 @@ urlpatterns = [
         view=ClientDetailExpensesView.as_view(),
         name='client-detail-return-expenses',
     ),
+    url(
+        regex=r'^(?P<username>[\w.@+-]+)/(?P<year>[0-9]{4})/returns/$',
+        view=ClientDetailReturnView.as_view(),
+        name='client-detail-return-returns',
+    ),
 
     url(
         regex=r'^invite$',
