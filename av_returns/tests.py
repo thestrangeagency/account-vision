@@ -86,69 +86,9 @@ class ReturnsTestCase(TestCase):
     #     response = self.client.get(url)
     #     self.assertRedirects(response, reverse('email_verify'), status_code=302)
 
-    def test_my_info(self):
-        url = reverse('info_my', args=[self.year])
-        self.login()
 
-        data = {
-            'first_name': 'Fred',
-            'ssn': '123121234',
-        }
-        response = self.client.post(url, data)
-        self.assertEqual(response.status_code, 302)
-
-        user = AvUser.objects.get(email=self.user.email)
-        self.assertEqual(user.first_name, data['first_name'])
-        self.assertEqual(user.ssn, data['ssn'])
-
-    def test_zero_ssn(self):
-        url = reverse('info_my', args=[self.year])
-        self.login()
-
-        data = {
-            'ssn': '023121234',
-        }
-        response = self.client.post(url, data)
-        self.assertEqual(response.status_code, 302)
-
-        user = AvUser.objects.get(email=self.user.email)
-        self.assertEqual(user.ssn, data['ssn'])
-
-    def test_short_ssn(self):
-        url = reverse('info_my', args=[self.year])
-        self.login()
-
-        data = {
-            'ssn': '12345678',
-        }
-        response = self.client.post(url, data)
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'error')
-
-    def test_long_ssn(self):
-        url = reverse('info_my', args=[self.year])
-        self.login()
-
-        data = {
-            'ssn': '1234567890',
-        }
-        response = self.client.post(url, data)
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'error')
-
-    def test_no_spouse(self):
-        url = reverse('info', args=[self.year])
-        self.login()
-
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-
-        self.spouse.delete()
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-
-    def test_spouse_info(self):
-        url = reverse('info_spouse', args=[self.year])
+    def test_spouse(self):
+        url = reverse('spouse', args=[self.year])
         self.login()
 
         data = {
@@ -163,8 +103,8 @@ class ReturnsTestCase(TestCase):
         self.assertEqual(spouse.first_name, data['first_name'])
         self.assertEqual(spouse.ssn, data['ssn'])
 
-    def test_dependents_info(self):
-        url = reverse('info_dependents', args=[self.year])
+    def test_dependents(self):
+        url = reverse('dependents', args=[self.year])
         self.login()
 
         # using a formset, so need management data
