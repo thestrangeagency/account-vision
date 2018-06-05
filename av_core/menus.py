@@ -1,5 +1,3 @@
-from django.urls import reverse, reverse_lazy
-
 NAV_MENU_LEFT = [
     {
         "name": "Features",
