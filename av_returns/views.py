@@ -76,20 +76,6 @@ class ReturnsDetailView(ClientRequiredMixin, DetailView):
         return self.get(request)
 
 
-class PersonalInfoView(ClientRequiredMixin, TemplateView):
-    template_name = 'av_returns/info.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(PersonalInfoView, self).get_context_data(**kwargs)
-        tax_return = Return.objects.get(user=self.request.user, year=self.kwargs['year'])
-        try:
-            context['spouse'] = tax_return.spouse
-        except ObjectDoesNotExist:
-            pass
-        context['dependents'] = tax_return.dependent_set
-        return context
-
-
 class ReactView(ClientRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
@@ -116,19 +102,23 @@ class DownloadsView(ClientRequiredMixin, TemplateView):
 
 
 class SpouseView(ClientRequiredMixin, FreezableFormView):
-    template_name = 'av_returns/info_spouse.html'
+    template_name = 'av_returns/spouse.html'
     form_class = SpouseForm
 
     def get_form_kwargs(self):
-        tax_return = Return.objects.get(user=self.request.user, year=self.kwargs['year'])
-        spouse = tax_return.spouse
         kwargs = super(SpouseView, self).get_form_kwargs()
-        kwargs.update({
-            'instance': spouse,
-        })
+        tax_return = Return.objects.get(user=self.request.user, year=self.kwargs['year'])
+        try:
+            kwargs.update({
+                'instance': tax_return.spouse,
+            })
+        except ObjectDoesNotExist:
+            pass
         return kwargs
 
     def form_valid(self, form):
+        spouse = form.save(commit=False)
+        spouse.tax_return = Return.objects.get(user=self.request.user, year=self.kwargs['year'])
         form.save()
         return super(SpouseView, self).form_valid(form)
 
@@ -138,11 +128,11 @@ class SpouseView(ClientRequiredMixin, FreezableFormView):
         return context
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy('info_spouse', args={self.kwargs['year']})
+        return reverse_lazy('spouse', args={self.kwargs['year']})
 
 
 class DependentsView(ClientRequiredMixin, TemplateView):
-    template_name = 'av_returns/info_dependents.html'
+    template_name = 'av_returns/dependents.html'
 
     def post(self, request, *args, **kwargs):
         formset = DependentsFormSet(self.request.POST, self.request.FILES)
@@ -182,7 +172,7 @@ class DependentsView(ClientRequiredMixin, TemplateView):
         return context
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy('info_dependents', args={self.kwargs['year']})
+        return reverse_lazy('dependents', args={self.kwargs['year']})
 
 
 class EFileView(ClientRequiredMixin, FormView):
