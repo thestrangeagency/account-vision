@@ -90,6 +90,7 @@ INSTALLED_APPS = [
 
     # account vision
     'av_account',
+    'av_profile',
     'av_contact',
     'av_emails',
     'av_clients',

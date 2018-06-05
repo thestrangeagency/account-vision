@@ -2,7 +2,7 @@ from django.conf.urls import url
 from django.contrib.auth.views import logout, PasswordResetDoneView, PasswordResetView, PasswordResetConfirmView, \
     PasswordResetCompleteView, PasswordChangeView
 
-from av_account.forms import AccountPasswordResetForm, AccountSetPasswordForm, AccountLoginForm, \
+from av_account.forms import AccountPasswordResetForm, AccountLoginForm, \
     AccountPasswordChangeForm
 from .views import *
 
@@ -84,16 +84,12 @@ urlpatterns = [
         name='devices',
     ),
     url(
-        regex=r'^banking-info/$',
-        view=BankingView.as_view(),
-        name='banking',
-    ),
-    url(
         regex=r'^disabled/$',
         view=NotReadyView.as_view(),
         name='disabled',
     ),
 
+    # login etc.
     url(r'^login/$', LoginView.as_view(template_name='login.html', form_class=AccountLoginForm), name='login'),
     url(r'^logout/$', logout, name='logout'),
 

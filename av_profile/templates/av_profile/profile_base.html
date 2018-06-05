@@ -12,6 +12,7 @@
   {% url 'edit' as edit%}
   {% url 'logins' as logins %}
   {% url 'devices' as devices %}
+  {% url 'banking' as banking %}
 
   <div class="tx-full-width tx-nav-tabs">
     <div class="container">
@@ -19,6 +20,11 @@
         <li class="nav-item">
           <a class="nav-link {% if request.get_full_path == edit %}active{% endif %}" href="{% url 'edit' %} ">Account</a>
         </li>
+        {% if not user.is_cpa %}
+          <li class="nav-item">
+            <a class="nav-link {% if request.get_full_path == banking %}active{% endif %}" href="{% url 'banking' %} ">Banking Info</a>
+          </li>
+        {% endif %}
         <li class="nav-item">
           <a class="nav-link {% if request.get_full_path == logins %}active{% endif %}" href="{% url 'logins' %} ">Logins</a>
         </li>

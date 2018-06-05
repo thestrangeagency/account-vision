@@ -15,15 +15,14 @@ from django.views.generic import TemplateView
 from django_agent_trust import revoke_other_agents
 from django_agent_trust import trust_agent
 
-from av_account.models import Bank, AvUser
+from av_account.models import AvUser
 from av_account.models import UserLogin
 from av_account.models import UserSecurity
-from av_account.utils import FullRequiredMixin, ClientRequiredMixin
+from av_account.utils import FullRequiredMixin
 from av_core import logger
 from av_utils.utils import get_object_or_None
 from .forms import AccountForm, FirmForm, AccountSetPasswordForm
 from .forms import AvUserCreationForm
-from .forms import BankingForm
 from .forms import DevicesForm
 from .forms import PhoneNumberForm
 from .forms import ResendVerificationEmailForm
@@ -230,27 +229,6 @@ class LoginsView(FullRequiredMixin, ListView):
     model = UserLogin
     template_name = 'logins.html'
     queryset = UserLogin.objects.order_by('-date_created')[:10]
-
-
-class BankingView(ClientRequiredMixin, FormView):
-    template_name = 'banking.html'
-    form_class = BankingForm
-    success_url = reverse_lazy('banking')
-
-    def get_form(self):
-        bank, created = Bank.objects.get_or_create(user=self.request.user)
-        if self.request.POST:
-            return self.form_class(instance=bank, **self.get_form_kwargs())
-        else:
-            form = self.form_class(instance=bank, **self.get_form_kwargs())
-            account = form.initial['account']
-            if account is not None:
-                form.initial['account'] = '•' * (len(account) - 4) + account[-4:]
-            return form
-
-    def form_valid(self, form):
-        form.save()
-        return super(BankingView, self).form_valid(form)
 
 
 class EditView(FullRequiredMixin, FormView):

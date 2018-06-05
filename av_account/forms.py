@@ -13,10 +13,10 @@ from django.forms import ModelForm
 from django.forms import forms
 
 from av_core import settings
-from .models import Bank, Firm
-from .models import AvUser
-from .models import UserSecurity
 from av_utils.utils import FormSubmit
+from .models import AvUser
+from .models import Firm
+from .models import UserSecurity
 
 
 class AvUserCreationForm(UserCreationForm):
@@ -117,25 +117,6 @@ class DevicesForm(Form):
         super(DevicesForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.add_input(Submit('submit', 'Stop Trusting Other Devices', css_class='btn-danger'))
-
-
-class BankingForm(ModelForm):
-
-    def __init__(self, *args, **kwargs):
-        super(BankingForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.add_input(FormSubmit('submit', 'Save'))
-
-    class Meta:
-        model = Bank
-        fields = ['routing', 'account']
-
-    def clean_account(self):
-        account = self.cleaned_data.get('account')
-        if '•' in account:
-            raise forms.ValidationError(u'Please enter your account number.')
-        else:
-            return account
 
 
 class ResendVerificationEmailForm(Form):
