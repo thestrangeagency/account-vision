@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls.base import reverse
 
-from av_account.models import AvUser, Address
+from av_account.models import AvUser, Address, Bank
 from av_core import settings
 
 
@@ -109,3 +109,27 @@ class ReturnsTestCase(TestCase):
         self.assertEqual(address.city, city)
         self.assertEqual(address.state, state)
         self.assertEqual(address.zip, zip_code)
+
+    def test_banking(self):
+        url = reverse('banking')
+        
+        routing = '123456789'
+        account = '1234567890'
+        
+        data = {
+            'routing': routing,
+            'account': account,
+        }
+
+        response = self.client.post(url, data, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(response, '{}?next={}'.format(settings.LOGIN_URL, url))
+
+        self.login()
+        response = self.client.post(url, data, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(response, url)
+        
+        banking = Bank.objects.get(user=self.user)
+        self.assertEqual(banking.routing, routing)
+        self.assertEqual(banking.account, account)
