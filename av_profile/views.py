@@ -1,9 +1,10 @@
+from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views.generic import FormView
 
-from av_account.models import Bank
+from av_account.models import Bank, Address
 from av_account.utils import ClientRequiredMixin
-from .forms import BankingForm
+from .forms import BankingForm, MyInfoForm, AddressForm
 
 
 class BankingView(ClientRequiredMixin, FormView):
@@ -11,7 +12,7 @@ class BankingView(ClientRequiredMixin, FormView):
     form_class = BankingForm
     success_url = reverse_lazy('banking')
 
-    def get_form(self):
+    def get_form(self, form_class=None):
         bank, created = Bank.objects.get_or_create(user=self.request.user)
         if self.request.POST:
             return self.form_class(instance=bank, **self.get_form_kwargs())
@@ -25,3 +26,41 @@ class BankingView(ClientRequiredMixin, FormView):
     def form_valid(self, form):
         form.save()
         return super(BankingView, self).form_valid(form)
+
+
+class MyInfoView(ClientRequiredMixin, FormView):
+    template_name = 'av_profile/info_my.html'
+    form_class = MyInfoForm
+    success_url = reverse_lazy('identity')
+    
+    def get_form_kwargs(self):
+        kwargs = super(MyInfoView, self).get_form_kwargs()
+        kwargs.update({
+            'instance': self.request.user,
+        })
+        return kwargs
+    
+    def form_valid(self, form):
+        form.save()
+        return super(MyInfoView, self).form_valid(form)
+
+
+class AddressView(ClientRequiredMixin, FormView):
+    template_name = 'av_profile/info_address.html'
+    form_class = AddressForm
+    success_url = reverse_lazy('address')
+    
+    def get_form_kwargs(self):
+        kwargs = super(AddressView, self).get_form_kwargs()
+        if not hasattr(self.request.user, 'address'):
+            self.request.user.address = Address.objects.create(user=self.request.user)
+            self.request.user.save()
+        kwargs.update({
+            'instance': self.request.user.address,
+        })
+        return kwargs
+    
+    def form_valid(self, form):
+        form.save()
+        messages.success(self.request, 'Your address has been updated.')
+        return super(AddressView, self).form_valid(form)

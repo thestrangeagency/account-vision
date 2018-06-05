@@ -1,6 +1,5 @@
 import datetime
 
-from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
@@ -8,9 +7,8 @@ from django.views.generic import TemplateView, FormView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 
-from av_account.models import Address
 from av_account.utils import ClientRequiredMixin
-from av_returns.forms import MyInfoForm, SpouseForm, DependentsFormSet, AddressForm, DependentsFormSetHelper, \
+from av_returns.forms import SpouseForm, DependentsFormSet, DependentsFormSetHelper, \
     EFileForm, FrozenDependentsFormSet, FrozenDependentsFormSetHelper, ReturnForm
 from av_returns.utils import FreezableFormView
 from av_uploads.models import S3File
@@ -115,58 +113,6 @@ class DownloadsView(ClientRequiredMixin, TemplateView):
         context['downloads'] = files
         context['year'] = year
         return context
-
-
-class MyInfoView(ClientRequiredMixin, FreezableFormView):
-    template_name = 'av_returns/info_my.html'
-    form_class = MyInfoForm
-
-    def get_form_kwargs(self):
-        kwargs = super(MyInfoView, self).get_form_kwargs()
-        kwargs.update({
-            'instance': self.request.user,
-        })
-        return kwargs
-
-    def form_valid(self, form):
-        form.save()
-        return super(MyInfoView, self).form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super(MyInfoView, self).get_context_data(**kwargs)
-        context['year'] = self.kwargs['year']
-        return context
-
-    def get_success_url(self, **kwargs):
-        return reverse_lazy('info_my', args={self.kwargs['year']})
-
-
-class AddressView(ClientRequiredMixin, FreezableFormView):
-    template_name = 'av_returns/info_address.html'
-    form_class = AddressForm
-
-    def get_form_kwargs(self):
-        kwargs = super(AddressView, self).get_form_kwargs()
-        if not hasattr(self.request.user, 'address'):
-            self.request.user.address = Address.objects.create(user=self.request.user)
-            self.request.user.save()
-        kwargs.update({
-            'instance': self.request.user.address,
-        })
-        return kwargs
-
-    def form_valid(self, form):
-        form.save()
-        messages.success(self.request, 'Your address has been updated.')
-        return super(AddressView, self).form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super(AddressView, self).get_context_data(**kwargs)
-        context['year'] = self.kwargs['year']
-        return context
-
-    def get_success_url(self, **kwargs):
-        return reverse_lazy('info_address', args={self.kwargs['year']})
 
 
 class SpouseView(ClientRequiredMixin, FreezableFormView):

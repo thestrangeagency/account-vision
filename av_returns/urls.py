@@ -10,8 +10,6 @@ urlpatterns = [
     url(r'^(?P<year>[0-9]{4})/e-file$', EFileView.as_view(), name='efile'),
     url(r'^(?P<year>[0-9]{4})/info/$', PersonalInfoView.as_view(), name='info'),
 
-    url(r'^(?P<year>[0-9]{4})/info/my/$', MyInfoView.as_view(), name='info_my'),
-    url(r'^(?P<year>[0-9]{4})/info/address/$', AddressView.as_view(), name='info_address'),
     url(r'^(?P<year>[0-9]{4})/info/spouse/$', SpouseView.as_view(), name='info_spouse'),
     url(r'^(?P<year>[0-9]{4})/info/dependents/$', DependentsView.as_view(), name='info_dependents'),
     url(r'^(?P<year>[0-9]{4})/tax-return/$', DownloadsView.as_view(), name='downloads'),

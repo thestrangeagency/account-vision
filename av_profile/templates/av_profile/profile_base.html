@@ -4,32 +4,26 @@
 
 {% block breadcrumbs %}
   {{ block.super }}
-  {% breadcrumb "Account" "account" %}
+  {% breadcrumb "Profile" "profile" %}
 {% endblock %}
 
 {% block tabs %}
 
-  {% url 'edit' as edit%}
-  {% url 'logins' as logins %}
-  {% url 'devices' as devices %}
+  {% url 'identity' as identity %}
+  {% url 'address' as address %}
   {% url 'banking' as banking %}
 
   <div class="tx-full-width tx-nav-tabs">
     <div class="container">
       <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link {% if request.get_full_path == edit %}active{% endif %}" href="{% url 'edit' %} ">Account</a>
-        </li>
-        {% if not user.is_cpa %}
-          <li class="nav-item">
-            <a class="nav-link {% if request.get_full_path == banking %}active{% endif %}" href="{% url 'banking' %} ">Banking Info</a>
-          </li>
-        {% endif %}
-        <li class="nav-item">
-          <a class="nav-link {% if request.get_full_path == logins %}active{% endif %}" href="{% url 'logins' %} ">Logins</a>
+          <a class="nav-link {% if request.get_full_path == identity %}active{% endif %}" href="{% url 'identity' %} ">Identity</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if request.get_full_path == devices %}active{% endif %}" href="{% url 'devices' %} ">Devices</a>
+          <a class="nav-link {% if request.get_full_path == address %}active{% endif %}" href="{% url 'address' %} ">Address</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.get_full_path == banking %}active{% endif %}" href="{% url 'banking' %} ">Banking Info</a>
         </li>
       </ul>
     </div>
