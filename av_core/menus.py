@@ -12,7 +12,7 @@ NAV_MENU_LEFT = [
         "validators": ["menu_generator.validators.is_anonymous"],
     },
     {
-        "name": "Returns",
+        "name": "Tax Years",
         "url": "returns",
         "validators": ["menu_generator.validators.is_authenticated", "av_core.menus.is_not_cpa"],
         "root": True,
@@ -27,6 +27,12 @@ NAV_MENU_LEFT = [
         "name": "Messages",
         "url": "messages_redirect",
         "validators": ["menu_generator.validators.is_authenticated"],
+        "root": True,
+    },
+    {
+        "name": "Profile",
+        "url": "identity",
+        "validators": ["menu_generator.validators.is_authenticated", "av_core.menus.is_not_cpa"],
         "root": True,
     },
     {
