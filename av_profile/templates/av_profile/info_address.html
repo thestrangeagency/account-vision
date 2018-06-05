@@ -1,11 +1,6 @@
 {% extends 'av_profile/profile_base.html' %}
 
-{% load django_bootstrap_breadcrumbs crispy_forms_tags %}
-
-{% block breadcrumbs %}
-  {{ block.super }}
-  {% breadcrumb "Address" "info_address" year %}
-{% endblock %}
+{% load crispy_forms_tags %}
 
 {% block content %}
   <h1>Address</h1>
