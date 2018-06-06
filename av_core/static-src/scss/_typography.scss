@@ -3,28 +3,38 @@ font placeholders
  */
 
 %filson-soft-book {
-  font-family: "filson-soft", $font-family-sans-serif;
+  font-family: "roboto", $font-family-sans-serif;
   font-weight: 300;
 }
 
 %filson-soft-medium {
-  font-family: "filson-soft", $font-family-sans-serif;
+  font-family: "roboto", $font-family-sans-serif;
   font-weight: 500;
 }
 
 %filson-soft-black {
-  font-family: "filson-soft", $font-family-sans-serif;
+  font-family: "roboto", $font-family-sans-serif;
   font-weight: 800;
 }
 
 %gibson-regular {
-  font-family: "canada-type-gibson", $font-family-sans-serif;
+  font-family: "acumin-pro", $font-family-sans-serif;
   font-weight: 400;
 }
 
+%acumin-medium {
+  font-family: "acumin-pro", $font-family-sans-serif;
+  font-weight: 500;
+}
+
 %gibson-semibold {
-  font-family: "canada-type-gibson", $font-family-sans-serif;
+  font-family: "acumin-pro", $font-family-sans-serif;
   font-weight: 600;
+}
+
+%acumin-bold {
+  font-family: "acumin-pro", $font-family-sans-serif;
+  font-weight: 700;
 }
 
 /*
