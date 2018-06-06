@@ -2,11 +2,29 @@ from django.contrib import messages
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.text import wrap
-from django.views.generic import FormView
+from django.views.generic import FormView, ListView
 from django_messages.models import Message
 
 from av_account.utils import FullRequiredMixin
 from av_messages.forms import CPAMessageComposeForm, AvUserMessageComposeForm
+
+# override django_messages views to use our class based views for consistent permissions mixins
+
+
+class MessageInboxView(FullRequiredMixin, ListView):
+    template_name = 'django_messages/inbox.html'
+    context_object_name = 'message_list'
+    
+    def get_queryset(self):
+        return Message.objects.inbox_for(self.request.user)
+
+
+class MessageTrashView(FullRequiredMixin, ListView):
+    template_name = 'django_messages/trash.html'
+    context_object_name = 'message_list'
+    
+    def get_queryset(self):
+        return Message.objects.trash_for(self.request.user)
 
 
 class MessageView(FormView):
