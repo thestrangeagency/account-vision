@@ -2,9 +2,9 @@
 font placeholders
  */
 
-%roboto-book {
+%roboto-regular {
   font-family: "roboto", $font-family-sans-serif;
-  font-weight: 300;
+  font-weight: 400;
 }
 
 %roboto-medium {
@@ -12,9 +12,9 @@ font placeholders
   font-weight: 500;
 }
 
-%roboto-black {
+%roboto-bold {
   font-family: "roboto", $font-family-sans-serif;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 %acumin-regular {
@@ -65,7 +65,7 @@ headers
 
 .h1,
 .h2 {
-  @extend %roboto-black;
+  @extend %roboto-bold;
 
   line-height: 1;
   text-transform: uppercase;
