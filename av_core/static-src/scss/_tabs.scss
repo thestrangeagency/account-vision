@@ -20,5 +20,10 @@
     background-color: $dull-blue;
     color: $lighter-blue;
     font-size: 0.875rem;
+
+    &:hover,
+    &.active {
+      color: $pale-yellow;
+    }
   }
 }

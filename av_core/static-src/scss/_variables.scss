@@ -4,11 +4,12 @@ $light-blue: #68ADCF;
 $lighter-blue: #BBFAFF;
 $lightest-blue: #DEFFFE;
 $dull-blue: #5A95B3;
+$bg-blue: #4A7D94;
 $pale-yellow: #FBFFDB;
 
+// old
 $dark-green: #359e5a;
 $light-green: #f1f6eb;
-
 $dark-grey: #343a40;
 $kelly-green: #008c5e;
 $orange: #fb9e19;
@@ -24,7 +25,10 @@ $primary: $dull-blue;
 $warning: $orange;
 
 // overrides
-$body-color: #3a3a3a;
+$body-bg: $bg-blue;
+$body-color: $lightest-blue;
+
+// old
 $font-family-base: "filson-soft", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 $font-size-base: 0.9375rem;
 $font-weight-base: 300;
