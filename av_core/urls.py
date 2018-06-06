@@ -54,7 +54,7 @@ urlpatterns = [
     url(r'^account/', include('av_account.urls')),
     url(r'^profile/', include('av_profile.urls')),
     url(r'^clients/', include('av_clients.urls')),
-    url(r'^returns/', include('av_returns.urls')),
+    url(r'^years/', include('av_returns.urls')),
     url(r'^uploads/', include('av_uploads.urls')),
     url(r'^messages/', include('av_messages.urls')),
 
