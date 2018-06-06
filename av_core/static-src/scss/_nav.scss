@@ -69,7 +69,7 @@
 
   &:hover,
   &.active {
-    color: $green;
+    color: $dull-blue;
   }
 
   @include from-breakpoint(md) {

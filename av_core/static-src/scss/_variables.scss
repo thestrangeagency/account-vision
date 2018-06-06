@@ -2,7 +2,7 @@
 $blue: #274957;
 $pale-yellow: #FBFFDB;
 $light-blue: #68ADCF;
-$green: #5A95B3;
+$dull-blue: #5A95B3;
 
 $dark-green: #359e5a;
 $light-green: #f1f6eb;
@@ -13,12 +13,12 @@ $orange: #fb9e19;
 $red: #e94b1a;
 
 // global
-$btn-secondary-box-shadow: inset 0 0 0 1px $green;
+$btn-secondary-box-shadow: inset 0 0 0 1px $dull-blue;
 
 // bootstrap theme overrides
 $danger: $red;
 $link-color: $blue;
-$primary: $green;
+$primary: $dull-blue;
 $warning: $orange;
 
 // overrides

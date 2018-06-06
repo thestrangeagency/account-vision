@@ -69,15 +69,15 @@ a:hover {
 }
 
 .btn-secondary {
-  @include button-variant($white, $green, lighten($green, 42%), darken($green, 10%), lighten($green, 42%), darken($green, 12.5%));
+  @include button-variant($white, $dull-blue, lighten($dull-blue, 42%), darken($dull-blue, 10%), lighten($dull-blue, 42%), darken($dull-blue, 12.5%));
 
   @include hover {
     box-shadow: $btn-secondary-box-shadow;
-    color: darken($green, 10%);
+    color: darken($dull-blue, 10%);
   }
 
   box-shadow: $btn-secondary-box-shadow;
-  color: $green;
+  color: $dull-blue;
 
   &:focus,
   &.focus {
@@ -88,7 +88,7 @@ a:hover {
   &:not([disabled]):not(.disabled).active,
   .show > &.dropdown-toggle {
     box-shadow: $btn-secondary-box-shadow;
-    color: darken($green, 10%);
+    color: darken($dull-blue, 10%);
   }
 }
 
