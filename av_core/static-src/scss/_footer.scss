@@ -1,6 +1,6 @@
 .tx-footer {
-  background-color: $kelly-green;
-  color: $white;
+  background-color: $light-blue;
+  color: $lightest-blue;
   font-size: 0.875rem;
   padding: 1.5rem 0 0.5rem;
 
@@ -55,10 +55,10 @@
 .tx-footer__nav-link {
   @extend %gibson-regular;
 
-  color: $white;
+  color: $lighter-blue;
 
   &:hover {
-    color: $white;
+    color: $pale-yellow;
     text-decoration: none;
   }
 }
