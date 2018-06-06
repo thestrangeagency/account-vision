@@ -43,7 +43,7 @@
     z-index: 1;
 
     &.navbar-dark .navbar-nav .nav-link:hover {
-      color: $green-grey;
+      color: $light-blue;
     }
   }
 }
@@ -60,7 +60,7 @@
 .tx-nav-link {
   @extend %gibson-regular;
 
-  color: $white;
+  color: $pale-yellow;
   display: block;
   font-size: 0.875rem;
   letter-spacing: 2px;
