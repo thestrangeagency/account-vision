@@ -2,22 +2,22 @@
 font placeholders
  */
 
-%filson-soft-book {
+%roboto-book {
   font-family: "roboto", $font-family-sans-serif;
   font-weight: 300;
 }
 
-%filson-soft-medium {
+%roboto-medium {
   font-family: "roboto", $font-family-sans-serif;
   font-weight: 500;
 }
 
-%filson-soft-black {
+%roboto-black {
   font-family: "roboto", $font-family-sans-serif;
   font-weight: 800;
 }
 
-%gibson-regular {
+%acumin-regular {
   font-family: "acumin-pro", $font-family-sans-serif;
   font-weight: 400;
 }
@@ -27,7 +27,7 @@ font placeholders
   font-weight: 500;
 }
 
-%gibson-semibold {
+%acumin-semibold {
   font-family: "acumin-pro", $font-family-sans-serif;
   font-weight: 600;
 }
@@ -50,7 +50,7 @@ form
  */
 
 form {
-  @extend %gibson-regular;
+  @extend %acumin-regular;
 
   font-size: 1rem;
 }
@@ -65,7 +65,7 @@ headers
 
 .h1,
 .h2 {
-  @extend %filson-soft-black;
+  @extend %roboto-black;
 
   line-height: 1;
   text-transform: uppercase;
@@ -80,7 +80,7 @@ headers
 .h4,
 .h5,
 .h6 {
-  @extend %filson-soft-medium;
+  @extend %roboto-medium;
 
   line-height: 1.5;
 }
@@ -136,10 +136,10 @@ button
  */
 
 .btn {
-  @extend %gibson-semibold;
+  @extend %acumin-semibold;
 
   font-size: 1rem;
 }
 
-// gibson-semibold 14px seo headers
-// gibson-regular 14px seo links
+// acumin-semibold 14px seo headers
+// acumin-regular 14px seo links

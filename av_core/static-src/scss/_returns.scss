@@ -1,14 +1,14 @@
 .tx-returns__text {
-  @extend %gibson-regular;
+  @extend %acumin-regular;
 }
 
 .tx-returns__status-text {
-  @extend %gibson-regular;
+  @extend %acumin-regular;
   color: $dull-blue;
 }
 
 .tx-returns__icon-text {
-  @extend %gibson-semibold;
+  @extend %acumin-semibold;
   color: $dull-blue;
   text-transform: uppercase;
 }

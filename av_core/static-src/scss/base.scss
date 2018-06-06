@@ -50,7 +50,7 @@ a:hover {
 }
 
 .btn {
-  @extend %gibson-semibold;
+  @extend %acumin-semibold;
 
   border-radius: 0;
   letter-spacing: 2px;
@@ -104,7 +104,7 @@ a:hover {
 }
 
 .alert-danger {
-  @extend %gibson-semibold;
+  @extend %acumin-semibold;
 
   color: $red;
   font-size: 13px;
