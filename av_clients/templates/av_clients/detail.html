@@ -20,6 +20,9 @@
   <p>address1: {{ client.address.address1 }}</p>
   <p>etc.</p>
 
+  <p>routing: {{ client.bank.routing }}</p>
+  <p>account: {{ client.bank.account }}</p>
+
   <h3>Tax Years</h3>
   <ul>
     {% for return in client.return_set.all %}
