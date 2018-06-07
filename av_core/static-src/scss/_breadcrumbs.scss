@@ -20,9 +20,10 @@
 }
 
 .breadcrumb-item {
-  @extend %acumin-regular;
+  @extend %roboto-regular;
 
-  font-size: 0.775rem;
+  font-size: 0.75rem;
+  letter-spacing: .5px;
   padding: 3px 8px 3px 8px;
   background-color: $bg-blue;
 

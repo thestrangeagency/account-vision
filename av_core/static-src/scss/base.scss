@@ -41,6 +41,8 @@ a:hover {
 }
 
 .tx-body {
+  @extend %roboto-regular;
+
   display: flex;
   flex-direction: column;
 }
