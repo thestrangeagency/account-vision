@@ -19,9 +19,13 @@ $red: #e94b1a;
 $btn-secondary-box-shadow: inset 0 0 0 1px $dull-blue;
 
 // bootstrap theme overrides
+$primary: #efff00;
+$secondary: #70F3FF;
+
+// old
 $danger: $red;
 $link-color: $blue;
-$primary: $dull-blue;
+//$primary: $dull-blue;
 $warning: $orange;
 
 // overrides

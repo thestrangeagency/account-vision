@@ -41,6 +41,10 @@ font placeholders
 global
  */
 
+.text-muted {
+  color: $lighter-blue !important;
+}
+
 strong {
   font-weight: 800;
 }
@@ -61,7 +65,8 @@ form {
 
 .form-control {
   font-size: .875rem;
-
+  border: 0;
+  
   @include from-breakpoint(md) {
     font-size: 1rem;
   }

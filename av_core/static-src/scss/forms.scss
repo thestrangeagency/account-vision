@@ -1,5 +1,6 @@
 .asteriskField {
-  color: $red;
+  color: $secondary;
+  padding-left: .2rem;
 }
 
 .tx-form__link--forgot {
@@ -12,7 +13,7 @@
 }
 
 .tx-form-btn {
-  margin-top: 10px;
+  margin-top: 12px;
 }
 
 .invalid-feedback-checkbox{
@@ -34,7 +35,6 @@
 
 .tx-anchor-button {
   background: none!important;
-  color: inherit;
   border: none;
   padding: 0!important;
   font: inherit;
