@@ -7,6 +7,7 @@ $dull-blue: #5A95B3;
 $bg-blue: #4A7D94;
 $bg-cool: #FBFFF0;
 $pale-yellow: #FBFFDB;
+$yellow: #feffa0;
 
 // old
 $dark-green: #359e5a;
@@ -33,8 +34,10 @@ $warning: $orange;
 $body-bg: $bg-blue;
 $body-color: $lightest-blue;
 
+$font-family-base: Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+
 // old
-$font-family-base: "filson-soft", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+//$font-family-base: "filson-soft", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 $font-size-base: 0.9375rem;
 $font-weight-base: 300;
 $nav-tabs-border-width: 0;
