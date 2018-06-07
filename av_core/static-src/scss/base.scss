@@ -137,3 +137,16 @@ a:hover {
   background-color: $yellow;
   border-color: $yellow;
 }
+
+.table th {
+  border-bottom: 0;
+  border-top: 0;
+}
+
+table th:first-child {
+  border-radius: 10px 0 0 0;
+}
+
+table th:last-child {
+  border-radius: 0 10px 0 0;
+}
