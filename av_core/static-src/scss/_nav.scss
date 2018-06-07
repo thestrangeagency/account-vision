@@ -79,6 +79,9 @@
 
 .tx-navbar__account {
 
+  margin-top: 16px;
+  margin-bottom: 10px;
+
   @include from-breakpoint(md) {
     margin: 10px 0 0;
   }
