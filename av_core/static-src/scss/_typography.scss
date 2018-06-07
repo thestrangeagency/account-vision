@@ -59,7 +59,7 @@ form {
   font-size: .875rem;
 
   @include from-breakpoint(md) {
-    font-size: 1rem;
+    font-size: .9375rem;
   }
 }
 
@@ -70,7 +70,7 @@ form {
   color: $blue;
 
   @include from-breakpoint(md) {
-    font-size: 1rem;
+    font-size: .9375rem;
   }
 }
 
