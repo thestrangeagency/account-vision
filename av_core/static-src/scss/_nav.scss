@@ -17,7 +17,7 @@
   .navbar-nav {
 
     @include from-breakpoint(md) {
-      margin-top: 0.5rem;
+      margin-top: 10px;
 
       &.tx-navbar__nav--no-margin {
         margin: 0;
@@ -50,11 +50,7 @@
 
 .navbar__logo {
   flex: 0 1 auto;
-  height: 60px;
-
-  @include from-breakpoint(md) {
-    height: 76px;
-  }
+  height: 64px;
 }
 
 .tx-nav-link {
@@ -84,7 +80,7 @@
 .tx-navbar__account {
 
   @include from-breakpoint(md) {
-    margin: 0.5rem 0 0;
+    margin: 10px 0 0;
   }
 }
 

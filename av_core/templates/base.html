@@ -24,7 +24,7 @@
 </head>
 <body class={% block body_styles %}tx-body{% endblock body_styles %}>
 {% block header %}
-  <nav class="{% block nav_styles %}{% endblock nav_styles %} navbar navbar-dark navbar-expand-md pt-md-1 pb-md-0">
+  <nav class="{% block nav_styles %}{% endblock nav_styles %} navbar navbar-dark navbar-expand-md pt-1 pb-0">
     <div class="navbar__logo-wrapper d-flex justify-content-between">
       <a href="{% url 'home' %}">
         <img src="{%  static  "svg/logo.svg"  %}" alt="logo" class="navbar__logo" width="228" height="76" />
@@ -46,26 +46,14 @@
         {% endfor %}
 
       </ul>
-      {% if user.is_authenticated %}
-        <div class="tx-navbar__account tx-navbar__account--signed-in">
-        <img src="{%  static  "svg/icon-user-white.svg"  %}" alt="logo" class="tx-navbar__account-icon" width="30" height="30" />
-        <span class="tx-navbar__account-username">
-              Hi,
-          {% if user.first_name %}
-            {{ user.first_name }}
-          {% else %}
-            {{ user.email|upper }}
-          {% endif %}
-            </span>
-      {% else %}
-        <div class="tx-navbar__account">
-      {% endif %}
-      {% get_menu "NAV_MENU_RIGHT" as right_menu %}
-      {% for item in right_menu %}
-        <a class="tx-nav-link {% if user.is_authenticated %}tx-nav-link--no-padding{% endif %}" href="{{ item.url }}">{{ item.name }}</a>
-      {% endfor %}
+
+      <div class="tx-navbar__account">
+        {% get_menu "NAV_MENU_RIGHT" as right_menu %}
+        {% for item in right_menu %}
+          <a class="tx-nav-link {% if user.is_authenticated %}tx-nav-link--no-padding{% endif %}" href="{{ item.url }}">{{ item.name }}</a>
+        {% endfor %}
       </div>
-      </div>
+    </div>
   </nav>
 {% endblock header %}
 
