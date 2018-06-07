@@ -160,10 +160,19 @@ a:hover {
   border-top: 0;
 }
 
+.table .thead-light th {
+  color: $blue;
+  font-weight: normal;
+}
+
 table th:first-child {
   border-radius: 10px 0 0 0;
 }
 
 table th:last-child {
   border-radius: 0 10px 0 0;
+}
+
+.card {
+  background-color: $blue;
 }
