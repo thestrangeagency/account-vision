@@ -53,16 +53,29 @@ a:hover {
   @extend %acumin-semibold;
 
   letter-spacing: 1px;
-  padding: 10px 30px;
+  padding: 8px 28px;
   text-transform: uppercase;
 }
 
-.btn-primary,
-.btn-warning {
+.btn-primary {
   color: $bg-blue;
+
+  @include hover {
+    background-color: #ffeb00;
+    border-color: #ffeb00;
+  }
 
   &:hover {
     color: $bg-blue;
+  }
+}
+
+.btn-warning,
+.btn-danger {
+  color: $pale-yellow;
+
+  &:hover {
+    color: $yellow;
   }
 }
 
