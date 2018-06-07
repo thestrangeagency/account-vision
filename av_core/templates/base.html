@@ -59,7 +59,7 @@
 
 <main class="main" role="main">
   <div class="container">
-    {% block render_breadcrumbs %}{% render_breadcrumbs %}{% endblock render_breadcrumbs %}
+    {% block render_breadcrumbs %}{% render_breadcrumbs "django_bootstrap_breadcrumbs/bootstrap4.html" %}{% endblock render_breadcrumbs %}
     {% block tabs %}{% endblock tabs %}
     {%  block messages %}
       {% if messages %}
