@@ -238,7 +238,7 @@ export default class UploadManager extends React.Component {
         {!frozen &&
         <Dropzone
           activeClassName=""
-          className="upload-manager__dropzone p-5 my-5"
+          className="upload-manager__dropzone p-5 my-4"
           disablePreview
           disabledClassName=""
           disabled={numUploadsInProgress > 0}
