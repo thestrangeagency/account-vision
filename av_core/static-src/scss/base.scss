@@ -148,6 +148,10 @@ a:hover {
   background-color: $bg-cool;
   color: $blue;
   border-color: $bg-blue;
+
+  a {
+    color: $bg-blue;
+  }
 }
 
 .list-group-item-action {
