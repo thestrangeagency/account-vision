@@ -237,10 +237,10 @@ export default class UploadManager extends React.Component {
         )}
         {!frozen &&
         <Dropzone
-          activeClassName="bg-light"
-          className="dropzone p-5 my-5 border"
+          activeClassName=""
+          className="upload-manager__dropzone p-5 my-5"
           disablePreview
-          disabledClassName="bg-light"
+          disabledClassName=""
           disabled={numUploadsInProgress > 0}
           onDrop={this.onDroppedFiles}
         >
