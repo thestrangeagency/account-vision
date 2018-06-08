@@ -161,8 +161,6 @@ export default class CustomExpenseManager extends React.Component {
       frozen,
     } = this.props;
 
-    const iconSize = 48;
-
     return (
       <div>
         {expenses && expenses.length === 0 && !frozen &&
@@ -182,7 +180,7 @@ export default class CustomExpenseManager extends React.Component {
                           onClick={() => this.onClickEdit(index)}
                           type="button"
                         >
-                          <img src="/static/svg/icon_note.svg" width={iconSize} height={iconSize} alt="note" />
+                          <i className="far fa-sticky-note fa-lg" />
                         </button>
                       </span>
                     }
@@ -195,14 +193,14 @@ export default class CustomExpenseManager extends React.Component {
                       onClick={() => this.onClickEdit(index)}
                       type="button"
                     >
-                      <img src="/static/svg/icon_edit.svg" width={iconSize} height={iconSize} alt="edit" />
+                      <i className="far fa-edit fa-lg" />
                     </button>
                     <button
-                      className="expense-manager__expense__button"
+                      className="expense-manager__expense__button_danger"
                       onClick={() => this.onClickDelete(index)}
                       type="button"
                     >
-                      <img src="/static/svg/icon_delete.svg" width={iconSize} height={iconSize} alt="delete" />
+                      <i className="far fa-times-circle fa-lg" />
                     </button>
                   </span>
                   }
