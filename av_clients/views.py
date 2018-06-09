@@ -233,7 +233,9 @@ class ClientImportPreView(CPARequiredMixin, FormView):
             messages.error(self.request, 'Nothing to preview.')
             return context
 
-        context['name'] = file_name
+        # this can be helpful in debugging
+        # context['name'] = file_name
+
         context['users'] = generate_users(file_name, self.request)
 
         if len(context['users']) == 0:
