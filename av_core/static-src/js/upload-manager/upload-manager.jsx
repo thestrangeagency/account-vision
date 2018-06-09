@@ -278,9 +278,10 @@ export default class UploadManager extends React.Component {
 UploadManager.propTypes = {
   year: PropTypes.string.isRequired,
   target: PropTypes.string,
-  frozen: PropTypes.bool.isRequired,
+  frozen: PropTypes.bool,
 };
 
 UploadManager.defaultProps = {
   target: null,
+  frozen: false,
 };
