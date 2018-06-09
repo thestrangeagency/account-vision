@@ -19,19 +19,44 @@
     <div class="container">
       <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link {% if request.get_full_path == expenses %}active{% endif %}" href="{{ expenses }} ">Expenses</a>
+          <a class="nav-link {% if request.get_full_path == expenses %}active{% endif %}" href="{{ expenses }} ">
+            <div class="tx-nav-icon">
+              <i class="far fa-credit-card"></i>
+              <span>Expenses</span>
+            </div>
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if request.get_full_path == uploads %}active{% endif %}" href="{{ uploads }} ">Uploads</a>
+          <a class="nav-link {% if request.get_full_path == uploads %}active{% endif %}" href="{{ uploads }} ">
+            <div class="tx-nav-icon">
+              <i class="far fa-file"></i>
+              <span>Uploads</span>
+            </div>
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if request.get_full_path == spouse %}active{% endif %}" href="{{ spouse }} ">Spouse</a>
+          <a class="nav-link {% if request.get_full_path == spouse %}active{% endif %}" href="{{ spouse }} ">
+            <div class="tx-nav-icon">
+              <i class="fas fa-user-friends"></i>
+              <span>Spouse</span>
+            </div>
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if request.get_full_path == dependents %}active{% endif %}" href="{{ dependents }} ">Dependents</a>
+          <a class="nav-link {% if request.get_full_path == dependents %}active{% endif %}" href="{{ dependents }} ">
+            <div class="tx-nav-icon">
+              <i class="fas fa-users"></i>
+              <span>Dependents</span>
+            </div>
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if request.get_full_path == returns %}active{% endif %}" href="{{ returns }} ">Returns</a>
+          <a class="nav-link {% if request.get_full_path == returns %}active{% endif %}" href="{{ returns }} ">
+            <div class="tx-nav-icon">
+              <i class="far fa-file-alt"></i>
+              <span>Tax Return</span>
+            </div>
+          </a>
         </li>
       </ul>
     </div>
