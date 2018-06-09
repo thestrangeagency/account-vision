@@ -21,9 +21,38 @@
     color: $lighter-blue;
     font-size: 0.875rem;
 
+    padding: .5rem .4rem;
+    @include from-breakpoint(sm) {
+     padding: .5rem 1rem;
+    }
+
     &:hover,
     &.active {
       color: $active;
     }
+  }
+}
+
+.tx-nav-icon {
+  display: table-cell;
+  vertical-align: middle;
+
+  @include from-breakpoint(sm) {
+    display: inherit;
+  }
+}
+
+.tx-nav-icon span {
+  display: block;
+  font-size: .3rem;
+  @include from-breakpoint(sm) {
+    display: inline;
+    font-size: inherit;
+  }
+}
+
+.tx-nav-icon i {
+  @include from-breakpoint(sm) {
+    display: none;
   }
 }
