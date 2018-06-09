@@ -189,3 +189,9 @@ table th:last-child {
 .card {
   background-color: $blue;
 }
+
+// errors on file upload for importing users were not showing up due to bootstrap default display: none
+// might be fixed in future crispy forms release, which is supposed to style file input better
+.invalid-feedback {
+  display: block;
+}
