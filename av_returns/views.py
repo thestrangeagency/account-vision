@@ -2,7 +2,7 @@ import datetime
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import TemplateView, FormView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
@@ -12,7 +12,6 @@ from av_returns.forms import SpouseForm, DependentsFormSet, DependentsFormSetHel
     EFileForm, FrozenDependentsFormSet, FrozenDependentsFormSetHelper, ReturnForm
 from av_returns.utils import FreezableFormView
 from av_uploads.models import S3File
-from av_uploads.utils import get_s3_url
 from .models import Return, Dependent
 
 
@@ -95,7 +94,7 @@ class DownloadsView(ClientRequiredMixin, TemplateView):
         year = self.kwargs['year']
         files = S3File.objects.filter(target_user=self.request.user, tax_return__year=year)
         for file in files:
-            file.url = get_s3_url(file)
+            file.url = reverse('upload-url', args=[file.id])
         context['downloads'] = files
         context['year'] = year
         return context
