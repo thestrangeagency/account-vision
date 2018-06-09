@@ -19,24 +19,20 @@ export default function File({
         {date}
       </div>
       { !frozen &&
-      <span>
+      <div>
         <button
           type="button"
-          className="file-upload__edit-button px-2"
+          className="px-2 far fa-edit fa-lg file-upload__button"
           aria-label="Edit"
           onClick={onClickEdit}
-        >
-          <i className="far fa-edit fa-lg" />
-        </button>
+        />
         <button
-          className="expense-manager__expense__button text-danger"
+          className="far fa-times-circle fa-lg text-danger file-upload__button"
           aria-label="Remove"
           onClick={onClickDelete}
           type="button"
-        >
-          <i className="far fa-times-circle fa-lg" />
-        </button>
-      </span>
+        />
+      </div>
       }
     </div>
   );

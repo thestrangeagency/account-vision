@@ -2,10 +2,11 @@
   flex: 1;
 }
 
-.file-upload__edit-button {
+.file-upload__button {
   background-color: transparent;
   border: none;
   cursor: pointer;
   padding: 0.125rem 0.5rem 0.1875rem;
   color: $blue;
+  line-height: 1.1rem !important;
 }
