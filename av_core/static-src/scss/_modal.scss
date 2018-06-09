@@ -3,11 +3,9 @@
 }
 
 .tx-modal-link {
-  color: $dull-blue;
   text-decoration: underline;
 
   &:hover {
-    color: $dull-blue;
     text-decoration: underline;
   }
 }
@@ -23,7 +21,8 @@
 }
 
 .tx-modal__content {
-  background-color: $white;
+  background-color: $bg-blue;
+  border-radius: 4px;
   padding: 2rem 1rem;
 
   @include from-breakpoint(md) {
