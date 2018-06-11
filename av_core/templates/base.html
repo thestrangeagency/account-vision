@@ -28,7 +28,11 @@
   <nav class="{% block nav_styles %}{% endblock nav_styles %} navbar navbar-dark navbar-expand-md pt-0 pb-0">
     <div class="navbar__logo-wrapper d-flex justify-content-between">
       <a href="{% url 'home' %}">
-        <img src="{%  static  "svg/logo.svg"  %}" alt="logo" class="navbar__logo" width="228" height="76" />
+        {% if user.is_authenticated and not user.is_cpa %}
+          <div class="tx-nav-firm">{{ user.firm }}</div>
+        {% else %}
+          <img src="{% static "svg/logo.svg" %}" alt="logo" class="navbar__logo"/>
+        {% endif %}
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>

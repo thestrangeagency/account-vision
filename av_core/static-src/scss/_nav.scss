@@ -26,6 +26,12 @@
   }
 }
 
+.tx-nav-firm {
+  height: 64px;
+  font-size: 2rem;
+  padding-top: 10px;
+}
+
 .nav-item {
   @include from-breakpoint(lg) {
     margin: 0 8px;
@@ -51,6 +57,7 @@
 .navbar__logo {
   flex: 0 1 auto;
   height: 64px;
+  width: 228px;
 }
 
 .tx-nav-link {
