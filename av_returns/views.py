@@ -93,8 +93,6 @@ class DownloadsView(ClientRequiredMixin, TemplateView):
         context = super(DownloadsView, self).get_context_data(**kwargs)
         year = self.kwargs['year']
         files = S3File.objects.filter(target_user=self.request.user, tax_return__year=year)
-        for file in files:
-            file.url = reverse('upload-url', args=[file.id])
         context['downloads'] = files
         context['year'] = year
         return context
