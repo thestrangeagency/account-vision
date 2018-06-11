@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.dispatch import receiver
+from django.urls import reverse_lazy
 
 from av_returns.models import Return
 from av_utils.utils import TimeStampedModel
@@ -19,6 +20,9 @@ class S3File(TimeStampedModel):
     s3_region = models.TextField()
     description = models.TextField(blank=True)
     uploaded = models.BooleanField(default=False)
+    
+    def url(self):
+        return reverse_lazy('upload-url', args=[self.id])
 
 
 @receiver(models.signals.post_delete, sender=S3File)

@@ -1,6 +1,6 @@
 {% extends 'av_clients/detail.html' %}
 
-{% load django_bootstrap_breadcrumbs %}
+{% load django_bootstrap_breadcrumbs table %}
 
 {% block breadcrumbs %}
   {{ block.super }}
@@ -73,16 +73,14 @@
   {% url 'client-detail-return-returns' client.email year as returns %}
 
   {% if request.get_full_path == expenses %}
-    <p>Expenses:</p>
-    {% for expense in object_list %}
-      <p>{{ expense.type }} {{ expense.amount }} {{ expense.notes }}</p>
-    {% endfor %}
-
+    <h1>Expenses:</h1>
+    {% table object_list fields %}
     <button class="btn btn-primary">Export</button>
   {% endif %}
 
   {% if request.get_full_path == uploads %}
-    <p>Uploads:</p>
+    <h1>Uploads:</h1>
+    {% table object_list fields %}
     {% for file in object_list %}
       <p>{{ file.name }} {{ file.size }} {{ file.type }} <a
               href="{% url 'upload-url' file.id %}">{% url 'upload-url' file.id %}</a></p>
@@ -90,21 +88,21 @@
   {% endif %}
 
   {% if request.get_full_path == spouse %}
-    <p>Spouse:</p>
+    <h1>Spouse:</h1>
     {% for person in return.spouse_set.all %}
       <p>{{ person.first_name }} {{ person.last_name }}</p>
     {% endfor %}
   {% endif %}
 
   {% if request.get_full_path == dependents %}
-    <p>Dependents:</p>
+    <h1>Dependents:</h1>
     {% for person in return.dependent_set.all %}
       <p>{{ person.first_name }} {{ person.last_name }}</p>
     {% endfor %}
   {% endif %}
 
   {% if request.get_full_path == returns %}
-    <p>Upload prepared returns and vouchers</p>
+    <h1>Upload prepared returns and vouchers</h1>
     <div id="upload-manager" data-year="{{ year }}" data-target="{{ client.id }}"></div>
   {% endif %}
 
