@@ -11,7 +11,7 @@
 {% block content %}
   {{ block.super }}
 
-  <h1>{{ client.first_name }} {{ client.last_name }}</h1>
+  <h1 class="h1">{{ client.first_name }} {{ client.last_name }}</h1>
   <h2>{{ client.email }}</h2>
 
   <p>dob: {{ client.dob|date:'SHORT_DATE_FORMAT' }}</p>

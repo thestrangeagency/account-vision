@@ -73,32 +73,32 @@
   {% url 'client-detail-return-returns' client.email year as returns %}
 
   {% if request.get_full_path == expenses %}
-    <h1>Expenses</h1>
+    <h1 class="h1">Expenses</h1>
     {% table object_list fields %}
     <button class="btn btn-primary">Export</button>
   {% endif %}
 
   {% if request.get_full_path == uploads %}
-    <h1>Uploads</h1>
+    <h1 class="h1">Uploads</h1>
     {% table object_list fields %}
   {% endif %}
 
   {% if request.get_full_path == spouse %}
-    <h1>Spouse</h1>
+    <h1 class="h1">Spouse</h1>
     {% for person in return.spouse_set.all %}
       <p>{{ person.first_name }} {{ person.last_name }}</p>
     {% endfor %}
   {% endif %}
 
   {% if request.get_full_path == dependents %}
-    <h1>Dependents</h1>
+    <h1 class="h1">Dependents</h1>
     {% for person in return.dependent_set.all %}
       <p>{{ person.first_name }} {{ person.last_name }}</p>
     {% endfor %}
   {% endif %}
 
   {% if request.get_full_path == returns %}
-    <h1>Upload prepared returns and vouchers</h1>
+    <h1 class="h1">Upload prepared returns and vouchers</h1>
     <div id="upload-manager" data-year="{{ year }}" data-target="{{ client.id }}"></div>
   {% endif %}
 

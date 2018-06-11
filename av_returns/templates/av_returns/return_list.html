@@ -8,16 +8,18 @@
 {% endblock %}
 
 {% block content %}
-  <h1>Tax Years</h1>
+  <h1 class="h1">Tax Years</h1>
   <ul>
     {% for return in object_list %}
-      <li><h3 class="h3"><a href="{% url 'return' return.year %}">Your {{ return.year }} return</a></h3></li>
+      <li>
+        <h4 class="h4"><a href="{% url 'return' return.year %}"><i class="far fa-file-alt pr-2"></i> {{ return.year }}</a></h4>
+      </li>
       {% empty %}
       <li>No years yet.</li>
     {% endfor %}
   </ul>
 
-  <p class="col-md-8">
+  <p class="col-md-8 pt-4">
     <a class="btn btn-primary" href="{% url 'new' %}">Create a new tax year</a>
   </p>
 
