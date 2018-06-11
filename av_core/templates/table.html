@@ -10,7 +10,11 @@
   {% for row in rows %}
     <tr>
       {% for col in row %}
-        <td>{{ col }}</td>
+        {% if col.url %}
+          <td><a href="{{ col.url }}">{{ col.name }}</a></td>
+        {% else %}
+          <td>{{ col }}</td>
+        {% endif %}
       {% endfor %}
     </tr>
   {% endfor %}

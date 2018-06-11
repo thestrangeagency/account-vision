@@ -81,10 +81,6 @@
   {% if request.get_full_path == uploads %}
     <h1>Uploads:</h1>
     {% table object_list fields %}
-    {% for file in object_list %}
-      <p>{{ file.name }} {{ file.size }} {{ file.type }} <a
-              href="{% url 'upload-url' file.id %}">{% url 'upload-url' file.id %}</a></p>
-    {% endfor %}
   {% endif %}
 
   {% if request.get_full_path == spouse %}

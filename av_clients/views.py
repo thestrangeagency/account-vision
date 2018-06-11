@@ -77,13 +77,12 @@ class ClientDetailUploadsView(AbstractClientReturnView, AbstractTableView):
     fields = [
         {
             'name': 'Name',
-            'field': 'url',
-            'link': True,
+            'field': 'name',
+            'link': 'url',
         },
         {
             'name': 'Size',
             'field': 'size',
-            'link': False,
         },
         {
             'name': 'Type',
@@ -97,11 +96,20 @@ class ClientDetailUploadsView(AbstractClientReturnView, AbstractTableView):
 
 class ClientDetailExpensesView(AbstractClientReturnView, AbstractTableView):
     model = Expense
-    fields = {
-        'type': 'Type',
-        'amount': 'Amount',
-        'notes': 'Notes'
-    }
+    fields = [
+        {
+            'name': 'Type',
+            'field': 'type',
+        },
+        {
+            'name': 'Amount',
+            'field': 'amount',
+        },
+        {
+            'name': 'Notes',
+            'field': 'notes',
+        },
+    ]
     
     def get_queryset(self):
         return Expense.objects.filter(tax_return=self.get_return())
