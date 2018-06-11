@@ -196,7 +196,7 @@ export default class CustomExpenseManager extends React.Component {
                       <i className="far fa-edit fa-lg" />
                     </button>
                     <button
-                      className="expense-manager__expense__button text-danger"
+                      className="expense-manager__expense__button text-danger-light"
                       onClick={() => this.onClickDelete(index)}
                       type="button"
                     >

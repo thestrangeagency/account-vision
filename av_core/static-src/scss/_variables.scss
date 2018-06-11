@@ -26,7 +26,8 @@ $btn-secondary-box-shadow: inset 0 0 0 1px $dull-blue;
 $primary: #efff00;
 $secondary: #70F3FF;
 $warning: #ff7524;
-$danger: #ff97a9; // greater danger: $danger: #ff6a71; but it's hard to read when used on type, e.g. form errors
+$danger: #ff97a9; // less saturated for blue backgrounds
+$danger-bg-light: #ff6a71; // more saturated danger for light backgrounds
 
 $link-color: $pale-yellow;
 

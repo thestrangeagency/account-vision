@@ -27,7 +27,7 @@ export default function File({
           onClick={onClickEdit}
         />
         <button
-          className="far fa-times-circle fa-lg text-danger file-upload__button"
+          className="far fa-times-circle fa-lg text-danger-light file-upload__button"
           aria-label="Remove"
           onClick={onClickDelete}
           type="button"
