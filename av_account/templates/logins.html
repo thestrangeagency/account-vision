@@ -5,12 +5,26 @@
 
   <h1 class="h1">Recent Logins</h1>
 
-  <ul>
+  <p>You are accessing this site from IP Address: {{ ip }}</p>
+  <p>If you don't recognize any activity below, you should <a href="{% url 'password_change' %}">change your password</a> immediately as a precaution.</p>
+
+  <table class="table dictionary-table mt-4">
+    <thead class="thead-light">
+      <tr>
+        <th>Date</th>
+        <th>IP Address</th>
+      </tr>
+    </thead>
+    <tbody>
+
     {% for login in object_list %}
-      <li>{{ login.date_created }} EST from IP address {{ login.ip }}</li>
-    {% empty %}
-      <li>No logins yet.</li>
+      <tr>
+        <td>{{ login.date_created }} EST</td>
+        <td>{{ login.ip }}</td>
+      </tr>
     {% endfor %}
-  </ul>
+
+    </tbody>
+  </table>
 
 {% endblock %}
