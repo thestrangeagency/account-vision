@@ -1,4 +1,5 @@
 // colors
+
 $blue: #274957;
 $light-blue: #68ADCF;
 $lighter-blue: #BBFAFF;
@@ -12,18 +13,12 @@ $yellow: #feffa0;
 
 $active: $bg-cool;
 
-// old
-$dark-green: #359e5a;
-$light-green: #f1f6eb;
-$dark-grey: #343a40;
-$kelly-green: #008c5e;
-$orange: #fb9e19;
-$red: #e94b1a;
-
 // global
+
 $btn-secondary-box-shadow: inset 0 0 0 1px $dull-blue;
 
-// bootstrap theme overrides
+// bootstrap overrides
+
 $primary: #efff00;
 $secondary: #70F3FF;
 $warning: #ff7524;
@@ -32,25 +27,13 @@ $danger-bg-light: #ff6a71; // more saturated danger for light backgrounds
 
 $link-color: $pale-yellow;
 
-// old
-//$danger: $red;
-//$link-color: $blue;
-//$primary: $dull-blue;
-//$warning: $orange;
-
-// overrides
 $body-bg: $bg-blue;
 $body-color: $lightest-blue;
 
-$font-family-base: Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-
-// old
-//$font-family-base: "filson-soft", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-$font-size-base: 0.9375rem;
-$font-weight-base: 300;
-$nav-tabs-border-width: 0;
-$nav-tabs-link-active-color: $body-color;
-$light: #fefefe;
 $table-head-bg: $light-blue;
 $table-border-color: $light-blue;
-$table-head-color: $dark-grey;
+$table-head-color: $blue;
+
+$nav-tabs-border-width: 0;
+
+$font-family-base: Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
