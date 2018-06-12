@@ -85,15 +85,60 @@
 
   {% if request.get_full_path == spouse %}
     <h1 class="h1">Spouse</h1>
-    {% for person in return.spouse_set.all %}
-      <p>{{ person.first_name }} {{ person.last_name }}</p>
-    {% endfor %}
+    <table class="table dictionary-table mt-4">
+      <tbody>
+      <tr>
+        <td>Last name</td>
+        <td>{{ return.spouse.last_name }}</td>
+      </tr>
+      <tr>
+        <td>First name</td>
+        <td>{{ return.spouse.first_name }}</td>
+      </tr>
+      <tr>
+        <td>Middle name</td>
+        <td>{{ return.spouse.middle_name }}</td>
+      </tr>
+      <tr>
+        <td>Date of birth</td>
+        <td>{{ return.spouse.dob|date:'SHORT_DATE_FORMAT' }}</td>
+      </tr>
+      <tr>
+        <td>Social Security Number</td>
+        <td>{{ return.spouse.ssn }}</td>
+      </tr>
+      </tbody>
+    </table>
   {% endif %}
 
   {% if request.get_full_path == dependents %}
     <h1 class="h1">Dependents</h1>
     {% for person in return.dependent_set.all %}
-      <p>{{ person.first_name }} {{ person.last_name }}</p>
+      <h4 class="h4">{{ person.relationship }}</h4>
+      <table class="table dictionary-table mt-4">
+        <tbody>
+        <tr>
+          <td>Last name</td>
+          <td>{{ person.last_name }}</td>
+        </tr>
+        <tr>
+          <td>First name</td>
+          <td>{{ person.first_name }}</td>
+        </tr>
+        <tr>
+          <td>Middle name</td>
+          <td>{{ person.middle_name }}</td>
+        </tr>
+        <tr>
+          <td>Date of birth</td>
+          <td>{{ person.dob|date:'SHORT_DATE_FORMAT' }}</td>
+        </tr>
+        <tr>
+          <td>Social Security Number</td>
+          <td>{{ person.ssn }}</td>
+        </tr>
+        </tbody>
+      </table>
     {% endfor %}
   {% endif %}
 
