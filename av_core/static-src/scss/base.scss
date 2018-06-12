@@ -195,6 +195,10 @@ table th:last-child {
   border-radius: 0 10px 0 0;
 }
 
+.dictionary-table tr td:first-child {
+  width: 50%;
+}
+
 .card {
   background-color: $blue;
 }
@@ -203,4 +207,8 @@ table th:last-child {
 // might be fixed in future crispy forms release, which is supposed to style file input better
 .invalid-feedback {
   display: block;
+}
+
+.tx-big-list {
+  font-size: 1.5rem;
 }
