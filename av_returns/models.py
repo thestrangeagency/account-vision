@@ -62,15 +62,11 @@ class Return(TimeStampedModel):
         return [(r, r) for r in range(now - 10, now + 1)]
 
 
-@receiver(models.signals.post_save, sender=Return)
-def return_post_save(sender, instance, created, *args, **kwargs):
-    if created:
-        common_expenses = CommonExpenses(tax_return=instance)
-        common_expenses.save()
-
-
 class Spouse(Person):
     tax_return = models.OneToOneField(Return, null=True, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return 'spouse named ' + super(Spouse, self).__str__()
 
 
 class Dependent(Person):
@@ -119,6 +115,9 @@ class Dependent(Person):
     )
     relationship = models.CharField(max_length=32, choices=RELATIONSHIP_CHOICES, null=True)
 
+    def __str__(self):
+        return 'dependent named ' + super(Dependent, self).__str__()
+
 
 class Expense(TimeStampedModel):
     tax_return = models.ForeignKey(Return, null=True, on_delete=models.CASCADE)
@@ -130,7 +129,7 @@ class Expense(TimeStampedModel):
         unique_together = ("tax_return", "type")
 
     def __str__(self):
-        return "{} {}".format(self.type, self.amount)
+        return "expense {} for ${}".format(self.type, self.amount)
 
 
 class CommonExpenses(TimeStampedModel):

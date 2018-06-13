@@ -9,3 +9,4 @@ class AccountAppConfig(AppConfig):
         registry.register(self.get_model('AvUser'))
         registry.register(self.get_model('Address'))
         registry.register(self.get_model('Bank'))
+        import av_account.signals

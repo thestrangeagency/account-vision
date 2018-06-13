@@ -24,6 +24,9 @@ class S3File(TimeStampedModel):
     def url(self):
         return reverse_lazy('upload-url', args=[self.id])
 
+    def __str__(self):
+        return 'file named {}'.format(self.name)
+
 
 @receiver(models.signals.post_delete, sender=S3File)
 def s3file_post_delete(sender, instance, *args, **kwargs):

@@ -1,8 +1,6 @@
 import string
-
 from secrets import choice
 
-from actstream import action
 from django.contrib.auth import hashers
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import BaseUserManager
@@ -10,16 +8,15 @@ from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.signals import user_logged_in
 from django.core.validators import RegexValidator
 from django.db import models
-from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from ipware.ip import get_ip
 from phonenumber_field.modelfields import PhoneNumberField
 from twilio.rest import Client
 
-from av_emails.utils import send_verification_email, send_invitation_email
 from av_core import logger
 from av_core import settings
+from av_emails.utils import send_verification_email, send_invitation_email
 from av_utils.utils import TimeStampedModel
 
 
@@ -43,6 +40,13 @@ class Person(TimeStampedModel):
 
     class Meta:
         abstract = True
+
+    def get_full_name(self):
+        full_name = '%s %s' % (self.first_name, self.last_name)
+        return full_name.strip()
+
+    def __str__(self):
+        return self.get_full_name()
 
 
 class AvUserManager(BaseUserManager):
@@ -128,10 +132,6 @@ class AvUser(Person, AbstractBaseUser, PermissionsMixin):
         super().clean()
         self.email = self.__class__.objects.normalize_email(self.email)
 
-    def get_full_name(self):
-        full_name = '%s %s' % (self.first_name, self.last_name)
-        return full_name.strip()
-
     def get_full_name_and_email(self):
         full_name = '%s %s %s' % (self.first_name, self.last_name, self.email)
         return full_name.strip()
@@ -175,9 +175,6 @@ class AvUser(Person, AbstractBaseUser, PermissionsMixin):
     def send_invitation_code(self):
         self.generate_email_code()
         send_invitation_email(self)
-
-    def __str__(self):
-        return self.email
 
 
 class Address(models.Model):
@@ -251,6 +248,9 @@ class Address(models.Model):
 
     zip = models.CharField("ZIP / Postal code", max_length=10)
 
+    def __str__(self):
+        return 'address at {}'.format(self.address1)
+
 
 class SecurityQuestion(models.Model):
     question = models.CharField(max_length=128)
@@ -308,8 +308,3 @@ class Bank(models.Model):
 
     def __str__(self):
         return 'account ending in {}'.format(self.account[-4:])
-
-
-@receiver(models.signals.post_save, sender=Bank)
-def return_post_save(sender, instance, created, *args, **kwargs):
-    action.send(instance.user, verb='updated', target=instance)
