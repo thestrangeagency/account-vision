@@ -66,7 +66,7 @@ class Return(TimeStampedModel):
 class Spouse(Person):
     tax_return = models.OneToOneField(Return, null=True, on_delete=models.CASCADE)
 
-    def stream_name(self):
+    def get_stream_name(self):
         return 'spouse named {}'.format(self.__str__())
 
     def get_stream_url(self):
@@ -119,7 +119,7 @@ class Dependent(Person):
     )
     relationship = models.CharField(max_length=32, choices=RELATIONSHIP_CHOICES, null=True)
 
-    def stream_name(self):
+    def get_stream_name(self):
         return 'dependent named {}'.format(self.__str__())
 
     def get_stream_url(self):
@@ -138,7 +138,7 @@ class Expense(TimeStampedModel):
     def __str__(self):
         return "{} ${}".format(self.type, self.amount)
 
-    def stream_name(self):
+    def get_stream_name(self):
         return "expense {} for ${}".format(self.type, self.amount)
 
     def get_stream_url(self):

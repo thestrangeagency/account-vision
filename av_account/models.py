@@ -180,7 +180,7 @@ class AvUser(Person, AbstractBaseUser, PermissionsMixin):
     def get_absolute_url(self):
         return reverse_lazy('client-detail', args=[self.email])
 
-    def stream_name(self):
+    def get_stream_name(self):
         return self.__str__()
 
     def get_stream_url(self):
@@ -258,7 +258,7 @@ class Address(models.Model):
 
     zip = models.CharField("ZIP / Postal code", max_length=10)
 
-    def stream_name(self):
+    def get_stream_name(self):
         return 'address at {}'.format(self.address1)
 
     def get_stream_url(self):
@@ -319,7 +319,7 @@ class Bank(models.Model):
     routing = models.CharField("Routing number", max_length=9, blank=False, null=True, help_text="9 digits")
     account = models.CharField("Account number", max_length=16, blank=False, null=True, help_text="Usually 10 to 12 digits")
 
-    def stream_name(self):
+    def get_stream_name(self):
         return 'account ending in {}'.format(self.account[-4:])
 
     def get_stream_url(self):

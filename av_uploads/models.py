@@ -25,7 +25,7 @@ class S3File(TimeStampedModel):
     def __str__(self):
         return self.name
 
-    def stream_name(self):
+    def get_stream_name(self):
         return 'file named {}'.format(self.__str__())
 
     def get_stream_url(self):
