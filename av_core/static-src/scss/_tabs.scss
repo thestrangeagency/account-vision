@@ -1,5 +1,5 @@
 .tx-nav-tabs {
-  background-color: $green-grey;
+  background-color: $light-blue;
   margin: 0;
 }
 
@@ -15,10 +15,44 @@
   }
 
   .nav-link {
-    @extend %gibson-regular;
+    @extend %acumin-regular;
 
-    background-color: $green;
-    color: $white;
+    background-color: $dull-blue;
+    color: $lighter-blue;
     font-size: 0.875rem;
+
+    padding: .5rem .4rem;
+    @include from-breakpoint(sm) {
+     padding: .5rem 1rem;
+    }
+
+    &:hover,
+    &.active {
+      color: $active;
+    }
+  }
+}
+
+.tx-nav-icon {
+  display: table-cell;
+  vertical-align: middle;
+
+  @include from-breakpoint(sm) {
+    display: inherit;
+  }
+}
+
+.tx-nav-icon span {
+  display: block;
+  font-size: .3rem;
+  @include from-breakpoint(sm) {
+    display: inline;
+    font-size: inherit;
+  }
+}
+
+.tx-nav-icon i {
+  @include from-breakpoint(sm) {
+    display: none;
   }
 }

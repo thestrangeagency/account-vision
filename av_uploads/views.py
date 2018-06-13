@@ -260,10 +260,15 @@ class DownloadsViewSet(viewsets.ModelViewSet):
 
 
 class UploadUrlView(FullRequiredMixin, View):
-
+    """
+    generates s3 urls and corresponding redirects
+    ensures that files are only accessible by their creator, their target, or by cpa whose firm matches the file user's
+    """
     def get(self, request, id):
         file = get_object_or_404(S3File, id=id)
-        if file.user == self.request.user or (self.request.user.is_cpa and file.user.firm == self.request.user.firm):
+        if file.user == self.request.user \
+                or file.target_user == self.request.user \
+                or (self.request.user.is_cpa and file.user.firm == self.request.user.firm):
             url = get_s3_url(file)
             return HttpResponseRedirect(url)
         else:

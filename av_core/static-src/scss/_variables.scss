@@ -1,31 +1,39 @@
 // colors
-$blue: #005f80;
-$green: #99c253;
-$dark-green: #359e5a;
-$light-green: #f1f6eb;
-$green-grey: #ddebcd;
-$dark-grey: #343a40;
-$kelly-green: #008c5e;
-$orange: #fb9e19;
-$red: #e94b1a;
+
+$blue: #274957;
+$light-blue: #68ADCF;
+$lighter-blue: #BBFAFF;
+$lightest-blue: #DEFFFE;
+$dull-blue: #5A95B3;
+$bg-blue: #4A7D94;
+$bg-cool: #FBFFF0;
+$bg-cold: #f0ffff;
+$pale-yellow: #FBFFDB;
+$yellow: #feffa0;
+
+$active: $bg-cool;
 
 // global
-$btn-secondary-box-shadow: inset 0 0 0 1px $green;
 
-// bootstrap theme overrides
-$danger: $red;
-$link-color: $blue;
-$primary: $green;
-$warning: $orange;
+$btn-secondary-box-shadow: inset 0 0 0 1px $dull-blue;
 
-// overrides
-$body-color: #3a3a3a;
-$font-family-base: "filson-soft", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-$font-size-base: 0.9375rem;
-$font-weight-base: 300;
+// bootstrap overrides
+
+$primary: #efff00;
+$secondary: #70F3FF;
+$warning: #ff7524;
+$danger: #ff97a9; // less saturated for blue backgrounds
+$danger-bg-light: #ff6a71; // more saturated danger for light backgrounds
+
+$link-color: $pale-yellow;
+
+$body-bg: $bg-blue;
+$body-color: $lightest-blue;
+
+$table-head-bg: $light-blue;
+$table-border-color: $light-blue;
+$table-head-color: $blue;
+
 $nav-tabs-border-width: 0;
-$nav-tabs-link-active-color: $body-color;
-$light: #fefefe;
-$table-head-bg: $green-grey;
-$table-border-color: $green-grey;
-$table-head-color: $dark-grey;
+
+$font-family-base: Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";

@@ -89,6 +89,7 @@ INSTALLED_APPS = [
     'django_agent_trust',
 
     # account vision
+    'av_core',
     'av_account',
     'av_profile',
     'av_contact',

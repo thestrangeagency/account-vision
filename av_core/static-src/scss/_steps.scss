@@ -1,5 +1,5 @@
 .tx-steps {
-  background-color: $green-grey;
+  background-color: $light-blue;
   padding: 2.625rem 0 0;
 
   @include from-breakpoint(lg) {
@@ -35,7 +35,7 @@
 }
 
 .tx-step-label {
-  @extend %filson-soft-book;
+  @extend %roboto-regular;
 
   background-color: $blue;
   border-radius: 50%;
@@ -51,7 +51,7 @@
 }
 
 .tx-step-label__number {
-  @extend %filson-soft-medium;
+  @extend %roboto-medium;
 
   font-size: 38px;
   line-height: 1;

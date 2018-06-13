@@ -16,6 +16,7 @@ from tempfile import NamedTemporaryFile
 
 from av_account.models import AvUser
 from av_account.utils import CPARequiredMixin
+from av_core.views import AbstractTableView
 from av_returns.models import Return, Expense
 from av_uploads.models import S3File
 from av_utils.utils import get_object_or_None
@@ -71,15 +72,44 @@ class ClientDetailReturnView(AbstractClientReturnView, DetailView):
         return self.get_return()
 
 
-class ClientDetailUploadsView(AbstractClientReturnView, ListView):
+class ClientDetailUploadsView(AbstractClientReturnView, AbstractTableView):
     model = S3File
+    fields = [
+        {
+            'name': 'Name',
+            'field': 'name',
+            'link': 'url',
+        },
+        {
+            'name': 'Size',
+            'field': 'size',
+        },
+        {
+            'name': 'Type',
+            'field': 'type',
+        },
+    ]
     
     def get_queryset(self):
         return S3File.objects.filter(user=self.get_user(), tax_return=self.get_return(), uploaded=True)
 
 
-class ClientDetailExpensesView(AbstractClientReturnView, ListView):
+class ClientDetailExpensesView(AbstractClientReturnView, AbstractTableView):
     model = Expense
+    fields = [
+        {
+            'name': 'Type',
+            'field': 'type',
+        },
+        {
+            'name': 'Amount',
+            'field': 'amount',
+        },
+        {
+            'name': 'Notes',
+            'field': 'notes',
+        },
+    ]
     
     def get_queryset(self):
         return Expense.objects.filter(tax_return=self.get_return())
@@ -233,7 +263,9 @@ class ClientImportPreView(CPARequiredMixin, FormView):
             messages.error(self.request, 'Nothing to preview.')
             return context
 
-        context['name'] = file_name
+        # this can be helpful in debugging
+        # context['name'] = file_name
+
         context['users'] = generate_users(file_name, self.request)
 
         if len(context['users']) == 0:

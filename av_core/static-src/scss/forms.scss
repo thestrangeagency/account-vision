@@ -1,18 +1,10 @@
 .asteriskField {
-  color: $red;
-}
-
-.tx-form__link--forgot {
-  color: $green;
-  font-size: 0.875rem;
-
-  &:hover {
-    color: $green;
-  }
+  color: $secondary;
+  padding-left: .2rem;
 }
 
 .tx-form-btn {
-  margin-top: 10px;
+  margin-top: 12px;
 }
 
 .invalid-feedback-checkbox{
@@ -34,7 +26,6 @@
 
 .tx-anchor-button {
   background: none!important;
-  color: inherit;
   border: none;
   padding: 0!important;
   font: inherit;

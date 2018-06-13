@@ -1,8 +1,7 @@
 /*
 typekit font styles
  */
-@import url("https://use.typekit.net/ipj1ldu.css");
-
+@import url("https://use.typekit.net/tmq0jyv.css");
 /*
 bootstrap variable overrides come before bootstrap
  */
@@ -31,6 +30,7 @@ the rest of our styles
 @import './security';
 @import '../js/shared/file/file';
 @import '../js/expense-manager/custom-expense-manager';
+@import '../js/upload-manager/upload-manager';
 @import '../js/shared/step-form/step-form-step/step-form-step';
 
 /*
@@ -41,7 +41,13 @@ a:hover {
   text-decoration: none;
 }
 
+.text-danger-light {
+  color: $danger-bg-light;
+}
+
 .tx-body {
+  @extend %roboto-regular;
+
   display: flex;
   flex-direction: column;
 }
@@ -51,33 +57,45 @@ a:hover {
 }
 
 .btn {
-  @extend %gibson-semibold;
+  @extend %acumin-semibold;
 
-  border-radius: 0;
-  letter-spacing: 2px;
-  padding: 10px 30px;
+  letter-spacing: 1px;
+  padding: 8px 28px;
   text-transform: uppercase;
 }
 
-.btn-primary,
-.btn-warning {
-  color: $light;
+.btn-primary {
+  color: $bg-blue;
+
+  @include hover {
+    background-color: #ffeb00;
+    border-color: #ffeb00;
+  }
 
   &:hover {
-    color: $light;
+    color: $bg-blue;
+  }
+}
+
+.btn-warning,
+.btn-danger {
+  color: $pale-yellow;
+
+  &:hover {
+    color: $yellow;
   }
 }
 
 .btn-secondary {
-  @include button-variant($white, $green, lighten($green, 42%), darken($green, 10%), lighten($green, 42%), darken($green, 12.5%));
+  @include button-variant($white, $dull-blue, lighten($dull-blue, 42%), darken($dull-blue, 10%), lighten($dull-blue, 42%), darken($dull-blue, 12.5%));
 
   @include hover {
     box-shadow: $btn-secondary-box-shadow;
-    color: darken($green, 10%);
+    color: darken($dull-blue, 10%);
   }
 
   box-shadow: $btn-secondary-box-shadow;
-  color: $green;
+  color: $dull-blue;
 
   &:focus,
   &.focus {
@@ -88,7 +106,7 @@ a:hover {
   &:not([disabled]):not(.disabled).active,
   .show > &.dropdown-toggle {
     box-shadow: $btn-secondary-box-shadow;
-    color: darken($green, 10%);
+    color: darken($dull-blue, 10%);
   }
 }
 
@@ -100,12 +118,16 @@ a:hover {
   }
 }
 
-.alert-info {
+ul {
+  list-style: none;
+}
+
+  .alert-info {
   color: $blue;
 }
 
 .alert-danger {
-  @extend %gibson-semibold;
+  @extend %acumin-semibold;
 
   color: $red;
   font-size: 13px;
@@ -130,6 +152,62 @@ a:hover {
   text-overflow: ellipsis;
 }
 
+.list-group-item {
+  background-color: $bg-cool;
+  color: $blue;
+  border-color: $bg-blue;
+
+  a {
+    color: $bg-blue;
+  }
+}
+
 .list-group-item-action {
   color: $blue;
+}
+
+.alert-success {
+  color: $blue;
+  background-color: $yellow;
+  border-color: $yellow;
+}
+
+.table {
+  font-size: .9375rem;
+  text-align: left;
+}
+
+.table th {
+  border-bottom: 0;
+  border-top: 0;
+}
+
+.table .thead-light th {
+  font-weight: normal;
+}
+
+.table th:first-child {
+  border-radius: 10px 0 0 0;
+}
+
+.table th:last-child {
+  border-radius: 0 10px 0 0;
+}
+
+.dictionary-table tr td:first-child {
+  width: 50%;
+}
+
+.card {
+  background-color: $blue;
+}
+
+// errors on file upload for importing users were not showing up due to bootstrap default display: none
+// might be fixed in future crispy forms release, which is supposed to style file input better
+.invalid-feedback {
+  display: block;
+}
+
+.tx-big-list {
+  font-size: 1.5rem;
 }

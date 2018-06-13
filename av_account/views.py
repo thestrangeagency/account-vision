@@ -14,6 +14,7 @@ from django.views.generic import ListView
 from django.views.generic import TemplateView
 from django_agent_trust import revoke_other_agents
 from django_agent_trust import trust_agent
+from ipware.ip import get_ip
 
 from av_account.models import AvUser
 from av_account.models import UserLogin
@@ -229,6 +230,11 @@ class LoginsView(FullRequiredMixin, ListView):
     model = UserLogin
     template_name = 'logins.html'
     queryset = UserLogin.objects.order_by('-date_created')[:10]
+
+    def get_context_data(self, **kwargs):
+        context = super(LoginsView, self).get_context_data(**kwargs)
+        context['ip'] = get_ip(self.request)
+        return context
 
 
 class EditView(FullRequiredMixin, FormView):

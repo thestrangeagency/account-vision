@@ -1,13 +1,13 @@
 .tx-footer {
-  background-color: $kelly-green;
-  color: $white;
+  background-color: $light-blue;
+  color: $lightest-blue;
   font-size: 0.875rem;
   padding: 1.5rem 0 0.5rem;
 
   @include from-breakpoint(md) {
     align-items: center;
     display: flex;
-    height: 80px;
+    height: 64px;
     padding: 0;
   }
 }
@@ -53,12 +53,12 @@
 }
 
 .tx-footer__nav-link {
-  @extend %gibson-regular;
+  @extend %acumin-regular;
 
-  color: $white;
+  color: $lighter-blue;
 
   &:hover {
-    color: $white;
+    color: $pale-yellow;
     text-decoration: none;
   }
 }

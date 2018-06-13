@@ -1,0 +1,22 @@
+<table class="table mt-4">
+  <thead class="thead-light">
+  <tr>
+    {% for head in headers %}
+      <th>{{ head }}</th>
+    {% endfor %}
+  </tr>
+  </thead>
+  <tbody>
+  {% for row in rows %}
+    <tr>
+      {% for col in row %}
+        {% if col.url %}
+          <td><a href="{{ col.url }}">{{ col.name }}</a></td>
+        {% else %}
+          <td>{{ col }}</td>
+        {% endif %}
+      {% endfor %}
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>

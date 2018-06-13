@@ -17,13 +17,19 @@
   .navbar-nav {
 
     @include from-breakpoint(md) {
-      margin-top: 0.5rem;
+      margin-top: 10px;
 
       &.tx-navbar__nav--no-margin {
         margin: 0;
       }
     }
   }
+}
+
+.tx-nav-firm {
+  height: 64px;
+  font-size: 2rem;
+  padding-top: 10px;
 }
 
 .nav-item {
@@ -43,33 +49,30 @@
     z-index: 1;
 
     &.navbar-dark .navbar-nav .nav-link:hover {
-      color: $green-grey;
+      color: $light-blue;
     }
   }
 }
 
 .navbar__logo {
   flex: 0 1 auto;
-  height: 60px;
-
-  @include from-breakpoint(md) {
-    height: 76px;
-  }
+  height: 64px;
+  width: 228px;
 }
 
 .tx-nav-link {
-  @extend %gibson-regular;
+  @extend %acumin-medium;
 
-  color: $white;
+  color: $lightest-blue;
   display: block;
   font-size: 0.875rem;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
   padding: 0.5rem 0;
   text-transform: uppercase;
 
   &:hover,
   &.active {
-    color: $green;
+    color: $active;
   }
 
   @include from-breakpoint(md) {
@@ -83,8 +86,11 @@
 
 .tx-navbar__account {
 
+  margin-top: 16px;
+  margin-bottom: 10px;
+
   @include from-breakpoint(md) {
-    margin: 0.5rem 0 0;
+    margin: 10px 0 0;
   }
 }
 

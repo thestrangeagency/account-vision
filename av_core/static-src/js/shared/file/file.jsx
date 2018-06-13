@@ -4,11 +4,10 @@ import PropTypes from 'prop-types';
 export default function File({
   date, name, onClickDelete, onClickEdit, size, frozen,
 }) {
-  const iconSize = 48;
   return (
     <div className="file-upload d-flex align-items-center">
-      <div className="md-mx-2">
-        <img src="/static/svg/icon_file.svg" width={iconSize} height={iconSize} alt="file" />
+      <div className="mx-2">
+        <i className="far fa-file fa-lg" />
       </div>
       <div className="md-mx-2 truncate w-25">
         {name}
@@ -20,24 +19,20 @@ export default function File({
         {date}
       </div>
       { !frozen &&
-      <span>
+      <div>
         <button
           type="button"
-          className="file-upload__edit-button px-2"
+          className="px-2 far fa-edit fa-lg file-upload__button"
           aria-label="Edit"
           onClick={onClickEdit}
-        >
-          <img src="/static/svg/icon_edit.svg" width={iconSize} height={iconSize} alt="edit" />
-        </button>
+        />
         <button
-          type="button"
-          className="close px-2"
+          className="far fa-times-circle fa-lg text-danger-light file-upload__button"
           aria-label="Remove"
           onClick={onClickDelete}
-        >
-          <img src="/static/svg/icon_delete.svg" width={iconSize} height={iconSize} alt="delete" />
-        </button>
-      </span>
+          type="button"
+        />
+      </div>
       }
     </div>
   );

@@ -1,6 +1,6 @@
 {% extends 'av_clients/detail.html' %}
 
-{% load django_bootstrap_breadcrumbs %}
+{% load django_bootstrap_breadcrumbs table %}
 
 {% block breadcrumbs %}
   {{ block.super }}
@@ -19,19 +19,44 @@
     <div class="container">
       <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link {% if request.get_full_path == expenses %}active{% endif %}" href="{{ expenses }} ">Expenses</a>
+          <a class="nav-link {% if request.get_full_path == expenses %}active{% endif %}" href="{{ expenses }} ">
+            <div class="tx-nav-icon">
+              <i class="far fa-credit-card"></i>
+              <span>Expenses</span>
+            </div>
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if request.get_full_path == uploads %}active{% endif %}" href="{{ uploads }} ">Uploads</a>
+          <a class="nav-link {% if request.get_full_path == uploads %}active{% endif %}" href="{{ uploads }} ">
+            <div class="tx-nav-icon">
+              <i class="far fa-file"></i>
+              <span>Uploads</span>
+            </div>
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if request.get_full_path == spouse %}active{% endif %}" href="{{ spouse }} ">Spouse</a>
+          <a class="nav-link {% if request.get_full_path == spouse %}active{% endif %}" href="{{ spouse }} ">
+            <div class="tx-nav-icon">
+              <i class="fas fa-user-friends"></i>
+              <span>Spouse</span>
+            </div>
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if request.get_full_path == dependents %}active{% endif %}" href="{{ dependents }} ">Dependents</a>
+          <a class="nav-link {% if request.get_full_path == dependents %}active{% endif %}" href="{{ dependents }} ">
+            <div class="tx-nav-icon">
+              <i class="fas fa-users"></i>
+              <span>Dependents</span>
+            </div>
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if request.get_full_path == returns %}active{% endif %}" href="{{ returns }} ">Returns</a>
+          <a class="nav-link {% if request.get_full_path == returns %}active{% endif %}" href="{{ returns }} ">
+            <div class="tx-nav-icon">
+              <i class="far fa-file-alt"></i>
+              <span>Tax Return</span>
+            </div>
+          </a>
         </li>
       </ul>
     </div>
@@ -48,38 +73,77 @@
   {% url 'client-detail-return-returns' client.email year as returns %}
 
   {% if request.get_full_path == expenses %}
-    <p>Expenses:</p>
-    {% for expense in object_list %}
-      <p>{{ expense.type }} {{ expense.amount }} {{ expense.notes }}</p>
-    {% endfor %}
-
+    <h1 class="h1">Expenses</h1>
+    {% table object_list fields %}
     <button class="btn btn-primary">Export</button>
   {% endif %}
 
   {% if request.get_full_path == uploads %}
-    <p>Uploads:</p>
-    {% for file in object_list %}
-      <p>{{ file.name }} {{ file.size }} {{ file.type }} <a
-              href="{% url 'upload-url' file.id %}">{% url 'upload-url' file.id %}</a></p>
-    {% endfor %}
+    <h1 class="h1">Uploads</h1>
+    {% table object_list fields %}
   {% endif %}
 
   {% if request.get_full_path == spouse %}
-    <p>Spouse:</p>
-    {% for person in return.spouse_set.all %}
-      <p>{{ person.first_name }} {{ person.last_name }}</p>
-    {% endfor %}
+    <h1 class="h1">Spouse</h1>
+    <table class="table dictionary-table mt-4">
+      <tbody>
+      <tr>
+        <td>Last name</td>
+        <td>{{ return.spouse.last_name }}</td>
+      </tr>
+      <tr>
+        <td>First name</td>
+        <td>{{ return.spouse.first_name }}</td>
+      </tr>
+      <tr>
+        <td>Middle name</td>
+        <td>{{ return.spouse.middle_name }}</td>
+      </tr>
+      <tr>
+        <td>Date of birth</td>
+        <td>{{ return.spouse.dob|date:'SHORT_DATE_FORMAT' }}</td>
+      </tr>
+      <tr>
+        <td>Social Security Number</td>
+        <td>{{ return.spouse.ssn }}</td>
+      </tr>
+      </tbody>
+    </table>
   {% endif %}
 
   {% if request.get_full_path == dependents %}
-    <p>Dependents:</p>
+    <h1 class="h1">Dependents</h1>
     {% for person in return.dependent_set.all %}
-      <p>{{ person.first_name }} {{ person.last_name }}</p>
+      <h4 class="h4">{{ person.relationship }}</h4>
+      <table class="table dictionary-table mt-4">
+        <tbody>
+        <tr>
+          <td>Last name</td>
+          <td>{{ person.last_name }}</td>
+        </tr>
+        <tr>
+          <td>First name</td>
+          <td>{{ person.first_name }}</td>
+        </tr>
+        <tr>
+          <td>Middle name</td>
+          <td>{{ person.middle_name }}</td>
+        </tr>
+        <tr>
+          <td>Date of birth</td>
+          <td>{{ person.dob|date:'SHORT_DATE_FORMAT' }}</td>
+        </tr>
+        <tr>
+          <td>Social Security Number</td>
+          <td>{{ person.ssn }}</td>
+        </tr>
+        </tbody>
+      </table>
     {% endfor %}
   {% endif %}
 
   {% if request.get_full_path == returns %}
-    <p>Upload prepared returns and vouchers</p>
+    <h1 class="h1">Upload prepared returns and vouchers</h1>
     <div id="upload-manager" data-year="{{ year }}" data-target="{{ client.id }}"></div>
   {% endif %}
 

@@ -2,34 +2,48 @@
 font placeholders
  */
 
-%filson-soft-book {
-  font-family: "filson-soft", $font-family-sans-serif;
-  font-weight: 300;
-}
-
-%filson-soft-medium {
-  font-family: "filson-soft", $font-family-sans-serif;
-  font-weight: 500;
-}
-
-%filson-soft-black {
-  font-family: "filson-soft", $font-family-sans-serif;
-  font-weight: 800;
-}
-
-%gibson-regular {
-  font-family: "canada-type-gibson", $font-family-sans-serif;
+%roboto-regular {
+  font-family: "roboto", $font-family-sans-serif;
   font-weight: 400;
 }
 
-%gibson-semibold {
-  font-family: "canada-type-gibson", $font-family-sans-serif;
+%roboto-medium {
+  font-family: "roboto", $font-family-sans-serif;
+  font-weight: 500;
+}
+
+%roboto-bold {
+  font-family: "roboto", $font-family-sans-serif;
+  font-weight: 700;
+}
+
+%acumin-regular {
+  font-family: "acumin-pro", $font-family-sans-serif;
+  font-weight: 400;
+}
+
+%acumin-medium {
+  font-family: "acumin-pro", $font-family-sans-serif;
+  font-weight: 500;
+}
+
+%acumin-semibold {
+  font-family: "acumin-pro", $font-family-sans-serif;
   font-weight: 600;
+}
+
+%acumin-bold {
+  font-family: "acumin-pro", $font-family-sans-serif;
+  font-weight: 700;
 }
 
 /*
 global
  */
+
+.text-muted {
+  color: $lighter-blue !important;
+}
 
 strong {
   font-weight: 800;
@@ -40,13 +54,24 @@ form
  */
 
 form {
-  @extend %gibson-regular;
+  @extend %acumin-regular;
 
-  font-size: 1rem;
+  font-size: .875rem;
+
+  @include from-breakpoint(md) {
+    font-size: .9375rem;
+  }
 }
 
 .form-control {
-  font-size: 1.125rem;
+  font-size: .875rem;
+  border: 0;
+  background-color: $bg-cool;
+  color: $blue;
+
+  @include from-breakpoint(md) {
+    font-size: .9375rem;
+  }
 }
 
 /*
@@ -55,10 +80,17 @@ headers
 
 .h1,
 .h2 {
-  @extend %filson-soft-black;
+  @extend %roboto-medium;
 
-  line-height: 1;
-  text-transform: uppercase;
+  line-height: 1.5;
+  text-transform: none;
+  font-size: 1.5rem;
+  margin-bottom: .5rem;
+
+  @include from-breakpoint(lg) {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
 
   &--soft {
     font-weight: 500;
@@ -70,17 +102,9 @@ headers
 .h4,
 .h5,
 .h6 {
-  @extend %filson-soft-medium;
+  @extend %roboto-medium;
 
   line-height: 1.5;
-}
-
-.h1 {
-  font-size: 1.875rem;
-
-  @include from-breakpoint(lg) {
-    font-size: 4.5625rem;
-  }
 }
 
 .h2 {
@@ -100,11 +124,12 @@ headers
 }
 
 .h4 {
-  font-size: 1.125rem;
-
-  @include from-breakpoint(lg) {
-    font-size: 1.375rem;
-  }
+  font-size: .8rem;
+  text-transform: uppercase;
+  color: $blue;
+  background-color: $bg-cold;
+  border-radius: 4px;
+  padding: 4px 8px;
 }
 
 .h5 {
@@ -126,10 +151,10 @@ button
  */
 
 .btn {
-  @extend %gibson-semibold;
+  @extend %acumin-semibold;
 
   font-size: 1rem;
 }
 
-// gibson-semibold 14px seo headers
-// gibson-regular 14px seo links
+// acumin-semibold 14px seo headers
+// acumin-regular 14px seo links

@@ -3,11 +3,9 @@
 }
 
 .tx-modal-link {
-  color: $green;
   text-decoration: underline;
 
   &:hover {
-    color: $green;
     text-decoration: underline;
   }
 }
@@ -23,7 +21,8 @@
 }
 
 .tx-modal__content {
-  background-color: $white;
+  background-color: $bg-blue;
+  border-radius: 4px;
   padding: 2rem 1rem;
 
   @include from-breakpoint(md) {
@@ -38,4 +37,38 @@
 
 .tx-modal__form-container {
   margin: 2.5rem 0 0;
+}
+
+// js modal
+
+.modal-content {
+  background-color: $bg-blue;
+}
+
+.modal-footer {
+  border-top-color: $light-blue;
+}
+
+// something ate these bootstrap styles, so adding them here
+
+.input-group-addon {
+    padding: .375rem .75rem;
+    margin-bottom: 0;
+    font-size: .9375rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    text-align: center;
+    background-color: $bg-cool;
+    border: none;
+    border-radius: .25rem;
+}
+
+.input-group-addon:not(:last-child) {
+    border-right: 0;
+}
+
+.input-group .form-control:not(:last-child), .input-group-addon:not(:last-child), .input-group-btn:not(:last-child)>.btn, .input-group-btn:not(:last-child)>.btn-group>.btn, .input-group-btn:not(:last-child)>.dropdown-toggle, .input-group-btn:not(:first-child)>.btn:not(:last-child):not(.dropdown-toggle), .input-group-btn:not(:first-child)>.btn-group:not(:last-child)>.btn {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
 }

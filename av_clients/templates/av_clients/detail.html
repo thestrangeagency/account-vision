@@ -11,25 +11,78 @@
 {% block content %}
   {{ block.super }}
 
-  <h1>{{ client.first_name }} {{ client.last_name }}</h1>
-  <h2>{{ client.email }}</h2>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm">
+        <h1 class="h1">{{ client.first_name }} {{ client.last_name }}</h1>
 
-  <p>dob: {{ client.dob|date:'SHORT_DATE_FORMAT' }}</p>
-  <p>ssn: {{ client.ssn }}</p>
+        <h4 class="h4">Identity</h4>
+        <table class="table dictionary-table mt-4">
+          <tbody>
+          <tr>
+            <td>Email address</td>
+            <td>{{ client.email }}</td>
+          </tr>
+          <tr>
+            <td>Date of birth</td>
+            <td>{{ client.dob|date:'SHORT_DATE_FORMAT' }}</td>
+          </tr>
+          <tr>
+            <td>Social Security Number</td>
+            <td>{{ client.ssn }}</td>
+          </tr>
+          </tbody>
+        </table>
 
-  <p>address1: {{ client.address.address1 }}</p>
-  <p>etc.</p>
+        <h4 class="h4">Address</h4>
+        <table class="table dictionary-table mt-4">
+          <tbody>
+          <tr>
+            <td>Address</td>
+            <td>{{ client.address.address1 }}</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>{{ client.address.address2 }}</td>
+          </tr>
+          <tr>
+            <td>City</td>
+            <td>{{ client.address.city }}</td>
+          </tr>
+          <tr>
+            <td>State</td>
+            <td>{{ client.address.state }}</td>
+          </tr>
+          <tr>
+            <td>Zip</td>
+            <td>{{ client.address.zip }}</td>
+          </tr>
+          </tbody>
+        </table>
 
-  <p>routing: {{ client.bank.routing }}</p>
-  <p>account: {{ client.bank.account }}</p>
-
-  <h3>Tax Years</h3>
-  <ul>
-    {% for return in client.return_set.all %}
-      <li><a href="{% url 'client-detail-return' client.email return.year %}">{{ return.year }}</a></li>
-    {% endfor %}
-  </ul>
-
-  <button class="btn btn-primary">Export</button>
-
+        <h4 class="h4">Banking</h4>
+        <table class="table dictionary-table mt-4">
+          <tbody>
+          <tr>
+            <td>Routing number</td>
+            <td>{{ client.bank.routing }}</td>
+          </tr>
+          <tr>
+            <td>Account Number</td>
+            <td>{{ client.bank.account }}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-sm">
+        <h1 class="h1">&nbsp;</h1>
+        <h4 class="h4">Tax Years</h4>
+        <ul>
+          {% for return in client.return_set.all %}
+            <li><a href="{% url 'client-detail-return' client.email return.year %}"><i class="far fa-file-alt pr-2"></i> {{ return.year }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
 {% endblock %}
