@@ -14,4 +14,4 @@ def s3file_post_save(sender, instance, created, *args, **kwargs):
 @receiver(post_delete, sender=S3File)
 def s3file_post_delete(sender, instance, *args, **kwargs):
     delete_s3_object(instance)
-    action.send(instance.user, verb='deleted', target=instance)
+    action.send(instance.user, verb='deleted a file', target=instance)
