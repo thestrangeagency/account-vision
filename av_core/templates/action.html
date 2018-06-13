@@ -6,6 +6,10 @@
 
 {{ action.verb }}
 
+{% if action.verb == 'deleted' %}
+  a file
+{% endif %}
+
 {% if action.action_object %}
   {% if action.action_object.get_stream_url %}
     <a href="{{ action.action_object.get_stream_url }}">{{ action.action_object.get_stream_name }}</a>
