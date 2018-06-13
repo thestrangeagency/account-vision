@@ -1,0 +1,26 @@
+{% if action.actor.get_stream_url %}
+  <a href="{{ action.actor.get_stream_url }}">{{ action.actor.get_stream_name }}</a>
+{% else %}
+  {{ action.actor }}
+{% endif %}
+
+{{ action.verb }}
+
+{% if action.action_object %}
+  {% if action.action_object.get_stream_url %}
+    <a href="{{ action.action_object.get_stream_url }}">{{ action.action_object.get_stream_name }}</a>
+  {% else %}
+    {{ action.action_object }}
+  {% endif %}
+{% endif %}
+
+{% if action.action_object and action.target %}to{% endif %}
+{% if action.target %}
+  {% if action.target.get_stream_url %}
+    <a href="{{ action.target.get_stream_url }}">{{ action.target.get_stream_name }}</a>
+  {% else %}
+    {{ action.target }}
+  {% endif %}
+{% endif %}
+
+{{ action.timestamp|timesince }} ago

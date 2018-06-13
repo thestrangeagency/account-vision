@@ -1,0 +1,1 @@
+default_app_config = 'av_uploads.apps.UploadsAppConfig'

@@ -1,0 +1,1 @@
+default_app_config = 'av_returns.apps.ReturnsAppConfig'

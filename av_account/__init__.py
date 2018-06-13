@@ -1,0 +1,1 @@
+default_app_config = 'av_account.apps.AccountAppConfig'

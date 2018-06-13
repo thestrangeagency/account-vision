@@ -1,5 +1,4 @@
 import string
-
 from secrets import choice
 
 from django.contrib.auth import hashers
@@ -9,15 +8,16 @@ from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.signals import user_logged_in
 from django.core.validators import RegexValidator
 from django.db import models
+from django.urls import reverse_lazy, reverse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from ipware.ip import get_ip
 from phonenumber_field.modelfields import PhoneNumberField
 from twilio.rest import Client
 
-from av_emails.utils import send_verification_email, send_invitation_email
 from av_core import logger
 from av_core import settings
+from av_emails.utils import send_verification_email, send_invitation_email
 from av_utils.utils import TimeStampedModel
 
 
@@ -41,6 +41,13 @@ class Person(TimeStampedModel):
 
     class Meta:
         abstract = True
+
+    def get_full_name(self):
+        full_name = '%s %s' % (self.first_name, self.last_name)
+        return full_name.strip()
+
+    def __str__(self):
+        return self.get_full_name()
 
 
 class AvUserManager(BaseUserManager):
@@ -126,10 +133,6 @@ class AvUser(Person, AbstractBaseUser, PermissionsMixin):
         super().clean()
         self.email = self.__class__.objects.normalize_email(self.email)
 
-    def get_full_name(self):
-        full_name = '%s %s' % (self.first_name, self.last_name)
-        return full_name.strip()
-
     def get_full_name_and_email(self):
         full_name = '%s %s %s' % (self.first_name, self.last_name, self.email)
         return full_name.strip()
@@ -174,8 +177,14 @@ class AvUser(Person, AbstractBaseUser, PermissionsMixin):
         self.generate_email_code()
         send_invitation_email(self)
 
-    def __str__(self):
-        return self.email
+    def get_absolute_url(self):
+        return reverse_lazy('client-detail', args=[self.email])
+
+    def get_stream_name(self):
+        return self.__str__()
+
+    def get_stream_url(self):
+        return self.get_absolute_url()
 
 
 class Address(models.Model):
@@ -249,6 +258,12 @@ class Address(models.Model):
 
     zip = models.CharField("ZIP / Postal code", max_length=10)
 
+    def get_stream_name(self):
+        return 'address at {}'.format(self.address1)
+
+    def get_stream_url(self):
+        return reverse('client-detail', args=[self.user.email])
+
 
 class SecurityQuestion(models.Model):
     question = models.CharField(max_length=128)
@@ -303,3 +318,9 @@ class Bank(models.Model):
     user = models.OneToOneField(AvUser, on_delete=models.CASCADE)
     routing = models.CharField("Routing number", max_length=9, blank=False, null=True, help_text="9 digits")
     account = models.CharField("Account number", max_length=16, blank=False, null=True, help_text="Usually 10 to 12 digits")
+
+    def get_stream_name(self):
+        return 'account ending in {}'.format(self.account[-4:])
+
+    def get_stream_url(self):
+        return reverse('client-detail', args=[self.user.email])
