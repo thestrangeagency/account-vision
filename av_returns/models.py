@@ -3,6 +3,7 @@ from decimal import Decimal
 
 from django.db import models
 from django.dispatch import receiver
+from django.urls import reverse
 
 from av_account.models import Person, AvUser
 from av_utils.utils import TimeStampedModel
@@ -65,8 +66,11 @@ class Return(TimeStampedModel):
 class Spouse(Person):
     tax_return = models.OneToOneField(Return, null=True, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return 'spouse named ' + super(Spouse, self).__str__()
+    def stream_name(self):
+        return 'spouse named {}'.format(self.__str__())
+
+    def get_stream_url(self):
+        return reverse('client-detail-return-spouse', args=[self.tax_return.user.email, self.tax_return.year])
 
 
 class Dependent(Person):
@@ -115,8 +119,11 @@ class Dependent(Person):
     )
     relationship = models.CharField(max_length=32, choices=RELATIONSHIP_CHOICES, null=True)
 
-    def __str__(self):
-        return 'dependent named ' + super(Dependent, self).__str__()
+    def stream_name(self):
+        return 'dependent named {}'.format(self.__str__())
+
+    def get_stream_url(self):
+        return reverse('client-detail-return-dependents', args=[self.tax_return.user.email, self.tax_return.year])
 
 
 class Expense(TimeStampedModel):
@@ -129,7 +136,13 @@ class Expense(TimeStampedModel):
         unique_together = ("tax_return", "type")
 
     def __str__(self):
+        return "{} ${}".format(self.type, self.amount)
+
+    def stream_name(self):
         return "expense {} for ${}".format(self.type, self.amount)
+
+    def get_stream_url(self):
+        return reverse('client-detail-return-expenses', args=[self.tax_return.user.email, self.tax_return.year])
 
 
 class CommonExpenses(TimeStampedModel):

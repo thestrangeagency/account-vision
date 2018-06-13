@@ -1,5 +1,5 @@
-{% if action.actor.get_absolute_url %}
-  <a href="{{ action.actor.get_absolute_url }}">{{ action.actor }}</a>
+{% if action.actor.get_stream_url %}
+  <a href="{{ action.actor.get_stream_url }}">{{ action.actor.stream_name }}</a>
 {% else %}
   {{ action.actor }}
 {% endif %}
@@ -7,8 +7,8 @@
 {{ action.verb }}
 
 {% if action.action_object %}
-  {% if action.action_object.get_absolute_url %}
-    <a href="{{ action.action_object.get_absolute_url }}">{{ action.action_object }}</a>
+  {% if action.action_object.get_stream_url %}
+    <a href="{{ action.action_object.get_stream_url }}">{{ action.action_object.stream_name }}</a>
   {% else %}
     {{ action.action_object }}
   {% endif %}
@@ -16,8 +16,8 @@
 
 {% if action.action_object and action.target %}to{% endif %}
 {% if action.target %}
-  {% if action.target.get_absolute_url %}
-    <a href="{{ action.target.get_absolute_url }}">{{ action.target }}</a>
+  {% if action.target.get_stream_url %}
+    <a href="{{ action.target.get_stream_url }}">{{ action.target.stream_name }}</a>
   {% else %}
     {{ action.target }}
   {% endif %}

@@ -8,7 +8,7 @@ from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.signals import user_logged_in
 from django.core.validators import RegexValidator
 from django.db import models
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from ipware.ip import get_ip
@@ -180,6 +180,12 @@ class AvUser(Person, AbstractBaseUser, PermissionsMixin):
     def get_absolute_url(self):
         return reverse_lazy('client-detail', args=[self.email])
 
+    def stream_name(self):
+        return self.__str__()
+
+    def get_stream_url(self):
+        return self.get_absolute_url()
+
 
 class Address(models.Model):
     user = models.OneToOneField(AvUser, on_delete=models.CASCADE)
@@ -252,8 +258,11 @@ class Address(models.Model):
 
     zip = models.CharField("ZIP / Postal code", max_length=10)
 
-    def __str__(self):
+    def stream_name(self):
         return 'address at {}'.format(self.address1)
+
+    def get_stream_url(self):
+        return reverse('client-detail', args=[self.user.email])
 
 
 class SecurityQuestion(models.Model):
@@ -310,5 +319,8 @@ class Bank(models.Model):
     routing = models.CharField("Routing number", max_length=9, blank=False, null=True, help_text="9 digits")
     account = models.CharField("Account number", max_length=16, blank=False, null=True, help_text="Usually 10 to 12 digits")
 
-    def __str__(self):
+    def stream_name(self):
         return 'account ending in {}'.format(self.account[-4:])
+
+    def get_stream_url(self):
+        return reverse('client-detail', args=[self.user.email])
