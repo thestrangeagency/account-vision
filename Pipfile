@@ -26,6 +26,7 @@ stripe = "*"
 python-dotenv = "*"
 "psycopg2-binary" = "*"
 freezegun = "*"
+django-activity-stream = "*"
 
 [requires]
 python_version = "3.6"

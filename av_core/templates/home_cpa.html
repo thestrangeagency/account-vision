@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  Hi cpa!
+
+  <ul>
+    {% for action in actions %}
+      <li>{{ action }}</li>
+    {% endfor %}
+  </ul>
+
+{% endblock content %}

@@ -1,18 +1,34 @@
+from actstream.models import actor_stream
 from django.shortcuts import redirect
 from django.views.generic import TemplateView, ListView
+from django.views.generic.base import ContextMixin
+
+from av_account.models import AvUser
 
 
 class HomeView(TemplateView):
-    template_name = 'home.html'
-
-    def dispatch(self, request, *args, **kwargs):
+    
+    def get_template_names(self):
         if self.request.user.is_authenticated:
             if self.request.user.is_cpa:
-                return redirect('clients')
+                return ['home_cpa.html']
             else:
-                return redirect('returns')
+                return ['home_client.html']
         else:
-            return super(HomeView, self).dispatch(request, *args, **kwargs)
+            return ['home.html']
+    
+    def get_context_data(self, **kwargs):
+        context = super(HomeView, self).get_context_data(**kwargs)
+        actions = []
+        if self.request.user.is_authenticated:
+            if self.request.user.is_cpa:
+                users = AvUser.objects.filter(firm=self.request.user.firm, is_cpa=False)
+                for user in users:
+                    stream = actor_stream(user)
+                    for action in stream:
+                        actions.append(action)
+        context['actions'] = actions
+        return context
 
 
 class AbstractTableView(ListView):

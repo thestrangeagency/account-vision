@@ -2,6 +2,7 @@ import string
 
 from secrets import choice
 
+from actstream import action
 from django.contrib.auth import hashers
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import BaseUserManager
@@ -9,6 +10,7 @@ from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.signals import user_logged_in
 from django.core.validators import RegexValidator
 from django.db import models
+from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from ipware.ip import get_ip
@@ -303,3 +305,11 @@ class Bank(models.Model):
     user = models.OneToOneField(AvUser, on_delete=models.CASCADE)
     routing = models.CharField("Routing number", max_length=9, blank=False, null=True, help_text="9 digits")
     account = models.CharField("Account number", max_length=16, blank=False, null=True, help_text="Usually 10 to 12 digits")
+
+    def __str__(self):
+        return 'account ending in {}'.format(self.account[-4:])
+
+
+@receiver(models.signals.post_save, sender=Bank)
+def return_post_save(sender, instance, created, *args, **kwargs):
+    action.send(instance.user, verb='updated', target=instance)

@@ -87,6 +87,7 @@ INSTALLED_APPS = [
     'django_messages',
     'twilio',
     'django_agent_trust',
+    'actstream',
 
     # account vision
     'av_core',
