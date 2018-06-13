@@ -169,7 +169,6 @@ class InvitationView(FormView):
         # if login worked, continue client signup flow
         if authenticated:
             login(self.request, authenticated)
-            user.send_email_verification_code()
             return redirect(reverse('questions'))
         else:
             logger.error('Automatic authentication failure.')
