@@ -1,11 +1,9 @@
 from django.conf import settings
 from django.db import models
-from django.dispatch import receiver
 from django.urls import reverse_lazy
 
 from av_returns.models import Return
 from av_utils.utils import TimeStampedModel
-from .utils import delete_s3_object
 
 
 class S3File(TimeStampedModel):
@@ -25,9 +23,7 @@ class S3File(TimeStampedModel):
         return reverse_lazy('upload-url', args=[self.id])
 
     def __str__(self):
+        return self.name
+
+    def stream_name(self):
         return 'file named {}'.format(self.name)
-
-
-@receiver(models.signals.post_delete, sender=S3File)
-def s3file_post_delete(sender, instance, *args, **kwargs):
-    delete_s3_object(instance)
