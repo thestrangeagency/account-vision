@@ -1,12 +1,17 @@
 {% extends 'base.html' %}
 
+{% load activity_tags action %}
+
 {% block content %}
   Hi cpa!
 
-  <ul>
-    {% for action in actions %}
-      <li>{{ action }}</li>
-    {% endfor %}
-  </ul>
+  {% for user in users %}
+    <ul>
+      {% activity_stream 'actor' user  %}
+      {% for action in stream %}
+        <li>{% action action %}</li>
+      {% endfor %}
+    </ul>
+  {% endfor %}
 
 {% endblock content %}
