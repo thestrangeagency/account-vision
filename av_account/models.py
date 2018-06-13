@@ -8,6 +8,7 @@ from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.signals import user_logged_in
 from django.core.validators import RegexValidator
 from django.db import models
+from django.urls import reverse_lazy
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from ipware.ip import get_ip
@@ -175,6 +176,9 @@ class AvUser(Person, AbstractBaseUser, PermissionsMixin):
     def send_invitation_code(self):
         self.generate_email_code()
         send_invitation_email(self)
+
+    def get_absolute_url(self):
+        return reverse_lazy('client-detail', args=[self.email])
 
 
 class Address(models.Model):

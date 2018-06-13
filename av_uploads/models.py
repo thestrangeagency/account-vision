@@ -21,7 +21,7 @@ class S3File(TimeStampedModel):
     description = models.TextField(blank=True)
     uploaded = models.BooleanField(default=False)
     
-    def url(self):
+    def get_absolute_url(self):
         return reverse_lazy('upload-url', args=[self.id])
 
     def __str__(self):

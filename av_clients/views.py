@@ -78,7 +78,7 @@ class ClientDetailUploadsView(AbstractClientReturnView, AbstractTableView):
         {
             'name': 'Name',
             'field': 'name',
-            'link': 'url',
+            'link': 'get_absolute_url',
         },
         {
             'name': 'Size',

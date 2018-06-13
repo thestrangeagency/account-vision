@@ -18,7 +18,7 @@
         <li class="list-group-item px-1 px-md-2 py-3">
           <div class="file-upload d-flex align-items-center">
             <i class="far fa-file fa-lg"></i>
-            <div class="mx-2 truncate"><a href="{{ download.url }}">{{ download.name }}</a></div>
+            <div class="mx-2 truncate"><a href="{{ download.get_absolute_url }}">{{ download.name }}</a></div>
             <div class="mx-2 truncate">{{ download.description }}</div>
             <div class="mx-2 file-upload__size text-nowrap">{{ download.size|filesizeformat }}</div>
             <div class="mx-2">{{ download.date_created|date:"n/d/Y" }}</div>
