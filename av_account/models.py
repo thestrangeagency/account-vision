@@ -27,6 +27,7 @@ class Firm(TimeStampedModel):
     def __str__(self):
         return self.name
 
+
 class Person(TimeStampedModel):
     first_name = models.CharField(_('first name'), max_length=150, blank=True)
     last_name = models.CharField(_('last name'), max_length=150, blank=True)
