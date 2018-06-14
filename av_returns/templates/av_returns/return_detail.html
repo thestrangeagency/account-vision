@@ -1,12 +1,10 @@
 {% extends 'av_returns/return_list.html' %}
 
-{% load static django_bootstrap_breadcrumbs %}
+{% load static django_bootstrap_breadcrumbs crispy_forms_tags %}
 
 {% comment %}
 django_bootstrap_breadcrumbs fails with object.year, so had to add 'year' to context
 {% endcomment %}
-
-{% load django_bootstrap_breadcrumbs %}
 
 {% block breadcrumbs %}
   {{ block.super }}
@@ -75,4 +73,5 @@ django_bootstrap_breadcrumbs fails with object.year, so had to add 'year' to con
 
   <p class="tx-returns__text mt-4">Return status: <span class="tx-returns__status-text">{{ object.get_return_status_display }}</span></p>
 
+  {% crispy form %}
 {% endblock content %}

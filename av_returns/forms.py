@@ -17,17 +17,28 @@ class CustomSelectDateWidget(SelectDateWidget):
         return context
 
 
-class ReturnForm(ModelForm):
+class NewReturnForm(ModelForm):
     year = TypedChoiceField(coerce=int, choices=Return.year_choices(), initial=datetime.date.today().year)
 
     def __init__(self, *args, **kwargs):
-        super(ReturnForm, self).__init__(*args, **kwargs)
+        super(NewReturnForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.add_input(Submit('submit', 'Save'))
 
     class Meta:
         model = Return
         fields = ('year', 'filing_status', 'is_dependent', 'county')
+
+
+class EditReturnForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(EditReturnForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.add_input(Submit('submit', 'Save'))
+
+    class Meta:
+        model = Return
+        fields = ('filing_status', 'is_dependent', 'county')
 
 
 class SpouseForm(ModelForm):

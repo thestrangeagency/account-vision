@@ -9,7 +9,7 @@ from django.views.generic.list import ListView
 
 from av_account.utils import ClientRequiredMixin
 from av_returns.forms import SpouseForm, DependentsFormSet, DependentsFormSetHelper, \
-    EFileForm, FrozenDependentsFormSet, FrozenDependentsFormSetHelper, ReturnForm
+    EFileForm, FrozenDependentsFormSet, FrozenDependentsFormSetHelper, NewReturnForm, EditReturnForm
 from av_returns.utils import FreezableFormView
 from av_uploads.models import S3File
 from .models import Return, Dependent
@@ -32,7 +32,7 @@ class ReturnsView(ClientRequiredMixin, ListView):
 
 
 class NewReturnView(ClientRequiredMixin, FormView):
-    form_class = ReturnForm
+    form_class = NewReturnForm
     template_name = 'av_returns/new.html'
     success_url = reverse_lazy('returns')
 
@@ -43,8 +43,21 @@ class NewReturnView(ClientRequiredMixin, FormView):
         return super(NewReturnView, self).form_valid(form)
 
 
-class ReturnsDetailView(ClientRequiredMixin, DetailView):
+class ReturnsDetailView(ClientRequiredMixin, FormView):
+    form_class = EditReturnForm
     model = Return
+    template_name = 'av_returns/return_detail.html'
+
+    def get_form_kwargs(self):
+        kwargs = super(ReturnsDetailView, self).get_form_kwargs()
+        tax_return = Return.objects.get(user=self.request.user, year=self.kwargs['year'])
+        try:
+            kwargs.update({
+                'instance': tax_return,
+            })
+        except ObjectDoesNotExist:
+            pass
+        return kwargs
 
     def get_object(self):
         return get_object_or_404(Return, year=self.kwargs['year'], user=self.request.user)
@@ -54,18 +67,22 @@ class ReturnsDetailView(ClientRequiredMixin, DetailView):
         year = self.kwargs['year']
         # even though we have object.year, we need this for breadcrumbs
         context['year'] = year
-        # check for downloads
-        context['downloads'] = S3File.objects.filter(target_user=self.request.user, tax_return__year=year).count()
-        # calculate status bar
-        if self.object.return_status == Return.DRAFT:
-            status = 1
-        elif self.object.return_status == Return.REVIEW:
-            status = 2
-        elif self.object.return_status == Return.COMPLETE or self.object.return_status == Return.READY:
-            status = 3
-        elif self.object.return_status == Return.FILED:
-            status = 4
-        context['status'] = status
+
+        # # check for downloads
+        # context['downloads'] = S3File.objects.filter(target_user=self.request.user, tax_return__year=year).count()
+        # # calculate status bar
+        # if self.object.return_status == Return.DRAFT:
+        #     status = 1
+        # elif self.object.return_status == Return.REVIEW:
+        #     status = 2
+        # elif self.object.return_status == Return.COMPLETE or self.object.return_status == Return.READY:
+        #     status = 3
+        # elif self.object.return_status == Return.FILED:
+        #     status = 4
+        # context['status'] = status
+
+        # switched to form view from detail view, so need this:
+        context['object'] = self.get_object()
         return context
 
     def post(self, request, *args, **kwargs):

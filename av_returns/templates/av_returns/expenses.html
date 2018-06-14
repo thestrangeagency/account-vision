@@ -1,5 +1,12 @@
 {% extends 'av_returns/return_detail.html' %}
 
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+  {{ block.super }}
+  {% breadcrumb "Expenses" "expenses" year %}
+{% endblock %}
+
 {% block content %}
   <h1 class="h1">Expenses</h1>
 
