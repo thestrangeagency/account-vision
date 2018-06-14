@@ -59,11 +59,8 @@ exports[`StepFormStep it checks for validity 1`] = `
         </label>
         <input
           className="form-control"
-          defaultValue={undefined}
           id="input_first_name"
           name="first_name"
-          pattern={undefined}
-          placeholder={undefined}
           required={false}
           type="text"
         />
@@ -153,11 +150,8 @@ exports[`StepFormStep it checks for validity 2`] = `
         </label>
         <input
           className="form-control"
-          defaultValue={undefined}
           id="input_first_name"
           name="first_name"
-          pattern={undefined}
-          placeholder={undefined}
           required={false}
           type="text"
         />
@@ -235,11 +229,8 @@ exports[`StepFormStep it renders 1`] = `
         </label>
         <input
           className="form-control"
-          defaultValue={undefined}
           id="input_first_name"
           name="first_name"
-          pattern={undefined}
-          placeholder={undefined}
           required={false}
           type="text"
         />

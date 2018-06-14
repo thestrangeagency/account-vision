@@ -40,6 +40,7 @@ exports[`it renders 1`] = `
         </li>
       </ul>
       <UploadManager
+        frozen={false}
         target={null}
         year=""
       />

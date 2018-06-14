@@ -5,13 +5,10 @@ exports[`it renders 1`] = `
   className="file-upload d-flex align-items-center"
 >
   <div
-    className="md-mx-2"
+    className="mx-2"
   >
-    <img
-      alt="file"
-      height={48}
-      src="/static/svg/icon_file.svg"
-      width={48}
+    <i
+      className="far fa-file fa-lg"
     />
   </div>
   <div
@@ -29,33 +26,19 @@ exports[`it renders 1`] = `
   >
     10/28/2017
   </div>
-  <span>
+  <div>
     <button
       aria-label="Edit"
-      className="file-upload__edit-button px-2"
+      className="px-2 far fa-edit fa-lg file-upload__button"
       onClick={[Function]}
       type="button"
-    >
-      <img
-        alt="edit"
-        height={48}
-        src="/static/svg/icon_edit.svg"
-        width={48}
-      />
-    </button>
+    />
     <button
       aria-label="Remove"
-      className="close px-2"
+      className="far fa-times-circle fa-lg text-danger-light file-upload__button"
       onClick={[Function]}
       type="button"
-    >
-      <img
-        alt="delete"
-        height={48}
-        src="/static/svg/icon_delete.svg"
-        width={48}
-      />
-    </button>
-  </span>
+    />
+  </div>
 </div>
 `;
