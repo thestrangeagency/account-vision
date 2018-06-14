@@ -32,10 +32,7 @@ class NewReturnForm(ModelForm):
 
     def clean_year(self):
         year = self.cleaned_data.get('year')
-        print('wtf #####')
-        print(self.user)
         if Return.objects.filter(user=self.user, year=year).exists():
-            print('ss')
             raise forms.ValidationError(u'This tax year already exists.')
         else:
             return year
