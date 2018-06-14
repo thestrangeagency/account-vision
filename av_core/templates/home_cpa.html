@@ -6,12 +6,18 @@
   Hi cpa!
 
   {% for user in users %}
+
+    {% activity_stream 'actor' user %}
+
     <ul>
-      {% activity_stream 'actor' user  %}
-      {% for action in stream %}
+      {% for action in stream|slice:":5" %}
         <li>{% action action %}</li>
       {% endfor %}
+      {% if stream %}
+        <li><a href="{% url 'client-activity' user.email %}">See all of {{ user }}'s activity...</a></li>
+      {% endif %}
     </ul>
+
   {% endfor %}
 
 {% endblock content %}

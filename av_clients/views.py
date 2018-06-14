@@ -65,6 +65,14 @@ class ClientDetailView(AbstractClientView, DetailView):
         return self.get_user()
 
 
+class ClientActivityView(AbstractClientView, DetailView):
+    model = AvUser
+    template_name = 'av_clients/activity.html'
+
+    def get_object(self, queryset=None):
+        return self.get_user()
+
+
 class ClientDetailReturnView(AbstractClientReturnView, DetailView):
     model = AvUser
 

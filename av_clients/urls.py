@@ -14,6 +14,11 @@ urlpatterns = [
         name='client-detail',
     ),
     url(
+        regex=r'^(?P<username>[\w.@+-]+)/activity/$',
+        view=ClientActivityView.as_view(),
+        name='client-activity',
+    ),
+    url(
         regex=r'^(?P<username>[\w.@+-]+)/(?P<year>[0-9]{4})/$',
         view=ClientDetailReturnView.as_view(),
         name='client-detail-return',

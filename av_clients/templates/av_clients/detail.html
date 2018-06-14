@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% load django_bootstrap_breadcrumbs %}
+{% load django_bootstrap_breadcrumbs activity_tags action %}
 
 {% block breadcrumbs %}
   {{ block.super }}
@@ -82,6 +82,19 @@
             <li><a href="{% url 'client-detail-return' client.email return.year %}"><i class="far fa-file-alt pr-2"></i> {{ return.year }}</a></li>
           {% endfor %}
         </ul>
+        <h1 class="h1">&nbsp;</h1>
+        <h4 class="h4">Recent Activity</h4>
+        {% activity_stream 'actor' client %}
+
+        <ul>
+          {% for action in stream|slice:":5" %}
+            <li>{% action action %}</li>
+          {% endfor %}
+          {% if stream %}
+            <li><a href="{% url 'client-activity' client.email %}">See all activity...</a></li>
+          {% endif %}
+        </ul>
+
       </div>
     </div>
   </div>
