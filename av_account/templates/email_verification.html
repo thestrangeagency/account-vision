@@ -1,5 +1,12 @@
 {% extends 'base.html' %}
 
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+  {{ block.super }}
+  {% breadcrumb 'Verification' 'confirmation' %}
+{% endblock %}
+
 {% block content %}
   <h1 class="h1">Email Verification</h1>
 
