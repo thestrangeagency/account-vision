@@ -1,9 +1,12 @@
+from actstream import action
 from crispy_forms.layout import BaseInput
 from django.conf import settings
+from django.contrib import messages
 from django.db import models
 from django.shortcuts import _get_queryset
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+from django.views.generic import FormView
 
 
 class TimeStampedModel(models.Model):
@@ -32,6 +35,30 @@ class ExcludeDateMixin:
 
 class CPAViewMixin(ExcludeDateMixin, ReadOnlyMixin):
     pass
+
+
+class FormMessageMixin(FormView):
+    form_message_type = 'information'
+
+    def form_valid(self, form):
+        # give user update feedback
+        messages.success(self.request, 'Your {} has been updated.'.format(self.form_message_type))
+        return super(FormMessageMixin, self).form_valid(form)
+
+
+class FormActivityMixin(FormView):
+    def form_valid(self, form):
+        # add form update to activity stream
+        for field in form.changed_data:
+            verb = 'updated {} on'.format(form[field].label.lower())
+            action.send(self.request.user, verb=verb, target=form.instance)
+        return super(FormActivityMixin, self).form_valid(form)
+
+
+class SimpleFormMixin(FormMessageMixin, FormActivityMixin):
+    def form_valid(self, form):
+        form.save()
+        return super(SimpleFormMixin, self).form_valid(form)
 
 
 class FormSubmit(BaseInput):

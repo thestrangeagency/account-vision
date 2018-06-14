@@ -1,10 +1,7 @@
-from actstream import action
-from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import redirect_to_login
 from django.shortcuts import redirect
 from django.urls import reverse
-from django.views.generic import FormView
 from ipware.ip import get_ip
 
 from av_core import settings
@@ -59,27 +56,3 @@ class CPARequiredMixin(FullRequiredMixin):
             if not request.user.is_cpa:
                 return redirect(reverse('home'))
         return super(CPARequiredMixin, self).dispatch(request, *args, **kwargs)
-
-
-class FormMessageMixin(FormView):
-    form_message_type = 'information'
-    
-    def form_valid(self, form):
-        # give user update feedback
-        messages.success(self.request, 'Your {} has been updated.'.format(self.form_message_type))
-        return super(FormMessageMixin, self).form_valid(form)
-
-
-class FormActivityMixin(FormView):
-    def form_valid(self, form):
-        # add form update to activity stream
-        for field in form.changed_data:
-            verb = 'updated {} on'.format(form[field].label.lower())
-            action.send(self.request.user, verb=verb, target=form.instance)
-        return super(FormActivityMixin, self).form_valid(form)
-
-
-class SimpleFormMixin(FormMessageMixin, FormActivityMixin):
-    def form_valid(self, form):
-        form.save()
-        return super(SimpleFormMixin, self).form_valid(form)

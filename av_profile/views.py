@@ -1,7 +1,8 @@
 from django.urls import reverse_lazy
 
 from av_account.models import Bank, Address
-from av_account.utils import ClientRequiredMixin, SimpleFormMixin
+from av_account.utils import ClientRequiredMixin
+from av_utils.utils import SimpleFormMixin
 from .forms import BankingForm, MyInfoForm, AddressForm
 
 

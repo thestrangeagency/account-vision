@@ -2,9 +2,8 @@ import datetime
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse_lazy
 from django.views.generic import TemplateView, FormView
-from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 
 from av_account.utils import ClientRequiredMixin
@@ -12,6 +11,7 @@ from av_returns.forms import SpouseForm, DependentsFormSet, DependentsFormSetHel
     EFileForm, FrozenDependentsFormSet, FrozenDependentsFormSetHelper, NewReturnForm, EditReturnForm
 from av_returns.utils import FreezableFormView
 from av_uploads.models import S3File
+from av_utils.utils import SimpleFormMixin
 from .models import Return, Dependent
 
 
@@ -47,11 +47,15 @@ class NewReturnView(ClientRequiredMixin, FormView):
         return super(NewReturnView, self).form_valid(form)
 
 
-class ReturnsDetailView(ClientRequiredMixin, FormView):
+class ReturnsDetailView(ClientRequiredMixin, SimpleFormMixin):
     form_class = EditReturnForm
     model = Return
     template_name = 'av_returns/return_detail.html'
+    form_message_type = 'tax year'
 
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('return', args={self.kwargs['year']})
+    
     def get_form_kwargs(self):
         kwargs = super(ReturnsDetailView, self).get_form_kwargs()
         tax_return = Return.objects.get(user=self.request.user, year=self.kwargs['year'])
@@ -88,12 +92,6 @@ class ReturnsDetailView(ClientRequiredMixin, FormView):
         # switched to form view from detail view, so need this:
         context['object'] = self.get_object()
         return context
-
-    def post(self, request, *args, **kwargs):
-        tax_return = self.get_object()
-        tax_return.return_status = Return.REVIEW
-        tax_return.save()
-        return self.get(request)
 
 
 class ReactView(ClientRequiredMixin, TemplateView):
