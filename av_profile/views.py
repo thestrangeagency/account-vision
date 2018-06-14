@@ -1,3 +1,4 @@
+from actstream import action
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views.generic import FormView
@@ -42,6 +43,10 @@ class MyInfoView(ClientRequiredMixin, FormView):
     
     def form_valid(self, form):
         form.save()
+        # add form update to activity stream
+        for field in form.changed_data:
+            verb = 'updated {} on'.format(form[field].label.lower())
+            action.send(self.request.user, verb=verb, target=form.instance)
         return super(MyInfoView, self).form_valid(form)
 
 
@@ -62,5 +67,8 @@ class AddressView(ClientRequiredMixin, FormView):
     
     def form_valid(self, form):
         form.save()
-        messages.success(self.request, 'Your address has been updated.')
+        # add form update to activity stream
+        for field in form.changed_data:
+            verb = 'updated {} on'.format(form[field].label.lower())
+            action.send(self.request.user, verb=verb, target=form.instance)
         return super(AddressView, self).form_valid(form)

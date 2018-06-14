@@ -5,9 +5,11 @@ from django.dispatch import receiver
 from av_account.models import Address, Bank, AvUser
 
 
-@receiver(post_save, sender=AvUser)
-def user_post_save(sender, instance, created, *args, **kwargs):
-    action.send(instance, verb='updated', target=instance)
+# this makes way too much noise, especially when creating a new user
+# probably better to add actions on e.g. address edit form
+# @receiver(post_save, sender=AvUser)
+# def user_post_save(sender, instance, created, *args, **kwargs):
+#     action.send(instance, verb='updated', target=instance)
 
 
 @receiver(post_save, sender=Address)
