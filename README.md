@@ -71,7 +71,7 @@ To watch css and js files for changes, run the following commands in separate te
 
 ```sh
 # watch and compile js
-npm run build:watch
+npm start
 ```
 
 ```sh
@@ -111,6 +111,11 @@ import Collapse from './bootstrap/collapse';
 
 ```sh
 python manage.py test
+
+npm test
+
+# fix snapshots
+npm test -- -u
 ```
 
 ## Deployment
