@@ -12,12 +12,11 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.utils.datastructures import MultiValueDictKeyError
 from django.views import View
-from django.views.generic import TemplateView
 from rest_framework import permissions, viewsets, serializers
 from rest_framework.views import APIView
 
 from av_account.models import AvUser
-from av_account.utils import CPARequiredMixin, FullRequiredMixin
+from av_account.utils import FullRequiredMixin
 from av_returns.models import Return
 from av_uploads.models import S3File
 from .utils import get_aws_v4_signature, get_aws_v4_signing_key, get_s3direct_destinations, get_s3_url
@@ -220,7 +219,11 @@ class FileViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         year = self.kwargs['year']
-        return self.model.objects.filter(user=self.request.user, tax_return__year=year)
+        only_uploaded = self.request.query_params.get('only_uploaded', False)
+        if only_uploaded:
+            return self.model.objects.filter(user=self.request.user, tax_return__year=year, uploaded=True)
+        else:
+            return self.model.objects.filter(user=self.request.user, tax_return__year=year)
 
     def get_serializer_context(self):
         context = super(FileViewSet, self).get_serializer_context()

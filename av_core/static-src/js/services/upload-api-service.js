@@ -4,9 +4,9 @@ import { checkStatus } from '../utils';
 
 export default class UploadApiService {
   static getFiles(year, target) {
-    let filesUrl = `/api/returns/${year}/files/`;
+    let filesUrl = `/api/returns/${year}/files/?only_uploaded=1`;
     if (target) {
-      filesUrl = `/api/returns/${year}/${target}/files/`;
+      filesUrl = `/api/returns/${year}/${target}/files/?only_uploaded=1`;
     }
 
     return fetch(filesUrl, {

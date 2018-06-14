@@ -198,7 +198,6 @@ export default class UploadManager extends React.Component {
       isModalSaveDisabled,
       uploadsInProgress,
     } = this.state;
-    const uploadedFiles = files.filter(file => file.uploaded);
 
     const uploadKeys = Object.keys(uploadsInProgress);
     const numUploadsInProgress = uploadKeys.length;
@@ -219,9 +218,9 @@ export default class UploadManager extends React.Component {
             {error}
           </div>
         )}
-        {uploadedFiles.length > 0 && (
+        {files.length > 0 && (
           <ul className="list-group">
-            {uploadedFiles.map((file, index) => (
+            {files.map((file, index) => (
               <li className="list-group-item px-1 px-md-2 py-3" key={file.url}>
                 <File
                   date={getFormattedDate(file.date_created)}
