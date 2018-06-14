@@ -36,6 +36,10 @@ class NewReturnView(ClientRequiredMixin, FormView):
     template_name = 'av_returns/new.html'
     success_url = reverse_lazy('returns')
 
+    def get_form(self, form_class=None):
+        # add user to form so it can validate unique user/year constraint
+        return NewReturnForm(user=self.request.user,  **self.get_form_kwargs())
+
     def form_valid(self, form):
         tax_return = form.save(commit=False)
         tax_return.user = self.request.user

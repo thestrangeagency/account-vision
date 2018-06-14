@@ -20,14 +20,25 @@ class CustomSelectDateWidget(SelectDateWidget):
 class NewReturnForm(ModelForm):
     year = TypedChoiceField(coerce=int, choices=Return.year_choices(), initial=datetime.date.today().year)
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, user, *args, **kwargs):
         super(NewReturnForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.add_input(Submit('submit', 'Save'))
+        self.user = user
 
     class Meta:
         model = Return
         fields = ('year', 'filing_status', 'is_dependent', 'county')
+
+    def clean_year(self):
+        year = self.cleaned_data.get('year')
+        print('wtf #####')
+        print(self.user)
+        if Return.objects.filter(user=self.user, year=year).exists():
+            print('ss')
+            raise forms.ValidationError(u'This tax year already exists.')
+        else:
+            return year
 
 
 class EditReturnForm(ModelForm):
