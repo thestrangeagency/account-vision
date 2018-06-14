@@ -124,7 +124,7 @@ class InviteForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(InviteForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.add_input(Submit('submit', 'Save'))
+        self.helper.add_input(Submit('submit', 'Invite'))
 
 
 class ClientInviteView(CPARequiredMixin, FormView):
