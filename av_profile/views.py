@@ -1,14 +1,11 @@
-from actstream import action
-from django.contrib import messages
 from django.urls import reverse_lazy
-from django.views.generic import FormView
 
 from av_account.models import Bank, Address
-from av_account.utils import ClientRequiredMixin, FormMessageMixin, FormActivityMixin
+from av_account.utils import ClientRequiredMixin, SimpleFormMixin
 from .forms import BankingForm, MyInfoForm, AddressForm
 
 
-class BankingView(ClientRequiredMixin, FormMessageMixin, FormActivityMixin):
+class BankingView(ClientRequiredMixin, SimpleFormMixin):
     template_name = 'av_profile/banking.html'
     form_class = BankingForm
     success_url = reverse_lazy('banking')
@@ -25,12 +22,8 @@ class BankingView(ClientRequiredMixin, FormMessageMixin, FormActivityMixin):
                 form.initial['account'] = '•' * (len(account) - 4) + account[-4:]
             return form
 
-    def form_valid(self, form):
-        form.save()
-        return super(BankingView, self).form_valid(form)
 
-
-class MyInfoView(ClientRequiredMixin, FormMessageMixin, FormActivityMixin):
+class MyInfoView(ClientRequiredMixin, SimpleFormMixin):
     template_name = 'av_profile/info_my.html'
     form_class = MyInfoForm
     success_url = reverse_lazy('identity')
@@ -43,12 +36,8 @@ class MyInfoView(ClientRequiredMixin, FormMessageMixin, FormActivityMixin):
         })
         return kwargs
     
-    def form_valid(self, form):
-        form.save()
-        return super(MyInfoView, self).form_valid(form)
 
-
-class AddressView(ClientRequiredMixin, FormMessageMixin, FormActivityMixin):
+class AddressView(ClientRequiredMixin, SimpleFormMixin):
     template_name = 'av_profile/info_address.html'
     form_class = AddressForm
     success_url = reverse_lazy('address')
@@ -63,7 +52,3 @@ class AddressView(ClientRequiredMixin, FormMessageMixin, FormActivityMixin):
             'instance': self.request.user.address,
         })
         return kwargs
-    
-    def form_valid(self, form):
-        form.save()
-        return super(AddressView, self).form_valid(form)

@@ -7,8 +7,8 @@ from django.urls import reverse
 from django.views.generic import FormView
 from ipware.ip import get_ip
 
-from av_emails.utils import send_untrusted_device_email
 from av_core import settings
+from av_emails.utils import send_untrusted_device_email
 
 
 class UserStateRequiredMixin(LoginRequiredMixin):
@@ -77,3 +77,9 @@ class FormActivityMixin(FormView):
             verb = 'updated {} on'.format(form[field].label.lower())
             action.send(self.request.user, verb=verb, target=form.instance)
         return super(FormActivityMixin, self).form_valid(form)
+
+
+class SimpleFormMixin(FormMessageMixin, FormActivityMixin):
+    def form_valid(self, form):
+        form.save()
+        return super(SimpleFormMixin, self).form_valid(form)
