@@ -12,11 +12,13 @@ from av_account.models import Address, Bank, AvUser
 #     action.send(instance, verb='updated', target=instance)
 
 
-@receiver(post_save, sender=Address)
-def address_post_save(sender, instance, created, *args, **kwargs):
-    action.send(instance.user, verb='updated', target=instance)
+# replaced with field specific form editing info, maybe better
+# @receiver(post_save, sender=Address)
+# def address_post_save(sender, instance, created, *args, **kwargs):
+#     action.send(instance.user, verb='updated', target=instance)
 
 
-@receiver(post_save, sender=Bank)
-def bank_post_save(sender, instance, created, *args, **kwargs):
-    action.send(instance.user, verb='updated', target=instance)
+# replaced with field specific form editing info, maybe better
+# @receiver(post_save, sender=Bank)
+# def bank_post_save(sender, instance, created, *args, **kwargs):
+#     action.send(instance.user, verb='updated', target=instance)
