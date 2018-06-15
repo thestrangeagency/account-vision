@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import Group
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.views import SuccessURLAllowedHostsMixin
 from django.core.exceptions import ObjectDoesNotExist
@@ -41,6 +42,9 @@ class RegistrationView(FormView):
         # default to cpa user in this flow
         user.is_cpa = True
         user.save()
+        # default to admin group
+        group = Group.objects.get(name='admin')
+        user.groups.add(group)
 
         # automatically log in
         password = self.request.POST.get('password1', None)
