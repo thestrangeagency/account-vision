@@ -16,7 +16,8 @@ def message_post_save(sender, instance, created, *args, **kwargs):
 @receiver(models.signals.post_save, sender=AvUser)
 def user_post_save(sender, instance, created, *args, **kwargs):
     if created:
-        if instance.is_cpa:
+        # only send new user email to a cpa that has just registered, but not another CPA that was invited to his team
+        if instance.is_cpa and instance.firm is None:
             send_new_user_email(instance)
 
 

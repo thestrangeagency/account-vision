@@ -1,0 +1,18 @@
+{% extends 'av_emails/base.html' %}
+
+{% block content %}
+  {{ block.super }}
+
+  <p {% include "av_emails/p_style_snippet.html" %}>
+    <strong>You have received an invitation from {{ user.firm.name }} to join their Account Vision team.</strong>
+  </p>
+
+  <p {% include "av_emails/p_style_snippet.html" %}>
+    <strong>To complete your account set up, please click the link below.</strong>
+  </p>
+
+  <p {% include "av_emails/p_style_snippet.html" %}>
+    <a href="{{ site_url }}{% url 'invitation' user.email_verification_code %}">{{ site_url }}{% url 'invitation' user.email_verification_code %}</a>
+  </p>
+
+{% endblock content %}

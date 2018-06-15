@@ -35,12 +35,15 @@ class InviteForm(forms.ModelForm):
 class TeamInviteView(CPARequiredMixin, FormView):
     form_class = InviteForm
     template_name = 'av_team/invite.html'
-    success_url = reverse_lazy('invite')
+    success_url = reverse_lazy('team-invite')
     
     def form_valid(self, form):
         user = form.save(commit=False)
         user.firm = self.request.user.firm
-        user.send_invitation_code()
+        user.is_cpa = True
         user.save()
-        messages.success(self.request, 'Invitation sent to {}.'.format(user.email))
+        group = Group.objects.get(id=form.cleaned_data['role'])
+        user.groups.add(group)
+        user.send_team_invitation_code()
+        messages.success(self.request, 'Invitation sent to {} with {} permissions.'.format(user.email, group))
         return super(TeamInviteView, self).form_valid(form)

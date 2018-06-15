@@ -122,7 +122,7 @@ class VerificationView(LoginRequiredMixin, FormView):
 
     def get_success_url(self):
         # a cpa will need to set up a firm, regular users are done here
-        if self.request.user.is_cpa:
+        if self.request.user.is_cpa and self.request.user.firm is None:
             return reverse_lazy('firm')
         else:
             return reverse_lazy('client_created')

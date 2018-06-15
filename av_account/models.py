@@ -17,7 +17,7 @@ from twilio.rest import Client
 
 from av_core import logger
 from av_core import settings
-from av_emails.utils import send_verification_email, send_invitation_email
+from av_emails.utils import send_verification_email, send_invitation_email, send_team_invitation_email
 from av_utils.utils import TimeStampedModel
 
 
@@ -177,6 +177,10 @@ class AvUser(Person, AbstractBaseUser, PermissionsMixin):
         self.generate_email_code()
         send_invitation_email(self)
 
+    def send_team_invitation_code(self):
+        self.generate_email_code()
+        send_team_invitation_email(self)
+        
     def get_absolute_url(self):
         return reverse_lazy('client-detail', args=[self.email])
 

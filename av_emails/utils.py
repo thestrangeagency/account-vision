@@ -50,6 +50,15 @@ def send_invitation_email(user):
     )
 
 
+def send_team_invitation_email(user):
+    send_email(
+        subject='Welcome to Account Vision',
+        recipient=user.email,
+        context={'user': user},
+        template='av_emails/team_invitation.html',
+    )
+    
+
 def send_return_update_email(tax_return, state_changed=None):
     if tax_return.cpa is not None:
         send_email(
