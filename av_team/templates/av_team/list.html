@@ -11,15 +11,17 @@
       <th>Last Name</th>
       <th>First Name</th>
       <th>Email</th>
+      <th>Role</th>
       <th>Registered</th>
     </tr>
     </thead>
-    {% for client in object_list %}
+    {% for member in object_list %}
       <tr>
-        <td><a href="{{ client.get_absolute_url }}">{{ client.last_name }}</a></td>
-        <td><a href="{{ client.get_absolute_url }}">{{ client.first_name }}</a></td>
-        <td><a href="{{ client.get_absolute_url }}">{{ client.email }}</a></td>
-        <td>{% if client.password %} √ {% endif %}</td>
+        <td><a href="{{ member.get_absolute_url }}">{{ member.last_name }}</a></td>
+        <td><a href="{{ member.get_absolute_url }}">{{ member.first_name }}</a></td>
+        <td><a href="{{ member.get_absolute_url }}">{{ member.email }}</a></td>
+        <td>{{ member.groups.all.0|capfirst }}</td>
+        <td>{% if member.password %} √ {% endif %}</td>
       </tr>
     {% empty %}
       <tr><td>You haven't invited anyone to your team yet.</td></tr>
