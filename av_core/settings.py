@@ -99,6 +99,7 @@ INSTALLED_APPS = [
     'av_returns',
     'av_uploads',
     'av_messages',
+    'av_team',
 ]
 
 SITE_ID = 1

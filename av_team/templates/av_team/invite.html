@@ -1,0 +1,14 @@
+{% extends 'av_team/team_base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+  {{ block.super }}
+
+  <h1 class="h1">Invite</h1>
+
+  <p>Invite a new team member from your firm.</p>
+
+  {% crispy form %}
+
+{% endblock %}

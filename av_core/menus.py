@@ -28,6 +28,12 @@ NAV_MENU_LEFT = [
         "root": True,
     },
     {
+        "name": "Team",
+        "url": "team",
+        "validators": ["menu_generator.validators.is_authenticated", "av_core.menus.is_cpa"],
+        "root": True,
+    },
+    {
         "name": "Profile",
         "url": "identity",
         "validators": ["menu_generator.validators.is_authenticated", "av_core.menus.is_not_cpa"],

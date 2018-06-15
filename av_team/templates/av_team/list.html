@@ -1,0 +1,29 @@
+{% extends 'av_team/team_base.html' %}
+
+{% block content %}
+  {{ block.super }}
+
+  <h1 class="h1">Team</h1>
+
+  <table class="table">
+    <thead class="thead-light">
+    <tr>
+      <th>Last Name</th>
+      <th>First Name</th>
+      <th>Email</th>
+      <th>Registered</th>
+    </tr>
+    </thead>
+    {% for client in object_list %}
+      <tr>
+        <td><a href="{{ client.get_absolute_url }}">{{ client.last_name }}</a></td>
+        <td><a href="{{ client.get_absolute_url }}">{{ client.first_name }}</a></td>
+        <td><a href="{{ client.get_absolute_url }}">{{ client.email }}</a></td>
+        <td>{% if client.password %} √ {% endif %}</td>
+      </tr>
+    {% empty %}
+      <tr><td>You haven't invited anyone to your team yet.</td></tr>
+    {% endfor %}
+  </table>
+
+{% endblock %}
