@@ -56,3 +56,11 @@ class CPARequiredMixin(FullRequiredMixin):
             if not request.user.is_cpa:
                 return redirect(reverse('home'))
         return super(CPARequiredMixin, self).dispatch(request, *args, **kwargs)
+
+
+class CPAAdminRequiredMixin(CPARequiredMixin):
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            if not request.user.is_admin():
+                return redirect(reverse('home'))
+        return super(CPARequiredMixin, self).dispatch(request, *args, **kwargs)

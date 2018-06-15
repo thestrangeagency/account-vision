@@ -141,6 +141,18 @@ class AvUser(Person, AbstractBaseUser, PermissionsMixin):
         # The user is identified by their email address
         return self.email
 
+    def is_admin(self):
+        if not self.is_cpa:
+            return False
+        else:
+            return self.groups.filter(name='admin').exists()
+
+    def is_associate(self):
+        if not self.is_cpa:
+            return False
+        else:
+            return self.groups.filter(name='associate').exists()
+
     def send_verification_code(self):
         if self.phone is None or self.phone is '':
             logger.error('Attempted to send verification without a phone number')

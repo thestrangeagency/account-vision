@@ -7,10 +7,10 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, FormView
 
 from av_account.models import AvUser
-from av_account.utils import CPARequiredMixin
+from av_account.utils import CPAAdminRequiredMixin
 
 
-class TeamListView(CPARequiredMixin, ListView):
+class TeamListView(CPAAdminRequiredMixin, ListView):
     model = AvUser
     template_name = 'av_team/list.html'
 
@@ -32,7 +32,7 @@ class InviteForm(forms.ModelForm):
         )
 
 
-class TeamInviteView(CPARequiredMixin, FormView):
+class TeamInviteView(CPAAdminRequiredMixin, FormView):
     form_class = InviteForm
     template_name = 'av_team/invite.html'
     success_url = reverse_lazy('team-invite')

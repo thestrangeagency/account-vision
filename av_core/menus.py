@@ -30,7 +30,7 @@ NAV_MENU_LEFT = [
     {
         "name": "Team",
         "url": "team",
-        "validators": ["menu_generator.validators.is_authenticated", "av_core.menus.is_cpa"],
+        "validators": ["menu_generator.validators.is_authenticated", "av_core.menus.is_admin"],
         "root": True,
     },
     {
@@ -67,6 +67,10 @@ NAV_MENU_RIGHT = [
 
 def is_cpa(request):
     return not request.user.is_anonymous() and request.user.is_cpa
+
+
+def is_admin(request):
+    return not request.user.is_anonymous() and request.user.is_admin()
 
 
 def is_not_cpa(request):
