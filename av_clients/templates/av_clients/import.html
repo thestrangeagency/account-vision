@@ -30,6 +30,12 @@
         </tr>
       {% endfor %}
     </table>
+  {% else %}
+    <p>Upload a CSV file, without a header row, formatted like this:</p>
+    <div class="pb-4 px-4 text-secondary">
+      <code>First Name, Last Name, Email Address</code>
+    </div>
+
   {% endif %}
 
   {% crispy form %}
