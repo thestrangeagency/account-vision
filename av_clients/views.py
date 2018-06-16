@@ -36,12 +36,6 @@ class AbstractClientView(CPARequiredMixin, ContextMixin, View):
     def get_user(self):
         return get_object_or_404(AvUser, email=self.kwargs['username'], firm=self.request.user.firm)
     
-    def get_year(self):
-        return self.kwargs.get('year', None)
-
-    def get_return(self):
-        return get_object_or_404(Return, year=self.get_year(), user=self.get_user())
-
     def get_context_data(self, **kwargs):
         context = super(AbstractClientView, self).get_context_data(**kwargs)
         context['client'] = self.get_user()
@@ -49,6 +43,12 @@ class AbstractClientView(CPARequiredMixin, ContextMixin, View):
 
 
 class AbstractClientReturnView(AbstractClientView):
+    def get_year(self):
+        return self.kwargs.get('year', None)
+    
+    def get_return(self):
+        return get_object_or_404(Return, year=self.get_year(), user=self.get_user())
+    
     def get_context_data(self, **kwargs):
         context = super(AbstractClientReturnView, self).get_context_data(**kwargs)
         # even though we have object.year, we need this for breadcrumbs to work
