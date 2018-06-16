@@ -3,8 +3,9 @@ from crispy_forms.layout import Submit
 from django import forms
 from django.contrib import messages
 from django.contrib.auth.models import Group
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import ListView, FormView
+from django.views.generic import ListView, FormView, DetailView
 
 from av_account.models import AvUser
 from av_account.utils import CPAAdminRequiredMixin
@@ -16,6 +17,18 @@ class TeamListView(CPAAdminRequiredMixin, ListView):
 
     def get_queryset(self):
         return AvUser.objects.filter(firm=self.request.user.firm, is_cpa=True).order_by('-date_created')
+
+
+class TeamDetailView(CPAAdminRequiredMixin, DetailView):
+    model = AvUser
+    template_name = 'av_team/detail.html'
+    context_object_name = 'member'
+
+    def get_user(self):
+        return get_object_or_404(AvUser, email=self.kwargs['username'], firm=self.request.user.firm)
+
+    def get_object(self, queryset=None):
+        return self.get_user()
 
 
 class InviteForm(forms.ModelForm):

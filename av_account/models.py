@@ -194,7 +194,10 @@ class AvUser(Person, AbstractBaseUser, PermissionsMixin):
         send_team_invitation_email(self)
         
     def get_absolute_url(self):
-        return reverse_lazy('client-detail', args=[self.email])
+        if self.is_cpa:
+            return reverse_lazy('team-detail', args=[self.email])
+        else:
+            return reverse_lazy('client-detail', args=[self.email])
 
     def get_stream_name(self):
         return self.__str__()
