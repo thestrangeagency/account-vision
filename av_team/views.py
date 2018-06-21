@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.models import Group
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import ListView, FormView, UpdateView
+from django.views.generic import ListView, FormView, UpdateView, DetailView
 
 from av_account.models import AvUser
 from av_account.utils import CPAAdminRequiredMixin
@@ -59,3 +59,15 @@ class TeamInviteView(CPAAdminRequiredMixin, FormView):
         user.send_team_invitation_code()
         messages.success(self.request, 'Invitation sent to {} with {} permissions.'.format(user.email, group))
         return super(TeamInviteView, self).form_valid(form)
+
+
+class TeamActivityView(DetailView):
+    model = AvUser
+    template_name = 'av_team/activity.html'
+    context_object_name = 'member'
+
+    def get_user(self):
+        return get_object_or_404(AvUser, email=self.kwargs['username'], firm=self.request.user.firm)
+    
+    def get_object(self, queryset=None):
+        return self.get_user()

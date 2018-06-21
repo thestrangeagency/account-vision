@@ -1,0 +1,23 @@
+{% extends 'av_team/detail.html' %}
+
+{% load django_bootstrap_breadcrumbs activity_tags action %}
+
+{% block breadcrumbs %}
+  {{ block.super }}
+  {% breadcrumb 'Activity' 'team-activity' member.email %}
+{% endblock %}
+
+{% block content %}
+
+  <div class="container">
+
+    {% activity_stream 'actor' member %}
+
+    <ul>
+      {% for action in stream %}
+        <li>{% action action %}</li>
+      {% endfor %}
+    </ul>
+
+  </div>
+{% endblock %}

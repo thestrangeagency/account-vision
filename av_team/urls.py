@@ -18,4 +18,9 @@ urlpatterns = [
         view=TeamInviteView.as_view(),
         name='team-invite',
     ),
+    url(
+        regex=r'^(?P<username>[\w.@+-]+)/activity/$',
+        view=TeamActivityView.as_view(),
+        name='team-activity',
+    ),
 ]

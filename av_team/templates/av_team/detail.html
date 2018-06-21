@@ -5,7 +5,7 @@
 {% block breadcrumbs %}
   {{ block.super }}
   {% breadcrumb "Team" "team" %}
-  {% breadcrumb member.get_full_name "client-detail" member.email %}
+  {% breadcrumb member.get_full_name "team-detail" member.email %}
 {% endblock %}
 
 {% block content %}
@@ -30,7 +30,7 @@
             <li>{% action action %}</li>
           {% endfor %}
           {% if stream %}
-            <li><a href="{% url 'client-activity' member.email %}">See all activity...</a></li>
+            <li><a href="{% url 'team-activity' member.email %}">See all activity...</a></li>
           {% endif %}
         </ul>
 
