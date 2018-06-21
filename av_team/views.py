@@ -1,6 +1,3 @@
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit
-from django import forms
 from django.contrib import messages
 from django.contrib.auth.models import Group
 from django.shortcuts import get_object_or_404
@@ -9,6 +6,7 @@ from django.views.generic import ListView, FormView, DetailView
 
 from av_account.models import AvUser
 from av_account.utils import CPAAdminRequiredMixin
+from av_team.forms import InviteForm
 
 
 class TeamListView(CPAAdminRequiredMixin, ListView):
@@ -29,20 +27,6 @@ class TeamDetailView(CPAAdminRequiredMixin, DetailView):
 
     def get_object(self, queryset=None):
         return self.get_user()
-
-
-class InviteForm(forms.ModelForm):
-    class Meta:
-        model = AvUser
-        fields = ('first_name', 'last_name', 'email')
-    
-    def __init__(self, *args, **kwargs):
-        super(InviteForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.add_input(Submit('submit', 'Invite'))
-        self.fields['role'] = forms.ChoiceField(
-            choices=[(o.id, str(o).capitalize()) for o in Group.objects.all()]
-        )
 
 
 class TeamInviteView(CPAAdminRequiredMixin, FormView):
