@@ -31,5 +31,6 @@ class DetailForm(forms.ModelForm):
         self.helper.add_input(Submit('submit', 'Save'))
         self.helper.add_input(Submit('delete', 'Delete', css_class='mx-2 btn-warning'))
         self.fields['role'] = forms.ChoiceField(
-            choices=[(o.id, str(o).capitalize()) for o in Group.objects.all()]
+            choices=[(o.id, str(o).capitalize()) for o in Group.objects.all()],
+            required=False,
         )
