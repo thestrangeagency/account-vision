@@ -26,10 +26,12 @@ class DetailForm(forms.ModelForm):
         fields = ('first_name', 'last_name')
     
     def __init__(self, *args, **kwargs):
+        can_delete = kwargs.pop('can_delete', None)
         super(DetailForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.add_input(Submit('submit', 'Save'))
-        self.helper.add_input(Submit('delete', 'Delete', css_class='mx-2 btn-warning'))
+        if can_delete:
+            self.helper.add_input(Submit('delete', 'Delete', css_class='mx-2 btn-warning'))
         self.fields['role'] = forms.ChoiceField(
             choices=[(o.id, str(o).capitalize()) for o in Group.objects.all()],
             required=False,

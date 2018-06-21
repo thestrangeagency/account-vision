@@ -30,6 +30,14 @@ class TeamDetailView(CPAAdminRequiredMixin, UserViewMixin, UpdateView, SimpleFor
         initial['role'] = self.get_user().groups.first().id
         return initial
 
+    def get_form_kwargs(self):
+        kwargs = super(TeamDetailView, self).get_form_kwargs()
+        # hides form delete field, so user cannot delete self
+        kwargs.update({
+            'can_delete': self.request.user != self.get_user(),
+        })
+        return kwargs
+
     def post(self, request, *args, **kwargs):
         if 'delete' in request.POST:
             return HttpResponseRedirect(reverse_lazy('team-delete', args=[self.get_user().email]))

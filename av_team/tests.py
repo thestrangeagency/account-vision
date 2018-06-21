@@ -156,3 +156,55 @@ class TeamTestCase(TestCase):
         url = reverse('team-invite')
         self.login_cpa()
         self.try_non_admin(url)
+
+    def test_cannot_delete_self(self):
+        url = reverse('team-detail', args=[self.cpa.email])
+        
+        self.login_cpa()
+        
+        response = self.client.get(url)
+        self.assertNotContains(response, 'delete')
+
+    def test_can_delete_other(self):
+        # invite a new user
+        url = reverse('team-invite')
+        data = {
+            'email': 'a@a.com',
+            'last_name': 'y',
+            'role': 1,
+        }
+    
+        self.try_anonymous(url)
+        self.login_cpa()
+    
+        response = self.client.post(url, data)
+        self.assertEqual(response.status_code, status.HTTP_302_FOUND)
+        self.assertRedirects(response, url)
+        
+        # check details of new user, ensure delete button appears
+        url = reverse('team-detail', args=[data['email']])
+        response = self.client.get(url)
+        self.assertContains(response, 'delete')
+
+        found = AvUser.objects.filter(email=data['email']).count()
+        self.assertEqual(found, 1)
+        
+        delete = {
+            'delete': True,
+        }
+        
+        # try delete
+        response = self.client.post(url, delete)
+        self.assertEqual(response.status_code, status.HTTP_302_FOUND)
+
+        # should redirect to confirmation page
+        url = reverse('team-delete', args=[data['email']])
+        self.assertRedirects(response, url)
+
+        # should actually delete the user
+        response = self.client.post(url, delete)
+        self.assertEqual(response.status_code, status.HTTP_302_FOUND)
+        self.assertRedirects(response, reverse('team'))
+        
+        found = AvUser.objects.filter(email=data['email']).count()
+        self.assertEqual(found, 0)
