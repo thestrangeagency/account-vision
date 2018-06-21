@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% load django_bootstrap_breadcrumbs activity_tags action %}
+{% load django_bootstrap_breadcrumbs activity_tags action crispy_forms_tags %}
 
 {% block breadcrumbs %}
   {{ block.super }}
@@ -16,23 +16,7 @@
       <div class="col-sm">
         <h1 class="h1">{{ member.first_name }} {{ member.last_name }}</h1>
 
-        <h4 class="h4">Identity</h4>
-        <table class="table dictionary-table mt-4">
-          <tbody>
-          <tr>
-            <td>Email address</td>
-            <td>{{ member.email }}</td>
-          </tr>
-          <tr>
-            <td>Date of birth</td>
-            <td>{{ member.dob|date:'SHORT_DATE_FORMAT' }}</td>
-          </tr>
-          <tr>
-            <td>Social Security Number</td>
-            <td>{{ member.ssn }}</td>
-          </tr>
-          </tbody>
-        </table>
+        {% crispy form %}
 
       </div>
       <div class="col-sm">

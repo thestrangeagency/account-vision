@@ -18,3 +18,17 @@ class InviteForm(forms.ModelForm):
         self.fields['role'] = forms.ChoiceField(
             choices=[(o.id, str(o).capitalize()) for o in Group.objects.all()]
         )
+
+
+class DetailForm(forms.ModelForm):
+    class Meta:
+        model = AvUser
+        fields = ('first_name', 'last_name')
+    
+    def __init__(self, *args, **kwargs):
+        super(DetailForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.add_input(Submit('submit', 'Save'))
+        self.fields['role'] = forms.ChoiceField(
+            choices=[(o.id, str(o).capitalize()) for o in Group.objects.all()]
+        )
