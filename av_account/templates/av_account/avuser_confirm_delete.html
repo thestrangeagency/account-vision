@@ -1,0 +1,18 @@
+{% extends 'base-modal.html' %}
+
+{% block breadcrumbs %}
+{% endblock %}
+
+{% block content_title %}
+  Delete Confirmation
+{% endblock content_title %}
+
+{% block modal_content %}
+
+<form method="post">{% csrf_token %}
+    <p>Are you sure you want to delete {{ object }} ({{ object.email }})?</p>
+    <p>You cannot undo this action.</p>
+    <input type="submit" value="Confirm" class="btn-danger btn" />
+</form>
+
+{% endblock modal_content %}

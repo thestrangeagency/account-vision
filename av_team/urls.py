@@ -14,6 +14,11 @@ urlpatterns = [
         name='team-detail',
     ),
     url(
+        regex=r'^(?P<username>[\w.@+-]+)/delete/$',
+        view=TeamDeleteView.as_view(),
+        name='team-delete',
+    ),
+    url(
         regex=r'^invite$',
         view=TeamInviteView.as_view(),
         name='team-invite',

@@ -77,12 +77,23 @@ a:hover {
   }
 }
 
-.btn-warning,
-.btn-danger {
+.btn-warning {
   color: $pale-yellow;
 
   &:hover {
     color: $yellow;
+  }
+}
+
+.btn-danger {
+  color: $pale-yellow;
+  background-color: $danger-bg-light;
+  border-color: $danger-bg-light;
+
+  &:hover {
+    color: $yellow;
+    background-color: darken($danger-bg-light, 5%);
+    border-color: darken($danger-bg-light, 5%);
   }
 }
 

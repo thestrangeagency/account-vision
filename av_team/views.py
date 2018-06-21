@@ -1,11 +1,11 @@
 from django.contrib import messages
 from django.contrib.auth.models import Group
-from django.shortcuts import get_object_or_404
+from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, FormView, UpdateView, DetailView
+from django.views.generic import ListView, FormView, UpdateView, DetailView, DeleteView
 
 from av_account.models import AvUser
-from av_account.utils import CPAAdminRequiredMixin
+from av_account.utils import CPAAdminRequiredMixin, UserViewMixin
 from av_team.forms import InviteForm, DetailForm
 from av_utils.utils import SimpleFormMixin
 
@@ -18,23 +18,23 @@ class TeamListView(CPAAdminRequiredMixin, ListView):
         return AvUser.objects.filter(firm=self.request.user.firm, is_cpa=True).order_by('-date_created')
 
 
-class TeamDetailView(CPAAdminRequiredMixin, UpdateView, SimpleFormMixin):
+class TeamDetailView(CPAAdminRequiredMixin, UserViewMixin, UpdateView, SimpleFormMixin):
     model = AvUser
     template_name = 'av_team/detail.html'
     context_object_name = 'member'
     form_class = DetailForm
     form_message_type = 'team member'
 
-    def get_user(self):
-        return get_object_or_404(AvUser, email=self.kwargs['username'], firm=self.request.user.firm)
-
-    def get_object(self, queryset=None):
-        return self.get_user()
-
     def get_initial(self):
         initial = super(TeamDetailView, self).get_initial()
         initial['role'] = self.get_user().groups.first().id
         return initial
+
+    def post(self, request, *args, **kwargs):
+        if 'delete' in request.POST:
+            return HttpResponseRedirect(reverse_lazy('team-delete', args=[self.get_user().email]))
+        else:
+            return super(TeamDetailView, self).post(request, *args, **kwargs)
 
     def form_valid(self, form):
         user = form.save()
@@ -43,6 +43,16 @@ class TeamDetailView(CPAAdminRequiredMixin, UpdateView, SimpleFormMixin):
         user.groups.add(group)
         return super(TeamDetailView, self).form_valid(form)
 
+
+class TeamDeleteView(CPAAdminRequiredMixin, UserViewMixin, DeleteView):
+    model = AvUser
+    success_url = reverse_lazy('team')
+
+    def delete(self, request, *args, **kwargs):
+        user = self.get_user()
+        messages.success(self.request, 'Deleted {} {} ({}).'.format(user.first_name, user.last_name, user.email))
+        return super(TeamDeleteView, self).delete(request)
+    
 
 class TeamInviteView(CPAAdminRequiredMixin, FormView):
     form_class = InviteForm
@@ -61,13 +71,8 @@ class TeamInviteView(CPAAdminRequiredMixin, FormView):
         return super(TeamInviteView, self).form_valid(form)
 
 
-class TeamActivityView(DetailView):
+class TeamActivityView(CPAAdminRequiredMixin, UserViewMixin, DetailView):
     model = AvUser
     template_name = 'av_team/activity.html'
     context_object_name = 'member'
 
-    def get_user(self):
-        return get_object_or_404(AvUser, email=self.kwargs['username'], firm=self.request.user.firm)
-    
-    def get_object(self, queryset=None):
-        return self.get_user()

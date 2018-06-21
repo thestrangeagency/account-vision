@@ -1,9 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import redirect_to_login
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse
+from django.views import View
 from ipware.ip import get_ip
 
+from av_account.models import AvUser
 from av_core import settings
 from av_emails.utils import send_untrusted_device_email
 
@@ -64,3 +66,11 @@ class CPAAdminRequiredMixin(CPARequiredMixin):
             if not request.user.is_admin():
                 return redirect(reverse('home'))
         return super(CPARequiredMixin, self).dispatch(request, *args, **kwargs)
+
+
+class UserViewMixin(View):
+    def get_user(self):
+        return get_object_or_404(AvUser, email=self.kwargs['username'], firm=self.request.user.firm)
+    
+    def get_object(self, queryset=None):
+        return self.get_user()
