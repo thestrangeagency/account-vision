@@ -16,7 +16,9 @@
 {% block modal_content %}
   {% if user %}
     <p class="tx-modal-eyebrow">Hello {{ user.first_name }} {{ user.last_name }}!</p>
-    <p class="tx-modal-eyebrow">Please set your password for access to the <br/><strong>{{ user.firm.name }}</strong><br/> Account Vision portal.</p>
+    <p class="tx-modal-eyebrow">Please set your password for access to the</p>
+    <h3 class="h3 text-center mb-0">{{ user.firm.name }}</h3>
+    <p class="tx-modal-eyebrow">Account Vision portal.</p>
 
     <p class="tx-modal-eyebrow">Already have an account? <a class="tx-modal-link" href="{% url 'login' %}">Sign In</a></p>
 
