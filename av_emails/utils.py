@@ -142,7 +142,8 @@ def send_email(subject="Account Vision", recipient=None, context=None, template=
     message = render_to_string(template_name=template, context=context)
 
     try:
-        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [recipient, ], html_message=message)
+        if not settings.MAIL_OFF:
+            send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [recipient, ], html_message=message)
         if not settings.TESTING:
             logger.info('sent from:{} to:{} subject:{}'.format(settings.DEFAULT_FROM_EMAIL, recipient, subject))
     except Exception as e:

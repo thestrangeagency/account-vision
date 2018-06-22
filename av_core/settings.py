@@ -41,6 +41,7 @@ else:
     ALLOWED_HOSTS = ['*']
 
 TESTING = sys.argv[1:2] == ['test']
+MAIL_OFF = False
 
 AUTH_USER_MODEL = 'av_account.AvUser'
 
