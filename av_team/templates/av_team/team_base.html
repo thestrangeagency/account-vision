@@ -4,7 +4,7 @@
 
 {% block breadcrumbs %}
   {{ block.super }}
-  {% breadcrumb "Team" "team" %}
+  {% breadcrumb "Firm" "team" %}
 {% endblock %}
 
 {% block tabs %}
@@ -16,7 +16,7 @@
     <div class="container">
       <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link {% if request.get_full_path == team %}active{% endif %}" href="{{ team }}">List</a>
+          <a class="nav-link {% if request.get_full_path == team %}active{% endif %}" href="{{ team }}">Members</a>
         </li>
         <li class="nav-item">
           <a class="nav-link {% if request.get_full_path == invite %}active{% endif %}" href="{{ invite }}">Invite</a>

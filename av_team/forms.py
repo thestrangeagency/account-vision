@@ -9,7 +9,7 @@ from av_account.models import AvUser
 role_field = forms.ChoiceField(
     choices=[(o.id, str(o).capitalize()) for o in Group.objects.all()],
     required=False,
-    help_text='Only Admins can invite, modify, or delete your team members.'
+    help_text='Only Admins can invite, modify, or delete your firm members.'
 )
 
 

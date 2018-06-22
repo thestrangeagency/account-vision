@@ -28,7 +28,7 @@ NAV_MENU_LEFT = [
         "root": True,
     },
     {
-        "name": "Team",
+        "name": "Firm",
         "url": "team",
         "validators": ["menu_generator.validators.is_authenticated", "av_core.menus.is_admin"],
         "root": True,

@@ -3,7 +3,7 @@
 {% block content %}
   {{ block.super }}
 
-  <h1 class="h1">Team</h1>
+  <h1 class="h1">Members</h1>
 
   <table class="table">
     <thead class="thead-light">
@@ -24,7 +24,7 @@
         <td>{% if member.password %} √ {% endif %}</td>
       </tr>
     {% empty %}
-      <tr><td>You haven't invited anyone to your team yet.</td></tr>
+      <tr><td>You haven't invited anyone to your firm yet.</td></tr>
     {% endfor %}
   </table>
 
