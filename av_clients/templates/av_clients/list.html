@@ -8,10 +8,26 @@
   <table class="table">
     <thead class="thead-light">
     <tr>
-      <th>Last Name</th>
-      <th>First Name</th>
-      <th>Email</th>
-      <th>Registered</th>
+      <th>
+        <a href="{% url 'clients' %}?sort=last&desc={% if sort == 'last' and desc == 'no' %}yes{% else %}no{% endif %}">
+          Last Name {% if sort == 'last' %}{% if desc == 'no' %}⯅{% else %}⯆{% endif %}{% endif %}
+        </a>
+      </th>
+      <th>
+        <a href="{% url 'clients' %}?sort=first&desc={% if sort == 'first' and desc == 'no' %}yes{% else %}no{% endif %}">
+          First Name {% if sort == 'first' %}{% if desc == 'no' %}⯅{% else %}⯆{% endif %}{% endif %}
+        </a>
+      </th>
+      <th>
+        <a href="{% url 'clients' %}?sort=email&desc={% if sort == 'email' and desc == 'no' %}yes{% else %}no{% endif %}">
+          Email {% if sort == 'email' %}{% if desc == 'no' %}⯅{% else %}⯆{% endif %}{% endif %}
+        </a>
+      </th>
+      <th>
+        <a href="{% url 'clients' %}?sort=reg&desc={% if sort == 'reg' and desc == 'no' %}yes{% else %}no{% endif %}">
+          Registered {% if sort == 'reg' %}{% if desc == 'no' %}⯅{% else %}⯆{% endif %}{% endif %}
+        </a>
+      </th>
     </tr>
     </thead>
     {% for client in object_list %}
@@ -19,9 +35,9 @@
         <td><a href="{{ client.get_absolute_url }}">{{ client.last_name }}</a></td>
         <td><a href="{{ client.get_absolute_url }}">{{ client.first_name }}</a></td>
         <td><a href="{{ client.get_absolute_url }}">{{ client.email }}</a></td>
-        <td>{% if client.password %} √ {% endif %}</td>
+        <td>{% if client.is_verified %} √ {% endif %}</td>
       </tr>
-    {% empty %}
+      {% empty %}
       <tr><td>You haven't invited any clients yet.</td></tr>
     {% endfor %}
   </table>

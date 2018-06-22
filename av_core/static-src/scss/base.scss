@@ -192,6 +192,10 @@ ul {
 .table th {
   border-bottom: 0;
   border-top: 0;
+
+  a {
+    color: $blue;
+  }
 }
 
 .table .thead-light th {

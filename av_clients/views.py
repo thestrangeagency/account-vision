@@ -28,6 +28,7 @@ def order_by(x):
         'last': 'last_name',
         'first': 'first_name',
         'email': 'email',
+        'reg': 'is_verified',
     }.get(x, 'date_created'))
 
 
@@ -38,8 +39,14 @@ class ClientListView(CPARequiredMixin, ListView):
     def get_queryset(self):
         sort = self.request.GET.get('sort')
         desc = self.request.GET.get('desc')
-        order = order_by(sort) if not desc else order_by(sort).desc()
+        order = order_by(sort) if desc == 'no' else order_by(sort).desc()
         return AvUser.objects.filter(firm=self.request.user.firm, is_cpa=False).order_by(order)
+
+    def get_context_data(self, **kwargs):
+        context = super(ClientListView, self).get_context_data(**kwargs)
+        context['sort'] = self.request.GET.get('sort')
+        context['desc'] = self.request.GET.get('desc')
+        return context
 
 
 class AbstractClientView(CPARequiredMixin, ContextMixin, View):
