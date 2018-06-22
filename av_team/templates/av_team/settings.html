@@ -1,0 +1,12 @@
+{% extends 'av_team/team_base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+  {{ block.super }}
+
+  <h1 class="h1">Settings</h1>
+
+  {% crispy form %}
+
+{% endblock %}

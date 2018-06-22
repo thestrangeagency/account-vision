@@ -3,8 +3,7 @@ from crispy_forms.layout import Submit
 from django import forms
 from django.contrib.auth.models import Group
 
-from av_account.models import AvUser
-
+from av_account.models import AvUser, Firm
 
 role_field = forms.ChoiceField(
     choices=[(o.id, str(o).capitalize()) for o in Group.objects.all()],
@@ -38,3 +37,14 @@ class DetailForm(forms.ModelForm):
         if can_delete:
             self.helper.add_input(Submit('delete', 'Delete', css_class='mx-2 btn-warning'))
         self.fields['role'] = role_field
+
+
+class TeamSettingsForm(forms.ModelForm):
+    class Meta:
+        model = Firm
+        fields = ('name',)
+
+    def __init__(self, *args, **kwargs):
+        super(TeamSettingsForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.add_input(Submit('submit', 'Save'))

@@ -11,6 +11,7 @@
 
   {% url 'team' as team%}
   {% url 'team-invite' as invite %}
+  {% url 'team-settings' as settings %}
 
   <div class="tx-full-width tx-nav-tabs">
     <div class="container">
@@ -20,6 +21,9 @@
         </li>
         <li class="nav-item">
           <a class="nav-link {% if request.get_full_path == invite %}active{% endif %}" href="{{ invite }}">Invite</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.get_full_path == settings %}active{% endif %}" href="{{ settings }}">Settings</a>
         </li>
       </ul>
     </div>

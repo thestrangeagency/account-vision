@@ -4,9 +4,9 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, FormView, UpdateView, DetailView, DeleteView
 
-from av_account.models import AvUser
+from av_account.models import AvUser, Firm
 from av_account.utils import CPAAdminRequiredMixin, UserViewMixin
-from av_team.forms import InviteForm, DetailForm
+from av_team.forms import InviteForm, DetailForm, TeamSettingsForm
 from av_utils.utils import SimpleFormMixin
 
 
@@ -84,3 +84,12 @@ class TeamActivityView(CPAAdminRequiredMixin, UserViewMixin, DetailView):
     template_name = 'av_team/activity.html'
     context_object_name = 'member'
 
+
+class TeamSettingsView(CPAAdminRequiredMixin, UpdateView, SimpleFormMixin):
+    model = Firm
+    template_name = 'av_team/settings.html'
+    form_class = TeamSettingsForm
+    form_message_type = 'firm'
+
+    def get_object(self, queryset=None):
+        return self.request.user.firm

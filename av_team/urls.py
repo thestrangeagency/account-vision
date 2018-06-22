@@ -24,6 +24,11 @@ urlpatterns = [
         name='team-invite',
     ),
     url(
+        regex=r'^settings$',
+        view=TeamSettingsView.as_view(),
+        name='team-settings',
+    ),
+    url(
         regex=r'^(?P<username>[\w.@+-]+)/activity/$',
         view=TeamActivityView.as_view(),
         name='team-activity',

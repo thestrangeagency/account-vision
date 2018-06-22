@@ -24,6 +24,9 @@ from av_utils.utils import TimeStampedModel
 class Firm(TimeStampedModel):
     name = models.CharField(verbose_name='firm name, as you would like your clients to see it', max_length=150, blank=True)
 
+    def get_absolute_url(self):
+        return reverse_lazy('team-settings')
+
     def __str__(self):
         return self.name
 
