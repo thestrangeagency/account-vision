@@ -8,6 +8,7 @@ from django import forms
 from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
+from django.db.models.functions import Lower
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, FormView, DetailView
@@ -22,12 +23,23 @@ from av_uploads.models import S3File
 from av_utils.utils import get_object_or_None
 
 
+def order_by(x):
+    return Lower({
+        'last': 'last_name',
+        'first': 'first_name',
+        'email': 'email',
+    }.get(x, 'date_created'))
+
+
 class ClientListView(CPARequiredMixin, ListView):
     model = AvUser
     template_name = 'av_clients/list.html'
 
     def get_queryset(self):
-        return AvUser.objects.filter(firm=self.request.user.firm, is_cpa=False).order_by('-date_created')
+        sort = self.request.GET.get('sort')
+        desc = self.request.GET.get('desc')
+        order = order_by(sort) if not desc else order_by(sort).desc()
+        return AvUser.objects.filter(firm=self.request.user.firm, is_cpa=False).order_by(order)
 
 
 class AbstractClientView(CPARequiredMixin, ContextMixin, View):
