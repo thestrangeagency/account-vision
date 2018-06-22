@@ -2,6 +2,7 @@ import csv
 
 import io
 import os
+from actstream.actions import follow
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from django import forms
@@ -165,6 +166,7 @@ class ClientInviteView(CPARequiredMixin, FormView):
         user.send_invitation_code()
         user.save()
         messages.success(self.request, 'Invitation sent to {}.'.format(user.email))
+        follow(self.request.user, user, actor_only=False)
         return super(ClientInviteView, self).form_valid(form)
 
 
@@ -273,6 +275,7 @@ class ClientImportPreView(CPARequiredMixin, FormView):
             if existing is None and not getattr(user, 'malformed', False):
                 user.send_invitation_code()
                 user.save()
+                follow(self.request.user, user, actor_only=False)
                 invite_count += 1
 
         os.remove(file_name)

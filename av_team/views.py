@@ -1,3 +1,4 @@
+from actstream.actions import follow
 from django.contrib import messages
 from django.contrib.auth.models import Group
 from django.http import HttpResponseRedirect
@@ -76,6 +77,7 @@ class TeamInviteView(CPAAdminRequiredMixin, FormView):
         user.groups.add(group)
         user.send_team_invitation_code()
         messages.success(self.request, 'Invitation sent to {} with {} permissions.'.format(user.email, group))
+        follow(self.request.user, user, actor_only=False)
         return super(TeamInviteView, self).form_valid(form)
 
 

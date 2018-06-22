@@ -1,6 +1,5 @@
+from actstream.models import user_stream
 from django.views.generic import TemplateView, ListView
-
-from av_account.models import AvUser
 
 
 class HomeView(TemplateView):
@@ -18,8 +17,7 @@ class HomeView(TemplateView):
         context = super(HomeView, self).get_context_data(**kwargs)
         if self.request.user.is_authenticated:
             if self.request.user.is_cpa:
-                users = AvUser.objects.filter(firm=self.request.user.firm, is_cpa=False)
-                context['users'] = users
+                context['stream'] = user_stream(self.request.user, with_user_activity=True)
         return context
 
 

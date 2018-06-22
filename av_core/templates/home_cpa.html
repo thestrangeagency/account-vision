@@ -5,19 +5,10 @@
 {% block content %}
   Hi cpa!
 
-  {% for user in users %}
-
-    {% activity_stream 'actor' user %}
-
-    <ul>
-      {% for action in stream|slice:":5" %}
-        <li>{% action action %}</li>
-      {% endfor %}
-      {% if stream %}
-        <li><a href="{% url 'client-activity' user.email %}">See all of {{ user }}'s activity...</a></li>
-      {% endif %}
-    </ul>
-
-  {% endfor %}
+  <ul>
+    {% for action in stream|slice:":25" %}
+      <li>{% action action %}</li>
+    {% endfor %}
+  </ul>
 
 {% endblock content %}
