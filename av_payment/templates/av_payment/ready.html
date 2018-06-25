@@ -1,0 +1,15 @@
+{% extends 'base-modal-form.html' %}
+
+{% block content_title %}
+  Thank you for your payment!
+{% endblock %}
+
+{% block modal_form_content %}
+  <h3 class="h3 text-center mb-5">Your account is now ready!</h3>
+  <p>Our team of trained professionals are now reviewing your account and the information you have provided. We will begin preparing your return. Once completed, your CPA will upload your tax return to your account for you to review. You will be notified via email when this takes place.</p>
+
+  <p>Click Next to view your return.</p>
+  <p class="text-center">
+    <a href="{% url 'returns' %}" class="btn btn-primary">Next</a>
+  </p>
+{% endblock %}

@@ -135,7 +135,7 @@ class VerificationView(LoginRequiredMixin, FormView):
 class FirmView(LoginRequiredMixin, FormView):
     template_name = 'firm.html'
     form_class = FirmForm
-    success_url = reverse_lazy('cpa_created')
+    success_url = reverse_lazy('terms')
 
     def form_valid(self, form):
         firm = form.save()

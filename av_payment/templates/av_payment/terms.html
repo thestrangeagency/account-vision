@@ -1,0 +1,9 @@
+{% extends 'base-modal-form.html' %}
+
+{% block content_title %}Terms{% endblock content_title %}
+
+{% block modal_content %}
+  <p>We're nearly done! Please accept our terms and conditions to proceed to the payment page.</p>
+  <p>If you have a discount code, enter it in the field below.</p>
+  {{ block.super }}
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base-modal.html' %}
+
+{% block content_title %}
+  <h1>Error</h1>
+{% endblock content_title %}
+
+{% block modal_content %}
+  <p>There was an error with your transaction.</p>
+
+  <a href="{% url 'checkout' %}" class="btn btn-primary">Try Again</a>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'base-modal.html' %}
+
+{% load static %}
+
+{% block head %}
+  {{ block.super }}
+  <script src="https://checkout.stripe.com/checkout.js"></script>
+{% endblock head %}
+
+{% block content_title %}Checkout{% endblock content_title %}
+
+{% block modal_content %}
+  <p>To have our team of trained CPA’s review and build your return, please click the pay button below.</p>
+
+  {% if code %}
+    <p>Discount code <strong>{{ code }}</strong> applied.</p>
+  {% endif %}
+
+  <button class="btn btn-primary" id="subscribe" onclick="handler.open();">Begin Trial</button>
+
+  {{ key }}
+  <p>Your total is: {{ total }}</p>
+
+  <form id="form" action="{% url 'checkout' %}" method="POST">
+    {% csrf_token %}
+    <input id="source" type="hidden" name="source" />
+  </form>
+
+  <script>
+    let handler = StripeCheckout.configure({
+      name: 'Account Vision',
+      key: '{{ key }}',
+      email: '{{ user.email }}',
+      image: "{% static 'logo-stripe.png' %}",
+      locale: 'auto',
+      description: 'Trial Subscription',
+      panelLabel: 'Begin Trial',
+      zipCode: true,
+      billingAddress: false,
+      allowRememberMe: false,
+      source: function (source) {
+        let input = document.getElementById('source');
+        input.value = source.id;
+        let form= document.getElementById('form');
+        form.submit();
+      }
+    });
+  </script>
+
+{% endblock %}

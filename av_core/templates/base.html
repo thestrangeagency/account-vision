@@ -8,6 +8,7 @@
 {% endblock %}
 
 <html>
+{% block head %}
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
@@ -29,6 +30,7 @@
   <meta name="theme-color" content="#ffffff">
 
 </head>
+{% endblock head %}
 <body class={% block body_styles %}tx-body{% endblock body_styles %}>
 {% block header %}
   <nav class="{% block nav_styles %}{% endblock nav_styles %} navbar navbar-dark navbar-expand-md pt-0 pb-0">
