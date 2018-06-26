@@ -1,3 +1,6 @@
+import datetime
+
+import stripe
 from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.contrib.auth import login
@@ -21,7 +24,7 @@ from av_account.models import AvUser
 from av_account.models import UserLogin
 from av_account.models import UserSecurity
 from av_account.utils import FullRequiredMixin, FullyVerifiedRequiredMixin
-from av_core import logger
+from av_core import logger, settings
 from av_utils.utils import get_object_or_None
 from .forms import AccountForm, FirmForm, AccountSetPasswordForm
 from .forms import AvUserCreationForm
@@ -262,6 +265,23 @@ class EditView(FullyVerifiedRequiredMixin, FormView):
     def form_valid(self, form):
         form.save()
         return super(EditView, self).form_valid(form)
+
+
+class PlanView(FullyVerifiedRequiredMixin, TemplateView):
+    template_name = 'plan.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(PlanView, self).get_context_data(**kwargs)
+
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        customer = stripe.Customer.retrieve(self.request.user.stripe_id)
+        subscription = customer.subscriptions.data[0]
+        plan = subscription.plan
+        
+        context['plan'] = plan
+        context['trial_end'] = datetime.datetime.utcfromtimestamp(subscription.trial_end)
+        
+        return context
 
 
 class EmailVerificationView(TemplateView):

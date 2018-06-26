@@ -10,6 +10,9 @@
 {% block tabs %}
 
   {% url 'edit' as edit%}
+  {% if user.is_cpa %}
+    {% url 'plan' as plan %}
+  {% endif %}
   {% url 'logins' as logins %}
   {% url 'devices' as devices %}
 
@@ -19,6 +22,11 @@
         <li class="nav-item">
           <a class="nav-link {% if request.get_full_path == edit %}active{% endif %}" href="{% url 'edit' %} ">Account</a>
         </li>
+        {% if user.is_cpa %}
+          <li class="nav-item">
+            <a class="nav-link {% if request.get_full_path == plan %}active{% endif %}" href="{% url 'plan' %} ">Plan</a>
+          </li>
+        {% endif %}
         <li class="nav-item">
           <a class="nav-link {% if request.get_full_path == logins %}active{% endif %}" href="{% url 'logins' %} ">Logins</a>
         </li>

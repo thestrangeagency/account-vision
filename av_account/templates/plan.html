@@ -1,0 +1,14 @@
+{% extends 'account_base.html' %}
+
+{% block content %}
+  {{ block.super }}
+
+  <h1 class="h1">Subscription Plan</h1>
+
+  <p>Active: {{ plan.active }}</p>
+  <p>{{ plan.amount }} per {{ plan.interval }}</p>
+  <p>{{ plan.id }}</p>
+
+  <p>Trial ends on {{ trial_end }}</p>
+
+{% endblock %}

@@ -57,7 +57,7 @@ urlpatterns = [
         name='client_created',
     ),
 
-    # account maintenance
+    # account misc
     url(
         regex=r'^new-device/$',
         view=TrustView.as_view(),
@@ -68,10 +68,17 @@ urlpatterns = [
         view=NewEmailView.as_view(),
         name='email_verify',
     ),
+    
+    # account maintenance
     url(
         regex=r'^edit/$',
         view=EditView.as_view(),
         name='edit',
+    ),
+    url(
+        regex=r'^plan/$',
+        view=PlanView.as_view(),
+        name='plan',
     ),
     url(
         regex=r'^logins/$',
