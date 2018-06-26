@@ -114,6 +114,10 @@ class AvUser(Person, AbstractBaseUser, PermissionsMixin):
     def trial_time_left(self):
         return self.trial_end - timezone.now()
 
+    def trial_days_left(self):
+        time_left = self.trial_time_left()
+        return time_left.days
+
     # 2FA via SMS
     verification_code = models.CharField(max_length=4, null=True, blank=True)
     is_verified = models.BooleanField(default=False)

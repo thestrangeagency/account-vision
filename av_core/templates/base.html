@@ -111,8 +111,12 @@
         </li>
       </ul>
       <div class={% block footer_address_class %}"tx-footer__address"{% endblock footer_address_class %}>
-        818 SW 3rd Ave #221-5989,
-        Portland OR 97204-2405
+        Logged in as {{ user.email }}
+        {% block trial %}
+          {% if user.trial_days_left > 0 %}
+            <span class="tx-trial-left">-- {{ user.trial_days_left }} days left in your trial</span>
+          {% endif %}
+        {% endblock trial %}
       </div>
       <div class={% block footer_badge_class %}"ml-auto rounded bg-white px-2 py-1"{% endblock footer_badge_class %}>
         {% if debug %}
