@@ -279,6 +279,7 @@ class PlanView(FullyVerifiedRequiredMixin, TemplateView):
         plan = subscription.plan
         
         context['plan'] = plan
+        context['status'] = subscription.status
         context['trial_end'] = datetime.datetime.fromtimestamp(subscription.trial_end, datetime.timezone.utc)
         
         return context
