@@ -84,10 +84,6 @@ class AvUserManager(BaseUserManager):
         return user
 
 
-def trial_end():
-    return timezone.now() + timezone.timedelta(days=30)
-
-
 class AvUser(Person, AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(verbose_name='email address', max_length=255, unique=True)
     phone = PhoneNumberField(null=True, blank=True)
@@ -99,7 +95,7 @@ class AvUser(Person, AbstractBaseUser, PermissionsMixin):
     is_cpa = models.BooleanField(default=False)
     
     is_paid = models.BooleanField(default=False)
-    trial_end = models.DateTimeField(default=trial_end)
+    trial_end = models.DateTimeField(null=True)
     stripe_id = models.CharField(blank=True, max_length=64)
 
     # user is fully active, i.e. paid or during a trial in the case of CPA user

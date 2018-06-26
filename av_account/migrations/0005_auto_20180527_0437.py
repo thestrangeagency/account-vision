@@ -21,6 +21,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='avuser',
             name='trial_end',
-            field=models.DateTimeField(default=av_account.models.trial_end),
+            field=models.DateTimeField(null=True),
+            # had to go back end change this in order to remove trial_end method from model
+            # field=models.DateTimeField(default=av_account.models.trial_end),
         ),
     ]
