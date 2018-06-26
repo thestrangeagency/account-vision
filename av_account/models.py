@@ -96,10 +96,11 @@ class AvUser(Person, AbstractBaseUser, PermissionsMixin):
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    
     is_cpa = models.BooleanField(default=False)
+    
     is_paid = models.BooleanField(default=False)
     trial_end = models.DateTimeField(default=trial_end)
+    stripe_id = models.CharField(blank=True, max_length=64)
 
     # user is fully active, i.e. paid or during a trial in the case of CPA user
     def is_full_cred(self):

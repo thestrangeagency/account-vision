@@ -10,16 +10,14 @@
 {% block content_title %}Checkout{% endblock content_title %}
 
 {% block modal_content %}
-  <p>To have our team of trained CPA’s review and build your return, please click the pay button below.</p>
+  <p>Click below to enter your payment info.</p>
+  <p>Your credit card will not be charged until your trial ends in 14 days. You may of course cancel at any time.</p>
 
   {% if code %}
     <p>Discount code <strong>{{ code }}</strong> applied.</p>
   {% endif %}
 
   <button class="btn btn-primary" id="subscribe" onclick="handler.open();">Begin Trial</button>
-
-  {{ key }}
-  <p>Your total is: {{ total }}</p>
 
   <form id="form" action="{% url 'checkout' %}" method="POST">
     {% csrf_token %}

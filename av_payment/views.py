@@ -1,11 +1,12 @@
+import datetime
+
 import stripe
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView, FormView
 
 from av_account.utils import VerifiedAndTrustedRequiredMixin
 from av_core import settings, logger
-from av_emails.utils import send_payment_email
 from av_payment.forms import TermsForm
 
 
@@ -23,7 +24,6 @@ class TermsView(VerifiedAndTrustedRequiredMixin, FormView):
 
 class CheckoutView(VerifiedAndTrustedRequiredMixin, TemplateView):
     template_name = 'av_payment/checkout.html'
-    price = 9900
 
     def dispatch(self, request, *args, **kwargs):
         if 'terms' not in self.request.session or not self.request.session['terms']:
@@ -33,6 +33,7 @@ class CheckoutView(VerifiedAndTrustedRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         stripe.api_key = settings.STRIPE_SECRET_KEY
 
+        # create a customer
         try:
             customer = stripe.Customer.create(
                 email=request.user.email,
@@ -43,28 +44,28 @@ class CheckoutView(VerifiedAndTrustedRequiredMixin, TemplateView):
             logger.error('Stripe customer creation error: %s', e)
             return redirect(reverse('error'))
 
-        try:
-            charge = stripe.Charge.create(
-                customer=customer.id,
-                amount=self.get_context_data()['data_amount'],
-                currency='usd',
-                description='Tax Filing',
-                metadata={'user_id': request.user.id},
-            )
+        # log any funny business like an existing subscription
+        if customer.subscriptions.total_count != 0:
+            logger.error('Creating a customer %s that already has a subscription!', customer.id)
 
+        # subscribe customer to default plan
+        try:
             subscription = stripe.Subscription.create(
                 customer=customer.id,
-                items=[{'plan': 'settings.STRIPE_DEFAULT_PLAN'}],
+                items=[{'plan': settings.STRIPE_DEFAULT_PLAN}],
+                trial_from_plan=True,
             )
 
         except stripe.error.StripeError as e:
-            logger.error('Stripe charge error: %s', e)
+            logger.error('Stripe subscription error: %s', e)
             return redirect(reverse('error'))
 
-        if charge.paid:
+        # if all went well, store results and redirect to ready page
+        if subscription is not None:
+            self.request.user.stripe_id = customer.id
             self.request.user.is_paid = True
+            self.request.user.trial_end = datetime.datetime.utcfromtimestamp(subscription.trial_end)
             self.request.user.save()
-            send_payment_email(self.request.user)
             return redirect(reverse('ready'))
         else:
             return redirect(reverse('error'))
@@ -72,8 +73,5 @@ class CheckoutView(VerifiedAndTrustedRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(CheckoutView, self).get_context_data(**kwargs)
         context['key'] = settings.STRIPE_PUBLIC_KEY
-        total = self.price - self.request.session['discount']
-        context['total'] = "${:.2f}".format(total/100)
-        context['data_amount'] = int(total)
         context['code'] = self.request.session['code']
         return context
