@@ -148,7 +148,6 @@ class TeamTestCase(TestCase):
         self.login_cpa()
 
         response = self.client.post(url, data)
-        print(response.content)
         self.assertEqual(response.status_code, status.HTTP_302_FOUND)
         self.assertRedirects(response, url)
 

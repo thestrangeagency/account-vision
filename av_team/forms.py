@@ -5,11 +5,13 @@ from django.contrib.auth.models import Group
 
 from av_account.models import AvUser, Firm
 
-role_field = forms.ChoiceField(
-    choices=[(o.id, str(o).capitalize()) for o in Group.objects.all()],
-    required=False,
-    help_text='Only Admins can invite, modify, or delete your firm members.'
-)
+
+def role_field():
+    return forms.ChoiceField(
+        choices=[(o.id, str(o).capitalize()) for o in Group.objects.all()],
+        required=False,
+        help_text='Only Admins can invite, modify, or erase your team members.'
+    )
 
 
 class InviteForm(forms.ModelForm):
@@ -21,7 +23,7 @@ class InviteForm(forms.ModelForm):
         super(InviteForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.add_input(Submit('submit', 'Invite'))
-        self.fields['role'] = role_field
+        self.fields['role'] = role_field()
 
 
 class DetailForm(forms.ModelForm):
@@ -36,7 +38,7 @@ class DetailForm(forms.ModelForm):
         self.helper.add_input(Submit('submit', 'Save'))
         if can_delete:
             self.helper.add_input(Submit('delete', 'Delete', css_class='mx-2 btn-warning'))
-        self.fields['role'] = role_field
+        self.fields['role'] = role_field()
 
 
 class TeamSettingsForm(forms.ModelForm):
