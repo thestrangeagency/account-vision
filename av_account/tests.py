@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.contrib import auth
+from django.contrib.auth.models import Group
 from django.core import mail
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
@@ -29,6 +30,7 @@ class AccountTestCase(TestCase):
             is_cpa=True,
         )
         self.cpa.phone = '(310) 666-3912'
+        self.cpa.trial_end = timezone.now() + timezone.timedelta(days=14)
         self.cpa.save()
 
         self.question1 = SecurityQuestion(question="a?")
@@ -37,6 +39,9 @@ class AccountTestCase(TestCase):
         self.question2.save()
         self.question3 = SecurityQuestion(question="c?")
         self.question3.save()
+
+        self.group = Group(name='admin')
+        self.group.save()
 
     def login(self):
         self.client.login(

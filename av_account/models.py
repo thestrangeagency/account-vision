@@ -106,7 +106,10 @@ class AvUser(Person, AbstractBaseUser, PermissionsMixin):
             if self.is_paid:
                 return True
             else:
-                return timezone.now() < self.trial_end
+                if self.trial_end is None:
+                    return False
+                else:
+                    return timezone.now() < self.trial_end
 
     def trial_time_left(self):
         return self.trial_end - timezone.now()

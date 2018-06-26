@@ -19,6 +19,9 @@ class UserStateRequiredMixin(LoginRequiredMixin):
 
 
 class VerifiedAndTrustedRequiredMixin(UserStateRequiredMixin):
+    """
+    Requires phone number to have been verified and device to be trusted
+    """
     def dispatch(self, request, *args, **kwargs):
         user = request.user
         if user.is_authenticated:
@@ -32,15 +35,24 @@ class VerifiedAndTrustedRequiredMixin(UserStateRequiredMixin):
         return super(VerifiedAndTrustedRequiredMixin, self).dispatch(request, *args, **kwargs)
 
 
-class FullRequiredMixin(VerifiedAndTrustedRequiredMixin):
+class FullyVerifiedRequiredMixin(VerifiedAndTrustedRequiredMixin):
+    """
+    Requires email and phone number to have been verified and device to be trusted
+    """
+    def dispatch(self, request, *args, **kwargs):
+        self.required_user_state = 'verified phone and email'
+        if request.user.is_authenticated:
+            if not request.user.is_email_verified:
+                return redirect(reverse('email_verify'))
+        return super(FullyVerifiedRequiredMixin, self).dispatch(request, *args, **kwargs)
+
+
+class FullRequiredMixin(FullyVerifiedRequiredMixin):
     def dispatch(self, request, *args, **kwargs):
         self.required_user_state = 'ready'
         if request.user.is_authenticated:
             if not request.user.is_full_cred():
                 return redirect(reverse('disabled'))
-            # removing email verification as a condition for using the site. turn it back on here if needed
-            if not request.user.is_email_verified:
-                return redirect(reverse('email_verify'))
         return super(FullRequiredMixin, self).dispatch(request, *args, **kwargs)
 
 

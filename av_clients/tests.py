@@ -5,6 +5,7 @@ from django.core import mail
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.urls import reverse
+from django.utils import timezone
 from rest_framework import status
 
 from av_account.models import AvUser, Firm
@@ -26,6 +27,7 @@ class ImportTestCase(TestCase):
         self.user.phone = '(310) 666-3912'
         self.user.is_verified = True
         self.user.is_email_verified = True
+        self.user.is_paid = True
         self.user.save()
 
     def login(self):
@@ -205,6 +207,7 @@ class ClientsTestCase(TestCase):
         self.cpa.firm = self.firm
         self.cpa.is_verified = True
         self.cpa.is_email_verified = True
+        self.cpa.trial_end = timezone.now() + timezone.timedelta(days=14)
         self.cpa.save()
 
         self.file = S3File(

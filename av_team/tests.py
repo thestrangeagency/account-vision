@@ -4,6 +4,7 @@ from django.contrib import auth
 from django.contrib.auth.models import Group
 from django.test import TestCase
 from django.urls import reverse
+from django.utils import timezone
 from rest_framework import status
 
 from av_account.models import AvUser, Firm
@@ -41,6 +42,7 @@ class TeamTestCase(TestCase):
         self.cpa.is_email_verified = True
         self.cpa.first_name = 'fred'
         self.cpa.last_name = 'smith'
+        self.cpa.trial_end = timezone.now() + timezone.timedelta(days=14)
         self.cpa.save()
         self.cpa.groups.add(self.group)
     
@@ -146,6 +148,7 @@ class TeamTestCase(TestCase):
         self.login_cpa()
 
         response = self.client.post(url, data)
+        print(response.content)
         self.assertEqual(response.status_code, status.HTTP_302_FOUND)
         self.assertRedirects(response, url)
 

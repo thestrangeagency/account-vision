@@ -20,7 +20,7 @@ from ipware.ip import get_ip
 from av_account.models import AvUser
 from av_account.models import UserLogin
 from av_account.models import UserSecurity
-from av_account.utils import FullRequiredMixin
+from av_account.utils import FullRequiredMixin, FullyVerifiedRequiredMixin
 from av_core import logger
 from av_utils.utils import get_object_or_None
 from .forms import AccountForm, FirmForm, AccountSetPasswordForm
@@ -219,7 +219,7 @@ class NewEmailView(LoginRequiredMixin, FormView):
         return render(self.request, self.template_name, {'form': form})
 
 
-class DevicesView(FullRequiredMixin, FormView):
+class DevicesView(FullyVerifiedRequiredMixin, FormView):
     template_name = 'devices.html'
     form_class = DevicesForm
     success_url = reverse_lazy('devices')
@@ -229,7 +229,7 @@ class DevicesView(FullRequiredMixin, FormView):
         return render(self.request, self.template_name, {'form': form, 'revoked': True})
 
 
-class LoginsView(FullRequiredMixin, ListView):
+class LoginsView(FullyVerifiedRequiredMixin, ListView):
     model = UserLogin
     template_name = 'logins.html'
     queryset = UserLogin.objects.order_by('-date_created')[:10]
@@ -240,7 +240,7 @@ class LoginsView(FullRequiredMixin, ListView):
         return context
 
 
-class EditView(FullRequiredMixin, FormView):
+class EditView(FullyVerifiedRequiredMixin, FormView):
     template_name = 'edit.html'
     form_class = AccountForm
     success_url = reverse_lazy('edit')
