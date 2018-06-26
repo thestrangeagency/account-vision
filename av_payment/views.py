@@ -64,7 +64,7 @@ class CheckoutView(VerifiedAndTrustedRequiredMixin, TemplateView):
         if subscription is not None:
             self.request.user.stripe_id = customer.id
             self.request.user.is_paid = True
-            self.request.user.trial_end = datetime.datetime.utcfromtimestamp(subscription.trial_end)
+            self.request.user.trial_end = datetime.datetime.fromtimestamp(subscription.trial_end, datetime.timezone.utc)
             self.request.user.save()
             return redirect(reverse('ready'))
         else:
