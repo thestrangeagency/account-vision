@@ -314,7 +314,16 @@ DJANGO_MESSAGES_NOTIFY = False  # disable built-in emails
 # stripe
 STRIPE_PUBLIC_KEY = os.environ.get("STRIPE_PUBLIC_KEY", "")
 STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "")
-STRIPE_DEFAULT_PLAN = os.environ.get("STRIPE_DEFAULT_PLAN", "")
+STRIPE_DEFAULT_PLAN = os.environ.get("STRIPE_PLAN_C_M", "plan_D7AOs7TfDtWrlg")
+
+PLANS = [
+    os.environ.get("STRIPE_PLAN_A_Y", "plan_D7oXwgD2i182za"),
+    os.environ.get("STRIPE_PLAN_A_M", "plan_D7oX8RjUSEso8g"),
+    os.environ.get("STRIPE_PLAN_B_Y", "plan_D7oW7JZ6R71FXq"),
+    os.environ.get("STRIPE_PLAN_B_M", "plan_D7oWRuh8ivq60s"),
+    os.environ.get("STRIPE_PLAN_C_Y", "plan_D7AOJHXXX6nHmW"),
+    os.environ.get("STRIPE_PLAN_C_M", "plan_D7AOs7TfDtWrlg"),
+]
 
 # notifications
 NOTIFICATION_NUMBERS = (

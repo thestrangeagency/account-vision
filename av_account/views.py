@@ -277,13 +277,27 @@ class PlanView(FullyVerifiedRequiredMixin, TemplateView):
         customer = stripe.Customer.retrieve(self.request.user.stripe_id)
         subscription = customer.subscriptions.data[0]
         plan = subscription.plan
+        plan.amount = str(plan.amount)[:-2]  # convert eg 9900 to 99
         
         context['plan'] = plan
         context['status'] = subscription.status
+        context['end'] = datetime.datetime.fromtimestamp(subscription.current_period_end, datetime.timezone.utc)
         context['trial_end'] = datetime.datetime.fromtimestamp(subscription.trial_end, datetime.timezone.utc)
+        
+        context['cpa_count'] = AvUser.objects.filter(firm=self.request.user.firm, is_cpa=True).count()
+        context['client_count'] = AvUser.objects.filter(firm=self.request.user.firm, is_cpa=False).count()
         
         return context
 
+
+class ChangePlanView(FullyVerifiedRequiredMixin, TemplateView):
+    template_name = 'plan_change.html'
+
+    def post(self, request, *args, **kwargs):
+        
+        return render(request, self.template_name, self.get_context_data())
+        # return redirect(self.get_success_url())
+    
 
 class EmailVerificationView(TemplateView):
     template_name = 'email_verification.html'

@@ -81,6 +81,11 @@ urlpatterns = [
         name='plan',
     ),
     url(
+        regex=r'^change-plan/$',
+        view=ChangePlanView.as_view(),
+        name='change-plan',
+    ),
+    url(
         regex=r'^logins/$',
         view=LoginsView.as_view(),
         name='logins',

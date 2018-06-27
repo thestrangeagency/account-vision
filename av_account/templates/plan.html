@@ -6,10 +6,15 @@
   <h1 class="h1">Subscription Plan</h1>
 
   <p>Active: {{ plan.active }}</p>
-  <p>{{ plan.amount }} per {{ plan.interval }}</p>
+  <p>${{ plan.amount }} per {{ plan.interval }}</p>
   <p>{{ plan.id }}</p>
+  <p>Using {{ cpa_count }} of {{ plan.metadata.max_cpa }} firm accounts.</p>
+  <p>Using {{ client_count }} of {{ plan.metadata.max_client }} client accounts.</p>
 
   <p>Subscription status: {{ status }}</p>
+  <p>Subscription period end: {{ end }}</p>
   <p>Trial ends on {{ trial_end }}</p>
+
+  <a class="btn btn-primary" href="{% url 'change-plan' %}">Change Plan</a>
 
 {% endblock %}
