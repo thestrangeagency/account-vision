@@ -297,6 +297,41 @@ class ChangePlanView(FullyVerifiedRequiredMixin, TemplateView):
         
         return render(request, self.template_name, self.get_context_data())
         # return redirect(self.get_success_url())
+
+    def get_context_data(self, **kwargs):
+        context = super(ChangePlanView, self).get_context_data(**kwargs)
+
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        
+        # retrieve all plans at once for speed
+        plans = stripe.Plan.list()
+
+        # pluck out the plans we are interested in
+        plan_a = next(x for x in plans.data if x.id == settings.STRIPE_PLANS['yearly']['a'])
+        plan_b = next(x for x in plans.data if x.id == settings.STRIPE_PLANS['yearly']['b'])
+        plan_c = next(x for x in plans.data if x.id == settings.STRIPE_PLANS['yearly']['c'])
+
+        plan_am = next(x for x in plans.data if x.id == settings.STRIPE_PLANS['monthly']['a'])
+        plan_bm = next(x for x in plans.data if x.id == settings.STRIPE_PLANS['monthly']['b'])
+        plan_cm = next(x for x in plans.data if x.id == settings.STRIPE_PLANS['monthly']['c'])
+        
+        # calculate display versions of prices
+        plan_a.amount = round(plan_a.amount / 1200)
+        plan_b.amount = round(plan_b.amount / 1200)
+        plan_c.amount = round(plan_c.amount / 1200)
+
+        plan_am.amount = round(plan_am.amount / 100)
+        plan_bm.amount = round(plan_bm.amount / 100)
+        plan_cm.amount = round(plan_cm.amount / 100)
+        
+        # show monthly option in yearly plans
+        plan_a.metadata.monthly = plan_am.amount
+        plan_b.metadata.monthly = plan_bm.amount
+        plan_c.metadata.monthly = plan_cm.amount
+        
+        context['plans'] = [plan_a, plan_b, plan_c]
+
+        return context
     
 
 class EmailVerificationView(TemplateView):

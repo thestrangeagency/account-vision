@@ -5,4 +5,32 @@
 
   <h1 class="h1">Change Subscription Plan</h1>
 
+  <form method="post">{% csrf_token %}
+    <div class="card-deck mb-3 text-center">
+
+      {% for plan in plans %}
+
+        <div class="card mb-4 box-shadow">
+          <div class="card-header">
+            <h4 class="my-0 font-weight-normal">{{ plan.metadata.name }}</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">${{ plan.amount }}
+              <small class="text-muted">/ mo</small>
+            </h1>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>{{ plan.metadata.max_cpa }} firm member{{ plan.metadata.max_cpa|pluralize }}</li>
+              <li>{{ plan.metadata.max_client }} clients</li>
+              <li>{{ plan.metadata.support }} firm members</li>
+            </ul>
+            <button type="button" class="btn btn-lg btn-block btn-primary">Yearly</button>
+            <button type="button" class="btn btn-lg btn-block btn-secondary">${{ plan.metadata.monthly }} Monthly</button>
+          </div>
+        </div>
+
+      {% endfor %}
+
+    </div>
+  </form>
+
 {% endblock %}
