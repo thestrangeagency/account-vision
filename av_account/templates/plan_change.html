@@ -23,8 +23,8 @@
               <li>{{ plan.metadata.max_client }} clients</li>
               <li>{{ plan.metadata.support }} firm members</li>
             </ul>
-            <button type="button" class="btn btn-lg btn-block btn-primary">Yearly</button>
-            <button type="button" class="btn btn-lg btn-block btn-secondary">${{ plan.metadata.monthly }} Monthly</button>
+            <input name="y{{ plan.metadata.post }}" type="submit" value="Yearly" class="btn btn-lg btn-block btn-primary"/>
+            <input name="m{{ plan.metadata.post }}" type="submit" value="${{ plan.metadata.monthly }} Monthly" class="btn btn-lg btn-block btn-secondary"/>
           </div>
         </div>
 

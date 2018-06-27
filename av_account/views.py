@@ -23,7 +23,7 @@ from ipware.ip import get_ip
 from av_account.models import AvUser
 from av_account.models import UserLogin
 from av_account.models import UserSecurity
-from av_account.utils import FullRequiredMixin, FullyVerifiedRequiredMixin
+from av_account.utils import FullRequiredMixin, FullyVerifiedRequiredMixin, StripeMixin
 from av_core import logger, settings
 from av_utils.utils import get_object_or_None
 from .forms import AccountForm, FirmForm, AccountSetPasswordForm
@@ -267,13 +267,12 @@ class EditView(FullyVerifiedRequiredMixin, FormView):
         return super(EditView, self).form_valid(form)
 
 
-class PlanView(FullyVerifiedRequiredMixin, TemplateView):
+class PlanView(FullyVerifiedRequiredMixin, TemplateView, StripeMixin):
     template_name = 'plan.html'
 
     def get_context_data(self, **kwargs):
         context = super(PlanView, self).get_context_data(**kwargs)
 
-        stripe.api_key = settings.STRIPE_SECRET_KEY
         customer = stripe.Customer.retrieve(self.request.user.stripe_id)
         subscription = customer.subscriptions.data[0]
         plan = subscription.plan
@@ -290,18 +289,34 @@ class PlanView(FullyVerifiedRequiredMixin, TemplateView):
         return context
 
 
-class ChangePlanView(FullyVerifiedRequiredMixin, TemplateView):
+class ChangePlanView(FullyVerifiedRequiredMixin, TemplateView, StripeMixin):
     template_name = 'plan_change.html'
-
+    success_url = reverse_lazy('plan')
+    
     def post(self, request, *args, **kwargs):
         
-        return render(request, self.template_name, self.get_context_data())
-        # return redirect(self.get_success_url())
+        if request.POST.get('ya'):
+            self.change_plan(settings.STRIPE_PLANS['yearly']['a'])
+        elif request.POST.get('ma'):
+            self.change_plan(settings.STRIPE_PLANS['monthly']['a'])
+
+        elif request.POST.get('yb'):
+            self.change_plan(settings.STRIPE_PLANS['yearly']['b'])
+        elif request.POST.get('mb'):
+            self.change_plan(settings.STRIPE_PLANS['monthly']['b'])
+
+        elif request.POST.get('yc'):
+            self.change_plan(settings.STRIPE_PLANS['yearly']['c'])
+        elif request.POST.get('mc'):
+            self.change_plan(settings.STRIPE_PLANS['monthly']['c'])
+        
+        else:
+            return render(request, self.template_name, self.get_context_data())
+        
+        return redirect(self.success_url)
 
     def get_context_data(self, **kwargs):
         context = super(ChangePlanView, self).get_context_data(**kwargs)
-
-        stripe.api_key = settings.STRIPE_SECRET_KEY
         
         # retrieve all plans at once for speed
         plans = stripe.Plan.list()
@@ -328,6 +343,10 @@ class ChangePlanView(FullyVerifiedRequiredMixin, TemplateView):
         plan_a.metadata.monthly = plan_am.amount
         plan_b.metadata.monthly = plan_bm.amount
         plan_c.metadata.monthly = plan_cm.amount
+
+        plan_a.metadata.post = 'a'
+        plan_b.metadata.post = 'b'
+        plan_c.metadata.post = 'c'
         
         context['plans'] = [plan_a, plan_b, plan_c]
 

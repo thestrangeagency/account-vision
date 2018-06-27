@@ -317,7 +317,7 @@ STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "")
 
 STRIPE_PLANS = {
     'yearly': {
-        'a': os.environ.get("STRIPE_PLAN_A_Y", "plan_D7oXwgD2i182za"),
+        'a': os.environ.get("STRIPE_PLAN_A_Y", "plan_D7v3rkEl6X0Z7H"),
         'b': os.environ.get("STRIPE_PLAN_B_Y", "plan_D7oW7JZ6R71FXq"),
         'c': os.environ.get("STRIPE_PLAN_C_Y", "plan_D7AOJHXXX6nHmW"),
     },

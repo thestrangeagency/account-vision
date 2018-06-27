@@ -1,3 +1,4 @@
+import stripe
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import redirect_to_login
 from django.shortcuts import redirect, get_object_or_404
@@ -12,7 +13,7 @@ from av_emails.utils import send_untrusted_device_email
 
 class UserStateRequiredMixin(LoginRequiredMixin):
     required_user_state = 'none'
-
+    
     def render_to_response(self, context, **response_kwargs):
         context['required_user_state'] = self.required_user_state
         return super(UserStateRequiredMixin, self).render_to_response(context, **response_kwargs)
@@ -86,3 +87,23 @@ class UserViewMixin(View):
     
     def get_object(self, queryset=None):
         return self.get_user()
+
+
+class StripeMixin(View):
+    def dispatch(self, request, *args, **kwargs):
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        return super(StripeMixin, self).dispatch(request, *args, **kwargs)
+    
+    def get_subscription(self):
+        customer = stripe.Customer.retrieve(self.request.user.stripe_id)
+        return customer.subscriptions.data[0]
+    
+    def change_plan(self, plan_id):
+        subscription = self.get_subscription()
+        stripe.Subscription.modify(subscription.id,
+                                   cancel_at_period_end=False,
+                                   items=[{
+                                       'id': subscription['items']['data'][0].id,
+                                       'plan': plan_id,
+                                   }]
+                                   )
