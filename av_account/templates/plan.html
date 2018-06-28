@@ -18,7 +18,7 @@
     </tr>
     <tr>
       <td>Current Period End</td>
-      <td>{{ end }}</td>
+      <td>{{ end|date:"M d, Y" }}</td>
     </tr>
     <tr>
       <td>Status</td>
@@ -42,7 +42,7 @@
   </table>
 
   {% if trial_end %}
-    <p>Trial ends on {{ trial_end }}</p>
+    <p>Trial ends on {{ trial_end }} UTC</p>
   {% endif %}
 
   <a class="btn btn-primary" href="{% url 'change-plan' %}">Change Plan</a>
