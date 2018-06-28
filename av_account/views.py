@@ -347,8 +347,16 @@ class ChangePlanView(FullyVerifiedRequiredMixin, TemplateView, StripeMixin):
         plan_a.metadata.post = 'a'
         plan_b.metadata.post = 'b'
         plan_c.metadata.post = 'c'
+
+        cpa_count = AvUser.objects.filter(firm=self.request.user.firm, is_cpa=True).count()
+        client_count = AvUser.objects.filter(firm=self.request.user.firm, is_cpa=False).count()
+        
+        if cpa_count > int(plan_a.metadata.max_cpa) or client_count > int(plan_a.metadata.max_client):
+            plan_a.metadata.disabled = True
         
         context['plans'] = [plan_a, plan_b, plan_c]
+        context['cpa_count'] = cpa_count
+        context['client_count'] = client_count
 
         return context
     

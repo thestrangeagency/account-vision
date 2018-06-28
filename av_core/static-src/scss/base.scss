@@ -216,6 +216,23 @@ ul {
 
 .card {
   background-color: $blue;
+  font-size: 1.1rem;
+
+  h1 {
+    @extend %roboto-medium;
+
+    line-height: 1.5;
+    font-size: 1.5rem;
+
+    @include from-breakpoint(lg) {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+.card-header {
+  background-color: $dark-blue;
 }
 
 // errors on file upload for importing users were not showing up due to bootstrap default display: none

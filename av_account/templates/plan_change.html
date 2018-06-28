@@ -5,6 +5,8 @@
 
   <h1 class="h1">Change Subscription Plan</h1>
 
+  <p class="pb-4">Select a new plan below, opting for discounted yearly or regular monthly billing.</p>
+
   <form method="post">{% csrf_token %}
     <div class="card-deck mb-3 text-center">
 
@@ -21,10 +23,10 @@
             <ul class="list-unstyled mt-3 mb-4">
               <li>{{ plan.metadata.max_cpa }} firm member{{ plan.metadata.max_cpa|pluralize }}</li>
               <li>{{ plan.metadata.max_client }} clients</li>
-              <li>{{ plan.metadata.support }} firm members</li>
+              <li>{{ plan.metadata.support }} support</li>
             </ul>
-            <input name="y{{ plan.metadata.post }}" type="submit" value="Yearly" class="btn btn-lg btn-block btn-primary"/>
-            <input name="m{{ plan.metadata.post }}" type="submit" value="${{ plan.metadata.monthly }} Monthly" class="btn btn-lg btn-block btn-secondary"/>
+            <input name="y{{ plan.metadata.post }}" type="submit" value="Yearly" class="btn btn-lg btn-block btn-primary" {% if  plan.metadata.disabled %}disabled{% endif %}/>
+            <input name="m{{ plan.metadata.post }}" type="submit" value="${{ plan.metadata.monthly }} Monthly" class="btn btn-lg btn-block btn-secondary" {% if  plan.metadata.disabled %}disabled{% endif %}/>
           </div>
         </div>
 
@@ -32,5 +34,7 @@
 
     </div>
   </form>
+
+  <p>You are currently using {{ cpa_count }} firm accounts and {{ client_count }} client accounts.</p>
 
 {% endblock %}
