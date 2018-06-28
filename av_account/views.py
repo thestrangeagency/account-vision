@@ -376,7 +376,7 @@ class ChangeCardView(FullyVerifiedRequiredMixin, TemplateView, StripeMixin):
     
         except stripe.error.StripeError as e:
             logger.error('Stripe customer modification error: %s', e)
-            return redirect(reverse('error'))
+            return redirect(reverse('plan'))
     
         return redirect(self.success_url)
 
