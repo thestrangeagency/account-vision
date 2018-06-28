@@ -231,6 +231,10 @@ ul {
   }
 }
 
+.disabled {
+  opacity: .3;
+}
+
 .card-header {
   background-color: $dark-blue;
 }
