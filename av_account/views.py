@@ -286,6 +286,8 @@ class PlanView(FullyVerifiedRequiredMixin, TemplateView, StripeMixin):
         context['cpa_count'] = AvUser.objects.filter(firm=self.request.user.firm, is_cpa=True).count()
         context['client_count'] = AvUser.objects.filter(firm=self.request.user.firm, is_cpa=False).count()
         
+        context['last4'] = customer.sources.data[0].card.last4
+        
         return context
 
 
@@ -359,7 +361,7 @@ class ChangePlanView(FullyVerifiedRequiredMixin, TemplateView, StripeMixin):
         context['client_count'] = client_count
 
         return context
-    
+
 
 class EmailVerificationView(TemplateView):
     template_name = 'email_verification.html'
