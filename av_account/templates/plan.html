@@ -5,16 +5,45 @@
 
   <h1 class="h1">Subscription Plan</h1>
 
-  <p>Status: {{ plan.active }}</p>
-  <p>Using credit card ending in {{ last4 }} <span class="text-muted"><a href="{% url 'change-card' %}">change</a></span></p>
-  <p>${{ plan.amount }} per {{ plan.interval }}</p>
-  <p>{{ plan.id }}</p>
-  <p>Using {{ cpa_count }} of {{ plan.metadata.max_cpa }} firm accounts.</p>
-  <p>Using {{ client_count }} of {{ plan.metadata.max_client }} client accounts.</p>
+  <h4 class="h4">Current Plan</h4>
+  <table class="table dictionary-table mt-4">
+    <tbody>
+    <tr>
+      <td>Billed Amount</td>
+      <td>${{ plan.amount }} per {{ plan.interval }}</td>
+    </tr>
+    <tr>
+      <td>Credit Card</td>
+      <td>ending in {{ last4 }} <span class="text-muted"><a href="{% url 'change-card' %}">change →</a></span></td>
+    </tr>
+    <tr>
+      <td>Current Period End</td>
+      <td>{{ end }}</td>
+    </tr>
+    <tr>
+      <td>Status</td>
+      <td>{{ status }}</td>
+    </tr>
+    </tbody>
+  </table>
 
-  <p>Subscription status: {{ status }}</p>
-  <p>Subscription period end: {{ end }}</p>
-  <p>Trial ends on {{ trial_end }}</p>
+  <h4 class="h4">Usage</h4>
+  <table class="table dictionary-table mt-4">
+    <tbody>
+    <tr>
+      <td>Firm accounts</td>
+      <td>{{ cpa_count }} of {{ plan.metadata.max_cpa }}</td>
+    </tr>
+    <tr>
+      <td>Client Accounts</td>
+      <td>{{ client_count }} of {{ plan.metadata.max_client }}</td>
+    </tr>
+    </tbody>
+  </table>
+
+  {% if trial_end %}
+    <p>Trial ends on {{ trial_end }}</p>
+  {% endif %}
 
   <a class="btn btn-primary" href="{% url 'change-plan' %}">Change Plan</a>
 
