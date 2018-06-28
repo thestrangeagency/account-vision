@@ -363,6 +363,29 @@ class ChangePlanView(FullyVerifiedRequiredMixin, TemplateView, StripeMixin):
         return context
 
 
+class ChangeCardView(FullyVerifiedRequiredMixin, TemplateView, StripeMixin):
+    template_name = 'card_change.html'
+    success_url = reverse_lazy('plan')
+
+    def post(self, request, *args, **kwargs):
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+    
+        # modify customer payment source
+        try:
+            stripe.Customer.modify(self.request.user.stripe_id, source=request.POST.get('source'))
+    
+        except stripe.error.StripeError as e:
+            logger.error('Stripe customer modification error: %s', e)
+            return redirect(reverse('error'))
+    
+        return redirect(self.success_url)
+
+    def get_context_data(self, **kwargs):
+        context = super(ChangeCardView, self).get_context_data(**kwargs)
+        context['key'] = settings.STRIPE_PUBLIC_KEY
+        return context
+
+
 class EmailVerificationView(TemplateView):
     template_name = 'email_verification.html'
 

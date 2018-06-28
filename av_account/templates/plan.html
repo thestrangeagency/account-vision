@@ -6,7 +6,7 @@
   <h1 class="h1">Subscription Plan</h1>
 
   <p>Status: {{ plan.active }}</p>
-  <p>Using credit card ending in {{ last4 }}</p>
+  <p>Using credit card ending in {{ last4 }} <span class="text-muted"><a href="{% url 'change-card' %}">change</a></span></p>
   <p>${{ plan.amount }} per {{ plan.interval }}</p>
   <p>{{ plan.id }}</p>
   <p>Using {{ cpa_count }} of {{ plan.metadata.max_cpa }} firm accounts.</p>

@@ -1,0 +1,44 @@
+{% extends 'base-modal.html' %}
+
+{% load static %}
+
+{% block head %}
+  {{ block.super }}
+  <script src="https://checkout.stripe.com/checkout.js"></script>
+{% endblock head %}
+
+{% block content_title %}Billing Source{% endblock content_title %}
+
+{% block modal_content %}
+  <p>Click below to update your payment info.</p>
+
+  <button class="btn btn-primary" id="subscribe" onclick="handler.open();">Update</button>
+  <button class="btn btn-secondary" onclick="window.history.back()">Cancel</button>
+
+  <form id="form" action="{% url 'change-card' %}" method="POST">
+    {% csrf_token %}
+    <input id="source" type="hidden" name="source" />
+  </form>
+
+  <script>
+    let handler = StripeCheckout.configure({
+      name: 'Account Vision',
+      key: '{{ key }}',
+      email: '{{ user.email }}',
+      image: "{% static 'logo-stripe.png' %}",
+      locale: 'auto',
+      description: 'Update Billing Source',
+      panelLabel: 'Update',
+      zipCode: true,
+      billingAddress: false,
+      allowRememberMe: false,
+      source: function (source) {
+        let input = document.getElementById('source');
+        input.value = source.id;
+        let form= document.getElementById('form');
+        form.submit();
+      }
+    });
+  </script>
+
+{% endblock %}
