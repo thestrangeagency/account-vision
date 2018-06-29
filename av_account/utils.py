@@ -96,7 +96,7 @@ class StripeMixin(View):
         return super(StripeMixin, self).dispatch(request, *args, **kwargs)
     
     def get_subscription(self):
-        customer = stripe.Customer.retrieve(self.request.user.stripe_id)
+        customer = stripe.Customer.retrieve(self.request.user.firm.stripe_id)
         return customer.subscriptions.data[0]
     
     def change_plan(self, plan_id):

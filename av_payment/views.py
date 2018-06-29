@@ -62,10 +62,12 @@ class CheckoutView(VerifiedAndTrustedRequiredMixin, TemplateView):
 
         # if all went well, store results and redirect to ready page
         if subscription is not None:
-            self.request.user.stripe_id = customer.id
-            self.request.user.is_paid = True
-            self.request.user.trial_end = datetime.datetime.fromtimestamp(subscription.trial_end, datetime.timezone.utc)
-            self.request.user.save()
+            firm = self.request.user.firm
+            firm.boss = self.request.user
+            firm.stripe_id = customer.id
+            firm.is_paid = True
+            firm.trial_end = datetime.datetime.fromtimestamp(subscription.trial_end, datetime.timezone.utc)
+            firm.save()
             return redirect(reverse('ready'))
         else:
             return redirect(reverse('error'))

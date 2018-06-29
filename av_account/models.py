@@ -24,6 +24,39 @@ from av_utils.utils import TimeStampedModel
 class Firm(TimeStampedModel):
     name = models.CharField(verbose_name='firm name, as you would like your clients to see it', max_length=150, blank=True)
 
+    stripe_id = models.CharField(blank=True, max_length=64)
+    trial_end = models.DateTimeField(null=True)
+    is_paid = models.BooleanField(default=False)
+
+    # this user's email address is associated with the stripe account
+    boss = models.OneToOneField('AvUser', related_name='boss_of', null=True)
+
+    # user is fully active, i.e. paid or during a trial in the case of CPA user
+    def is_full_cred(self):
+        if self.stripe_id is None:
+            return False
+        
+        if self.is_paid:
+            return True
+        else:
+            if self.trial_end is None:
+                return False
+            else:
+                return timezone.now() < self.trial_end
+
+    def trial_time_left(self):
+        return self.trial_end - timezone.now()
+
+    def trial_days_left(self):
+        time_left = self.trial_time_left()
+        return time_left.days
+
+    def cpa_count(self):
+        return AvUser.objects.filter(firm=self, is_cpa=True).count()
+
+    def client_count(self):
+        return AvUser.objects.filter(firm=self, is_cpa=False).count()
+
     def get_absolute_url(self):
         return reverse_lazy('team-settings')
 
@@ -94,35 +127,24 @@ class AvUser(Person, AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_cpa = models.BooleanField(default=False)
     
-    is_paid = models.BooleanField(default=False)
-    trial_end = models.DateTimeField(null=True)
-    stripe_id = models.CharField(blank=True, max_length=64)
-
     # user is fully active, i.e. paid or during a trial in the case of CPA user
     def is_full_cred(self):
-        if not self.is_cpa:
-            return self.is_active
+        if self.is_cpa:
+            return self.firm.is_full_cred()
         else:
-            if self.is_paid:
-                return True
-            else:
-                if self.trial_end is None:
-                    return False
-                else:
-                    return timezone.now() < self.trial_end
+            return self.is_active
 
     def trial_time_left(self):
-        return self.trial_end - timezone.now()
+        return self.firm.trial_time_left()
 
     def trial_days_left(self):
-        time_left = self.trial_time_left()
-        return time_left.days
+        return self.firm.trial_days_left()
     
     def cpa_count(self):
-        return AvUser.objects.filter(firm=self.firm, is_cpa=True).count()
+        return self.firm.cpa_count()
     
     def client_count(self):
-        return AvUser.objects.filter(firm=self.firm, is_cpa=False).count()
+        return self.firm.client_count()
 
     # 2FA via SMS
     verification_code = models.CharField(max_length=4, null=True, blank=True)

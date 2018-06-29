@@ -141,7 +141,9 @@ class FirmView(LoginRequiredMixin, FormView):
     success_url = reverse_lazy('terms')
 
     def form_valid(self, form):
-        firm = form.save()
+        firm = form.save(commit=False)
+        firm.boss = self.request.user
+        firm.save()
         self.request.user.firm = firm
         self.request.user.save()
         return super(FirmView, self).form_valid(form)
@@ -273,7 +275,7 @@ class PlanView(FullyVerifiedRequiredMixin, TemplateView, StripeMixin):
     def get_context_data(self, **kwargs):
         context = super(PlanView, self).get_context_data(**kwargs)
 
-        customer = stripe.Customer.retrieve(self.request.user.stripe_id)
+        customer = stripe.Customer.retrieve(self.request.user.firm.stripe_id)
         subscription = customer.subscriptions.data[0]
         plan = subscription.plan
         plan.amount = str(plan.amount)[:-2]  # convert eg 9900 to 99
@@ -327,7 +329,7 @@ class ChangeCardView(FullyVerifiedRequiredMixin, TemplateView, StripeMixin):
     
         # modify customer payment source
         try:
-            stripe.Customer.modify(self.request.user.stripe_id, source=request.POST.get('source'))
+            stripe.Customer.modify(self.request.user.firm.stripe_id, source=request.POST.get('source'))
     
         except stripe.error.StripeError as e:
             logger.error('Stripe customer modification error: %s', e)
