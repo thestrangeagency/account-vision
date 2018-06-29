@@ -23,7 +23,7 @@ from ipware.ip import get_ip
 from av_account.models import AvUser
 from av_account.models import UserLogin
 from av_account.models import UserSecurity
-from av_account.utils import FullyVerifiedRequiredMixin, StripeMixin, StripePlansMixin
+from av_account.utils import FullyVerifiedRequiredMixin, StripeMixin, StripePlansMixin, VerifiedAndTrustedRequiredMixin
 from av_core import logger, settings
 from av_utils.utils import get_object_or_None
 from .forms import AccountForm, FirmForm, AccountSetPasswordForm
@@ -103,7 +103,16 @@ class PhoneNumberView(LoginRequiredMixin, FormView):
     form_class = PhoneNumberForm
     success_url = reverse_lazy('verification')
 
-    def get_form(self):
+    def dispatch(self, request, *args, **kwargs):
+        user = request.user
+        if user.is_authenticated:
+            try:
+                us = user.usersecurity
+            except UserSecurity.DoesNotExist:
+                return redirect('questions')
+        return super(PhoneNumberView, self).dispatch(request, *args, **kwargs)
+
+    def get_form(self, form_class=None):
         user = self.request.user
         return self.form_class(instance=user, **self.get_form_kwargs())
 
@@ -135,7 +144,7 @@ class VerificationView(LoginRequiredMixin, FormView):
             return reverse_lazy('client_created')
 
 
-class FirmView(LoginRequiredMixin, FormView):
+class FirmView(VerifiedAndTrustedRequiredMixin, FormView):
     template_name = 'firm.html'
     form_class = FirmForm
     success_url = reverse_lazy('terms')

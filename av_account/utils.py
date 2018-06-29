@@ -28,8 +28,12 @@ class VerifiedAndTrustedRequiredMixin(UserStateRequiredMixin):
         user = request.user
         if user.is_authenticated:
             if not user.is_verified:
-                user.send_verification_code()
-                return redirect_to_login(self.request.get_full_path(), settings.VERIFY_URL, self.get_redirect_field_name())
+                # does user have a phone number yet?
+                if user.phone is None:
+                    return redirect('phone')
+                else:
+                    user.send_verification_code()
+                    return redirect_to_login(self.request.get_full_path(), settings.VERIFY_URL, self.get_redirect_field_name())
             if not request.agent.is_trusted:
                 send_untrusted_device_email(user, get_ip(request))
                 user.send_verification_code()
@@ -50,11 +54,20 @@ class FullyVerifiedRequiredMixin(VerifiedAndTrustedRequiredMixin):
 
 
 class FullRequiredMixin(FullyVerifiedRequiredMixin):
+    """
+    Ensure the user is a client or is a cpa who has paid or is trialing
+    """
     def dispatch(self, request, *args, **kwargs):
         self.required_user_state = 'ready'
         if request.user.is_authenticated:
             if not request.user.is_full_cred():
-                return redirect(reverse('disabled'))
+                if request.user.is_cpa:
+                    if request.user.firm is None:
+                        return redirect(reverse('firm'))
+                    elif request.user.firm.stripe_id is None:
+                        return redirect(reverse('payment'))
+                    else:
+                        return redirect(reverse('disabled'))
         return super(FullRequiredMixin, self).dispatch(request, *args, **kwargs)
 
 

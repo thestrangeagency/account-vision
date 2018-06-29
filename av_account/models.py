@@ -130,7 +130,10 @@ class AvUser(Person, AbstractBaseUser, PermissionsMixin):
     # user is fully active, i.e. paid or during a trial in the case of CPA user
     def is_full_cred(self):
         if self.is_cpa:
-            return self.firm.is_full_cred()
+            if self.firm is None:
+                return False
+            else:
+                return self.firm.is_full_cred()
         else:
             return self.is_active
 
