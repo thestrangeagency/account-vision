@@ -283,8 +283,8 @@ class PlanView(FullyVerifiedRequiredMixin, TemplateView, StripeMixin):
         context['end'] = datetime.datetime.fromtimestamp(subscription.current_period_end, datetime.timezone.utc)
         context['trial_end'] = datetime.datetime.fromtimestamp(subscription.trial_end, datetime.timezone.utc)
         
-        context['cpa_count'] = AvUser.objects.filter(firm=self.request.user.firm, is_cpa=True).count()
-        context['client_count'] = AvUser.objects.filter(firm=self.request.user.firm, is_cpa=False).count()
+        context['cpa_count'] = self.request.user.cpa_count()
+        context['client_count'] = self.request.user.client_count()
         
         context['last4'] = customer.sources.data[0].card.last4
         
@@ -350,8 +350,8 @@ class ChangePlanView(FullyVerifiedRequiredMixin, TemplateView, StripeMixin):
         plan_b.metadata.post = 'b'
         plan_c.metadata.post = 'c'
 
-        cpa_count = AvUser.objects.filter(firm=self.request.user.firm, is_cpa=True).count()
-        client_count = AvUser.objects.filter(firm=self.request.user.firm, is_cpa=False).count()
+        cpa_count = self.request.user.cpa_count()
+        client_count = self.request.user.client_count()
         
         if cpa_count > int(plan_a.metadata.max_cpa) or client_count > int(plan_a.metadata.max_client):
             plan_a.metadata.disabled = True

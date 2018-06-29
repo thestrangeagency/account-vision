@@ -117,6 +117,12 @@ class AvUser(Person, AbstractBaseUser, PermissionsMixin):
     def trial_days_left(self):
         time_left = self.trial_time_left()
         return time_left.days
+    
+    def cpa_count(self):
+        return AvUser.objects.filter(firm=self.firm, is_cpa=True).count()
+    
+    def client_count(self):
+        return AvUser.objects.filter(firm=self.firm, is_cpa=False).count()
 
     # 2FA via SMS
     verification_code = models.CharField(max_length=4, null=True, blank=True)
@@ -338,6 +344,7 @@ user_logged_in.connect(update_user_login)
 class Communications(models.Model):
     user = models.OneToOneField(AvUser, on_delete=models.CASCADE)
     registration_reminders = models.IntegerField(default=0)
+    trial_end_reminders = models.IntegerField(default=0)
 
 
 class Bank(models.Model):
