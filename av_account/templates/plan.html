@@ -10,7 +10,7 @@
     <tbody>
     <tr>
       <td>Billed Amount</td>
-      <td>${{ plan.amount }} per {{ plan.interval }}</td>
+      <td>${{ plan.amount }} per {{ plan.interval }} {% if status == 'trialing' %}(after trial ends){% endif %}</td>
     </tr>
     <tr>
       <td>Credit Card</td>
