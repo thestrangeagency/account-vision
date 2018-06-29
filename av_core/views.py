@@ -1,25 +1,32 @@
 from actstream.models import user_stream
+from django.shortcuts import redirect
 from django.views.generic import TemplateView, ListView
 
-from av_account.utils import StripePlansMixin
+from av_account.utils import StripePlansMixin, ClientRequiredMixin, CPARequiredMixin
 
 
 class HomeView(TemplateView, StripePlansMixin):
-    
-    def get_template_names(self):
+    template_name = 'home.html'
+
+    def dispatch(self, request, *args, **kwargs):
         if self.request.user.is_authenticated:
             if self.request.user.is_cpa:
-                return ['home_cpa.html']
+                return redirect('cpa-home')
             else:
-                return ['home_client.html']
-        else:
-            return ['home.html']
-    
+                return redirect('client-home')
+        return super(HomeView, self).dispatch(request, *args, **kwargs)
+
+
+class ClientHomeView(ClientRequiredMixin, TemplateView):
+    template_name = 'home_client.html'
+
+
+class CpaHomeView(CPARequiredMixin, TemplateView):
+    template_name = 'home_cpa.html'
+
     def get_context_data(self, **kwargs):
-        context = super(HomeView, self).get_context_data(**kwargs)
-        if self.request.user.is_authenticated:
-            if self.request.user.is_cpa:
-                context['stream'] = user_stream(self.request.user, with_user_activity=True)
+        context = super(CpaHomeView, self).get_context_data(**kwargs)
+        context['stream'] = user_stream(self.request.user, with_user_activity=True)
         return context
 
 

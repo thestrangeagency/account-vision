@@ -12,7 +12,7 @@ from rest_framework import routers
 from av_account.api import UserViewSet
 from av_contact.views import ContactView
 from av_core import settings
-from av_core.views import HomeView
+from av_core.views import HomeView, ClientHomeView, CpaHomeView
 from av_returns.api import ExpenseViewSet, CommonExpenseViewSet, ReturnViewSet
 from av_uploads.views import UploadParamsView, UploadSignatureView, UploadCompleteView, FileViewSet, CpaFileViewSet, \
     DownloadsViewSet
@@ -50,6 +50,8 @@ router.register(r'returns/(?P<year>[0-9]{4})/expenses/common', CommonExpenseView
 urlpatterns = [
 
     url(r'^$', HomeView.as_view(), name='home'),
+    url(r'^dashboard/$', CpaHomeView.as_view(), name='cpa-home'),
+    url(r'^home/$', ClientHomeView.as_view(), name='client-home'),
 
     url(r'^account/', include('av_account.urls')),
     url(r'^profile/', include('av_profile.urls')),
