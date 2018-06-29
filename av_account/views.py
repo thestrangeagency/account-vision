@@ -23,7 +23,7 @@ from ipware.ip import get_ip
 from av_account.models import AvUser
 from av_account.models import UserLogin
 from av_account.models import UserSecurity
-from av_account.utils import FullRequiredMixin, FullyVerifiedRequiredMixin, StripeMixin
+from av_account.utils import FullyVerifiedRequiredMixin, StripeMixin, StripePlansMixin
 from av_core import logger, settings
 from av_utils.utils import get_object_or_None
 from .forms import AccountForm, FirmForm, AccountSetPasswordForm
@@ -291,7 +291,7 @@ class PlanView(FullyVerifiedRequiredMixin, TemplateView, StripeMixin):
         return context
 
 
-class ChangePlanView(FullyVerifiedRequiredMixin, TemplateView, StripeMixin):
+class ChangePlanView(FullyVerifiedRequiredMixin, TemplateView, StripePlansMixin):
     template_name = 'plan_change.html'
     success_url = reverse_lazy('plan')
     
@@ -316,51 +316,6 @@ class ChangePlanView(FullyVerifiedRequiredMixin, TemplateView, StripeMixin):
             return render(request, self.template_name, self.get_context_data())
         
         return redirect(self.success_url)
-
-    def get_context_data(self, **kwargs):
-        context = super(ChangePlanView, self).get_context_data(**kwargs)
-        
-        # retrieve all plans at once for speed
-        plans = stripe.Plan.list()
-
-        # pluck out the plans we are interested in
-        plan_a = next(x for x in plans.data if x.id == settings.STRIPE_PLANS['yearly']['a'])
-        plan_b = next(x for x in plans.data if x.id == settings.STRIPE_PLANS['yearly']['b'])
-        plan_c = next(x for x in plans.data if x.id == settings.STRIPE_PLANS['yearly']['c'])
-
-        plan_am = next(x for x in plans.data if x.id == settings.STRIPE_PLANS['monthly']['a'])
-        plan_bm = next(x for x in plans.data if x.id == settings.STRIPE_PLANS['monthly']['b'])
-        plan_cm = next(x for x in plans.data if x.id == settings.STRIPE_PLANS['monthly']['c'])
-        
-        # calculate display versions of prices
-        plan_a.amount = round(plan_a.amount / 1200)
-        plan_b.amount = round(plan_b.amount / 1200)
-        plan_c.amount = round(plan_c.amount / 1200)
-
-        plan_am.amount = round(plan_am.amount / 100)
-        plan_bm.amount = round(plan_bm.amount / 100)
-        plan_cm.amount = round(plan_cm.amount / 100)
-        
-        # show monthly option in yearly plans
-        plan_a.metadata.monthly = plan_am.amount
-        plan_b.metadata.monthly = plan_bm.amount
-        plan_c.metadata.monthly = plan_cm.amount
-
-        plan_a.metadata.post = 'a'
-        plan_b.metadata.post = 'b'
-        plan_c.metadata.post = 'c'
-
-        cpa_count = self.request.user.cpa_count()
-        client_count = self.request.user.client_count()
-        
-        if cpa_count > int(plan_a.metadata.max_cpa) or client_count > int(plan_a.metadata.max_client):
-            plan_a.metadata.disabled = True
-        
-        context['plans'] = [plan_a, plan_b, plan_c]
-        context['cpa_count'] = cpa_count
-        context['client_count'] = client_count
-
-        return context
 
 
 class ChangeCardView(FullyVerifiedRequiredMixin, TemplateView, StripeMixin):

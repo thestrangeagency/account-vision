@@ -4,6 +4,7 @@ from django.contrib.auth.views import redirect_to_login
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse
 from django.views import View
+from django.views.generic.base import ContextMixin
 from ipware.ip import get_ip
 
 from av_account.models import AvUser
@@ -107,3 +108,53 @@ class StripeMixin(View):
                                        'plan': plan_id,
                                    }]
                                    )
+
+
+class StripePlansMixin(ContextMixin, StripeMixin):
+    def get_context_data(self, **kwargs):
+        context = super(StripePlansMixin, self).get_context_data(**kwargs)
+        
+        # retrieve all plans at once for speed
+        plans = stripe.Plan.list()
+        
+        # pluck out the plans we are interested in
+        plan_a = next(x for x in plans.data if x.id == settings.STRIPE_PLANS['yearly']['a'])
+        plan_b = next(x for x in plans.data if x.id == settings.STRIPE_PLANS['yearly']['b'])
+        plan_c = next(x for x in plans.data if x.id == settings.STRIPE_PLANS['yearly']['c'])
+        
+        plan_am = next(x for x in plans.data if x.id == settings.STRIPE_PLANS['monthly']['a'])
+        plan_bm = next(x for x in plans.data if x.id == settings.STRIPE_PLANS['monthly']['b'])
+        plan_cm = next(x for x in plans.data if x.id == settings.STRIPE_PLANS['monthly']['c'])
+        
+        # calculate display versions of prices
+        plan_a.amount = round(plan_a.amount / 1200)
+        plan_b.amount = round(plan_b.amount / 1200)
+        plan_c.amount = round(plan_c.amount / 1200)
+        
+        plan_am.amount = round(plan_am.amount / 100)
+        plan_bm.amount = round(plan_bm.amount / 100)
+        plan_cm.amount = round(plan_cm.amount / 100)
+        
+        # show monthly option in yearly plans
+        plan_a.metadata.monthly = plan_am.amount
+        plan_b.metadata.monthly = plan_bm.amount
+        plan_c.metadata.monthly = plan_cm.amount
+        
+        plan_a.metadata.post = 'a'
+        plan_b.metadata.post = 'b'
+        plan_c.metadata.post = 'c'
+        
+        # if logged in, check usage to calculate plan availability
+        if self.request.user.is_authenticated:
+            cpa_count = self.request.user.cpa_count()
+            client_count = self.request.user.client_count()
+            
+            if cpa_count > int(plan_a.metadata.max_cpa) or client_count > int(plan_a.metadata.max_client):
+                plan_a.metadata.disabled = True
+            
+            context['cpa_count'] = cpa_count
+            context['client_count'] = client_count
+        
+        context['plans'] = [plan_a, plan_b, plan_c]
+        
+        return context

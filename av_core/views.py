@@ -1,8 +1,10 @@
 from actstream.models import user_stream
 from django.views.generic import TemplateView, ListView
 
+from av_account.utils import StripePlansMixin
 
-class HomeView(TemplateView):
+
+class HomeView(TemplateView, StripePlansMixin):
     
     def get_template_names(self):
         if self.request.user.is_authenticated:
