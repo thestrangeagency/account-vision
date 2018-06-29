@@ -24,7 +24,7 @@ from av_utils.utils import TimeStampedModel
 class Firm(TimeStampedModel):
     name = models.CharField(verbose_name='firm name, as you would like your clients to see it', max_length=150, blank=True)
 
-    stripe_id = models.CharField(blank=True, max_length=64)
+    stripe_id = models.CharField(null=True, max_length=64)
     trial_end = models.DateTimeField(null=True)
     is_paid = models.BooleanField(default=False)
 

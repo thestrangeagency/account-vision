@@ -65,7 +65,7 @@ class FullRequiredMixin(FullyVerifiedRequiredMixin):
                     if request.user.firm is None:
                         return redirect(reverse('firm'))
                     elif request.user.firm.stripe_id is None:
-                        return redirect(reverse('payment'))
+                        return redirect(reverse('checkout'))
                     else:
                         return redirect(reverse('disabled'))
         return super(FullRequiredMixin, self).dispatch(request, *args, **kwargs)
