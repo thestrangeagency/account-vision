@@ -23,7 +23,8 @@ from ipware.ip import get_ip
 from av_account.models import AvUser
 from av_account.models import UserLogin
 from av_account.models import UserSecurity
-from av_account.utils import FullyVerifiedRequiredMixin, StripeMixin, StripePlansMixin, VerifiedAndTrustedRequiredMixin
+from av_account.utils import FullyVerifiedRequiredMixin, StripeMixin, StripePlansMixin, VerifiedAndTrustedRequiredMixin, \
+    FullRequiredMixin
 from av_core import logger, settings
 from av_utils.utils import get_object_or_None
 from .forms import AccountForm, FirmForm, AccountSetPasswordForm
@@ -278,7 +279,7 @@ class EditView(FullyVerifiedRequiredMixin, FormView):
         return super(EditView, self).form_valid(form)
 
 
-class PlanView(FullyVerifiedRequiredMixin, TemplateView, StripeMixin):
+class PlanView(FullRequiredMixin, TemplateView, StripeMixin):
     template_name = 'plan.html'
 
     def get_context_data(self, **kwargs):
@@ -302,7 +303,7 @@ class PlanView(FullyVerifiedRequiredMixin, TemplateView, StripeMixin):
         return context
 
 
-class ChangePlanView(FullyVerifiedRequiredMixin, TemplateView, StripePlansMixin):
+class ChangePlanView(FullRequiredMixin, TemplateView, StripePlansMixin):
     template_name = 'plan_change.html'
     success_url = reverse_lazy('plan')
     
