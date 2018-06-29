@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+  {{ block.super }}
+  {% breadcrumb "Legal" "legal" %}
+{% endblock %}
+
+{% block content %}
+  <h1 class="pb-4">Legal</h1>
+{% endblock %}

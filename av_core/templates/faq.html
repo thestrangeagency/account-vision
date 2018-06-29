@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+  {{ block.super }}
+  {% breadcrumb "FAQ" "faq" %}
+{% endblock %}
+
+{% block content %}
+  <h1 class="pb-4">Frequently Asked Questions</h1>
+
+  <div>
+
+    <div class="pb-3">
+      <div class="h5">
+        How does it work?
+      </div>
+      <div>
+        <p class="mb-3">
+         Ask me another.
+        </p>
+      </div>
+    </div>
+
+  </div>
+{% endblock %}
