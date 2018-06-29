@@ -37,6 +37,17 @@ pipenv install
 npm install
 ```
 
+### Stripe setup
+
+__Note: this is global, across all installations. You probably DO NOT need to do this.__
+
+Delete all test data first using the [dashboard](https://dashboard.stripe.com/account/data), and then set up a product and pricing.
+
+```
+# load a product and pricing plans
+python manage.py shell < av_utils/create_plans.py
+```
+
 ### Start the local server
 
 ```sh
@@ -156,6 +167,18 @@ heroku run python manage.py loaddata account/fixtures/users.json -a acvi-stage-p
 # to dump group data, we want natural keys
 python manage.py dumpdata auth --natural-foreign --natural-primary --indent 4 -e auth.Permission
 ```
+
+## Cron jobs
+
+Use Heroku Scheduler to run the following:
+
+```
+python manage.py stripe
+python manage.py purge_streams
+# this one needs updating:
+# python manage.py abandoned
+```
+
 
 ## Heroku Shell
 

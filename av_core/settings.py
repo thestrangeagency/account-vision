@@ -317,14 +317,14 @@ STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "")
 
 STRIPE_PLANS = {
     'yearly': {
-        'a': os.environ.get("STRIPE_PLAN_A_Y", "plan_D7v3rkEl6X0Z7H"),
-        'b': os.environ.get("STRIPE_PLAN_B_Y", "plan_D7oW7JZ6R71FXq"),
-        'c': os.environ.get("STRIPE_PLAN_C_Y", "plan_D7AOJHXXX6nHmW"),
+        'a': os.environ.get("STRIPE_PLAN_A_Y", "plan_ay"),
+        'b': os.environ.get("STRIPE_PLAN_B_Y", "plan_by"),
+        'c': os.environ.get("STRIPE_PLAN_C_Y", "plan_cy"),
     },
     'monthly': {
-        'a': os.environ.get("STRIPE_PLAN_A_M", "plan_D7oX8RjUSEso8g"),
-        'b': os.environ.get("STRIPE_PLAN_B_M", "plan_D7oWRuh8ivq60s"),
-        'c': os.environ.get("STRIPE_PLAN_C_M", "plan_D7AOs7TfDtWrlg"),
+        'a': os.environ.get("STRIPE_PLAN_A_M", "plan_am"),
+        'b': os.environ.get("STRIPE_PLAN_B_M", "plan_bm"),
+        'c': os.environ.get("STRIPE_PLAN_C_M", "plan_cm"),
     }
 }
 
