@@ -1,10 +1,13 @@
 import datetime
 
 import stripe
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView, FormView
+from django.utils import timezone
 
+from av_account.models import Communications, Firm
 from av_account.utils import VerifiedAndTrustedRequiredMixin
 from av_core import settings, logger
 from av_payment.forms import TermsForm
@@ -15,8 +18,24 @@ class TermsView(VerifiedAndTrustedRequiredMixin, FormView):
     form_class = TermsForm
     success_url = reverse_lazy('checkout')
 
+    def dispatch(self, request, *args, **kwargs):
+        """
+        continue to next step if user has already agreed
+        """
+        user = request.user
+        if user.is_authenticated:
+            try:
+                comms = Communications.objects.get(user=self.request.user)
+                if comms.agreed_terms:
+                    return redirect(self.success_url)
+            except ObjectDoesNotExist:
+                pass
+        return super(TermsView, self).dispatch(request, *args, **kwargs)
+
     def form_valid(self, form):
-        self.request.session['terms'] = True
+        comms, created = Communications.objects.get_or_create(user=self.request.user)
+        comms.agreed_terms = timezone.now()
+        comms.save()
         self.request.session['discount'] = form.get_discount()
         self.request.session['code'] = form.cleaned_data.get('code')
         return super(TermsView, self).form_valid(form)
@@ -26,8 +45,12 @@ class CheckoutView(VerifiedAndTrustedRequiredMixin, TemplateView):
     template_name = 'av_payment/checkout.html'
 
     def dispatch(self, request, *args, **kwargs):
-        if 'terms' not in self.request.session or not self.request.session['terms']:
+        try:
+            Communications.objects.get(user=self.request.user)
+        except ObjectDoesNotExist:
             return redirect(reverse('terms'))
+        if self.request.user.firm.stripe_id is not None:
+            return redirect(reverse('home'))
         return super(CheckoutView, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):

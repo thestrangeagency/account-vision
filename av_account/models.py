@@ -368,6 +368,7 @@ user_logged_in.connect(update_user_login)
 
 class Communications(models.Model):
     user = models.OneToOneField(AvUser, on_delete=models.CASCADE)
+    agreed_terms = models.DateTimeField('date agreed to terms', null=True)
     registration_reminders = models.IntegerField(default=0)
     trial_end_reminders = models.IntegerField(default=0)
 

@@ -35,7 +35,8 @@ class TermsForm(Form):
     def clean_terms(self):
         if not self.cleaned_data.get('terms'):
             raise forms.ValidationError(u'You must agree to our terms and conditions to proceed.')
-        return self.cleaned_data.get('terms')
+        else:
+            return self.cleaned_data.get('terms')
 
     def get_discount(self):
         code = self.cleaned_data.get('code')
