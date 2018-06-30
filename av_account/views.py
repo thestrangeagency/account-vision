@@ -20,7 +20,7 @@ from django_agent_trust import revoke_other_agents
 from django_agent_trust import trust_agent
 from ipware.ip import get_ip
 
-from av_account.models import AvUser
+from av_account.models import AvUser, Firm
 from av_account.models import UserLogin
 from av_account.models import UserSecurity
 from av_account.utils import FullyVerifiedRequiredMixin, StripeMixin, StripePlansMixin, VerifiedAndTrustedRequiredMixin, \
@@ -71,31 +71,22 @@ class SecurityQuestionsView(LoginRequiredMixin, FormView):
     form_class = SecurityQuestionsForm
     success_url = reverse_lazy('phone')
 
-    def get_form(self):
-        if self.request.POST:
-            return self.form_class(self.request.POST)
-        else:
-            security = get_object_or_None(UserSecurity, user=self.request.user)
-            form = self.form_class(instance=security)
-            # hide answers
-            for i in range(1, 3):
-                if 'answer{}'.format(i) in form.initial:
-                    form.initial['answer{}'.format(i)] = '••••••••'
-            return form
+    def dispatch(self, request, *args, **kwargs):
+        """
+        continue to next step if user already has security questions
+        """
+        user = request.user
+        if user.is_authenticated:
+            try:
+                us = user.usersecurity
+            except UserSecurity.DoesNotExist:
+                return super(SecurityQuestionsView, self).dispatch(request, *args, **kwargs)
+        return redirect(self.success_url)
 
     def form_valid(self, form):
-        user = self.request.user
-        security = get_object_or_None(UserSecurity, user=self.request.user)
-        if security is None:
-            security = form.save(commit=False)
-            security.user = user
-        for i in range(1, 3):
-            form_answer = form.cleaned_data['answer{}'.format(i)]
-            # only save new answers
-            if form_answer is not '' and form_answer is not None and '•' not in form_answer:
-                security.set_answer(i, form_answer)
+        security = form.save(commit=False)
+        security.user = self.request.user
         security.save()
-
         return super(SecurityQuestionsView, self).form_valid(form)
 
 
@@ -149,6 +140,18 @@ class FirmView(VerifiedAndTrustedRequiredMixin, FormView):
     template_name = 'firm.html'
     form_class = FirmForm
     success_url = reverse_lazy('terms')
+
+    def dispatch(self, request, *args, **kwargs):
+        """
+        continue to next step if user already has a firm
+        """
+        user = request.user
+        if user.is_authenticated:
+            try:
+                firm = user.firm
+            except Firm.DoesNotExist:
+                return super(FirmView, self).dispatch(request, *args, **kwargs)
+        return redirect(self.success_url)
 
     def form_valid(self, form):
         firm = form.save(commit=False)
@@ -211,7 +214,7 @@ class TrustView(LoginRequiredMixin, SuccessURLAllowedHostsMixin, FormView):
     form_class = VerificationForm
     success_url = reverse_lazy('returns')
 
-    def get_form(self):
+    def get_form(self, form_class=None):
         return self.form_class(user=self.request.user, **self.get_form_kwargs())
 
     def form_valid(self, form):
@@ -260,7 +263,7 @@ class EditView(FullyVerifiedRequiredMixin, FormView):
     form_class = AccountForm
     success_url = reverse_lazy('edit')
 
-    def get_form(self):
+    def get_form(self, form_class=None):
         user = self.request.user
         return self.form_class(instance=user, **self.get_form_kwargs())
 
