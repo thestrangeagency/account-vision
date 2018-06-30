@@ -165,21 +165,30 @@ class FirmView(VerifiedAndTrustedRequiredMixin, FormView):
 class InvitationView(FormView):
     template_name = 'invitation.html'
     form_class = AccountSetPasswordForm
+    user = None
 
-    def get_form(self, form_class=None):
+    def dispatch(self, request, *args, **kwargs):
         # find user matching verification code
         code = self.kwargs['code']
         try:
             user = AvUser.objects.get(email_verification_code=code)
-            user.is_email_verified = True
-            user.save()
-            return self.form_class(user=user, **self.get_form_kwargs())
+            # if password already set, someone is trying to reuse an invite code
+            if user.password:
+                return redirect(reverse('home'))
         except ObjectDoesNotExist:
             logger.warn('Attempted to accept invite with bad code')
             return None
+        self.user = user
+        return super(InvitationView, self).dispatch(request, *args, **kwargs)
+    
+    def get_form(self, form_class=None):
+        return self.form_class(user=self.user, **self.get_form_kwargs())
 
     def form_valid(self, form):
-        user = form.save()
+        user = form.save(commit=False)
+        # verify email since user received emailed invite code
+        user.is_email_verified = True
+        user.save()
 
         # automatically log in
         password = self.request.POST.get('new_password1', None)
