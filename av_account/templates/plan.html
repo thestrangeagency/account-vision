@@ -9,6 +9,10 @@
   <table class="table dictionary-table mt-4">
     <tbody>
     <tr>
+      <td>Tier</td>
+      <td>{{ plan.metadata.name }} - {% if plan.interval == 'month' %}monthly{% else %}yearly{% endif %}</td>
+    </tr>
+    <tr>
       <td>Billed Amount</td>
       <td>${{ plan.amount }} per {{ plan.interval }} {% if status == 'trialing' %}(after trial ends){% endif %}</td>
     </tr>
