@@ -10,7 +10,7 @@ def role_field():
     return forms.ChoiceField(
         choices=[(o.id, str(o).capitalize()) for o in Group.objects.all()],
         required=False,
-        help_text='Only Admins can invite, modify, or erase your team members.'
+        help_text='Only Admins can invite, modify, or remove your team members.'
     )
 
 

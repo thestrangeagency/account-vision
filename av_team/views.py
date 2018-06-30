@@ -35,7 +35,7 @@ class TeamDetailView(CPAAdminRequiredMixin, UserViewMixin, UpdateView, SimpleFor
         kwargs = super(TeamDetailView, self).get_form_kwargs()
         # hides form delete field, so user cannot delete self
         kwargs.update({
-            'can_delete': self.request.user != self.get_user(),
+            'can_delete': self.request.user != self.get_user() and self.request.user.firm.boss != self.get_user(),
         })
         return kwargs
 
