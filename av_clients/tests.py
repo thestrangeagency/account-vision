@@ -19,6 +19,14 @@ class ImportTestCase(TestCase):
 
     def setUp(self):
         self.password = 'aT%In<Yo'
+
+        self.firm = Firm(
+            name='acme'
+        )
+        self.firm.stripe_id = 'bogus'
+        self.firm.is_paid = True
+        self.firm.save()
+        
         self.user = AvUser.objects.create_user(
             email='test@example.com',
             password=self.password,
@@ -27,7 +35,7 @@ class ImportTestCase(TestCase):
         self.user.phone = '(310) 666-3912'
         self.user.is_verified = True
         self.user.is_email_verified = True
-        self.user.is_paid = True
+        self.user.firm = self.firm
         self.user.save()
 
     def login(self):
@@ -173,6 +181,8 @@ class ClientsTestCase(TestCase):
         self.firm = Firm(
             name='acme'
         )
+        self.firm.stripe_id = 'bogus'
+        self.firm.is_paid = True
         self.firm.save()
         
         self.user = AvUser.objects.create_user(
@@ -241,6 +251,8 @@ class ClientsTestCase(TestCase):
         firm = Firm(
             name='not acme'
         )
+        firm.stripe_id = 'bogus'
+        firm.is_paid = True
         firm.save()
         self.cpa.firm = firm
         self.cpa.save()

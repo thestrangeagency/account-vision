@@ -18,6 +18,8 @@ class TeamTestCase(TestCase):
         self.firm = Firm(
             name='acme'
         )
+        self.firm.stripe_id = 'bogus'
+        self.firm.is_paid = True
         self.firm.save()
         
         self.user = AvUser.objects.create_user(
@@ -83,9 +85,9 @@ class TeamTestCase(TestCase):
         self.cpa.groups.clear()
     
         # should redirect home
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_302_FOUND)
-        self.assertRedirects(response, reverse('home'))
+        response = self.client.get(url, follow=True)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertRedirects(response, reverse('cpa-home'))
 
     def test_list_view(self):
         url = reverse('team')

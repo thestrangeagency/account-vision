@@ -86,6 +86,10 @@ class SecurityQuestionsView(LoginRequiredMixin, FormView):
     def form_valid(self, form):
         security = form.save(commit=False)
         security.user = self.request.user
+        # use a custom setter to hash security answers
+        for i in range(1, 3):
+            form_answer = form.cleaned_data['answer{}'.format(i)]
+            security.set_answer(i, form_answer)
         security.save()
         return super(SecurityQuestionsView, self).form_valid(form)
 

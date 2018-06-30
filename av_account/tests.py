@@ -10,7 +10,7 @@ from freezegun import freeze_time
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from .models import AvUser, SecurityQuestion, UserSecurity
+from .models import AvUser, SecurityQuestion, UserSecurity, Firm
 
 
 class AccountTestCase(TestCase):
@@ -24,13 +24,21 @@ class AccountTestCase(TestCase):
         self.user.phone = '(310) 666-3912'
         self.user.save()
 
+        self.firm = Firm(
+            name='acme'
+        )
+        self.firm.stripe_id = 'bogus'
+        self.firm.is_paid = False
+        self.firm.trial_end = timezone.now() + timezone.timedelta(days=14)
+        self.firm.save()
+        
         self.cpa = AvUser.objects.create_user(
             email='cpa@example.com',
             password=self.password,
             is_cpa=True,
         )
         self.cpa.phone = '(310) 666-3912'
-        self.cpa.trial_end = timezone.now() + timezone.timedelta(days=14)
+        self.cpa.firm = self.firm
         self.cpa.save()
 
         self.question1 = SecurityQuestion(question="a?")
@@ -60,7 +68,7 @@ class AccountTestCase(TestCase):
             self.assertFalse(self.cpa.is_full_cred())
 
         # pay after expiration
-        self.cpa.is_paid = True
+        self.cpa.firm.is_paid = True
         self.assertTrue(self.cpa.is_full_cred())
 
     def test_register(self):
@@ -253,15 +261,20 @@ class AccountTestCase(TestCase):
         self.assertRaises(ValidationError)
 
     def test_phone(self):
+        # have to answer security questions first or else will get redirected back to security page
+        self.test_security()
+        self.client.logout()
+        
         url = reverse('phone')
         data = {
             'phone': '3106663912',
         }
 
+        # try anonymous
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, status.HTTP_302_FOUND)
-        # self.assertRedirects(response, settings.LOGIN_URL)  # django bug here
-
+        self.assertRedirects(response, '{}?next={}'.format(settings.LOGIN_URL, url))
+        
         self.client.login(username=self.user.email, password=self.password)
 
         response = self.client.post(url, data, format='json')
