@@ -12,12 +12,12 @@ from django.core.validators import validate_email
 from django.db.models.functions import Lower
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import ListView, FormView, DetailView
+from django.views.generic import ListView, FormView, DetailView, DeleteView
 from django.views.generic.base import View, ContextMixin
 from tempfile import NamedTemporaryFile
 
 from av_account.models import AvUser
-from av_account.utils import CPARequiredMixin, StripeMixin
+from av_account.utils import CPARequiredMixin, StripeMixin, UserViewMixin
 from av_core.views import AbstractTableView
 from av_returns.models import Return, Expense
 from av_uploads.models import S3File
@@ -84,6 +84,16 @@ class ClientDetailView(AbstractClientView, DetailView):
     def get_object(self, queryset=None):
         return self.get_user()
 
+
+class ClientDeleteView(CPARequiredMixin, UserViewMixin, DeleteView):
+    model = AvUser
+    success_url = reverse_lazy('clients')
+    
+    def delete(self, request, *args, **kwargs):
+        user = self.get_user()
+        messages.success(self.request, 'Deleted {} {} ({}).'.format(user.first_name, user.last_name, user.email))
+        return super(ClientDeleteView, self).delete(request)
+    
 
 class ClientActivityView(AbstractClientView, DetailView):
     model = AvUser

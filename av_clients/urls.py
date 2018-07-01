@@ -14,6 +14,11 @@ urlpatterns = [
         name='client-detail',
     ),
     url(
+        regex=r'^(?P<username>[\w.@+-]+)/delete/$',
+        view=ClientDeleteView.as_view(),
+        name='client-delete',
+    ),
+    url(
         regex=r'^(?P<username>[\w.@+-]+)/activity/$',
         view=ClientActivityView.as_view(),
         name='client-activity',
