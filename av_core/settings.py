@@ -50,7 +50,7 @@ LOGOUT_REDIRECT_URL = "/"
 LOGIN_URL = reverse_lazy('login')
 VERIFY_URL = reverse_lazy('trust')
 
-DEFAULT_FROM_EMAIL = 'no-reply@account.vision'
+DEFAULT_FROM_EMAIL = 'Account Vision <no-reply@account.vision>'
 SERVER_EMAIL = 'info@accoun.vision'
 
 ADMINS = [('Lucas', 'lucas@strange.agency')]
