@@ -43,6 +43,13 @@ class Command(BaseCommand):
                     
                     # update trial end time
                     firm.trial_end = datetime.datetime.fromtimestamp(subscription.trial_end, datetime.timezone.utc)
+
+                    # update status
+                    if subscription.status in ('trialing', 'active', 'past_due'):
+                        firm.is_paid = True
+                    else:
+                        firm.is_paid = False
+
                     firm.save()
                     count += 1
                     
