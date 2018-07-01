@@ -23,14 +23,14 @@ metadata_a = {
 }
 
 metadata_b = {
-    "max_client": "1000",
+    "max_client": "500",
     "max_cpa": "5",
     "name": "Practice",
     "support": "email"
 }
 
 metadata_c = {
-    "max_client": "3000",
+    "max_client": "1500",
     "max_cpa": "15",
     "name": "Firm",
     "support": "email and phone"
