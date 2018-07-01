@@ -7,8 +7,20 @@
 
   <h1 class="h1">Invite</h1>
 
-  <p>Invite a new member to your firm.</p>
+  {% if cpa_count >= max_cpa %}
 
-  {% crispy form %}
+    <p>You have reached your firm membership limit.</p>
+
+  {% else %}
+
+    <p>Use the form below to invite a new member to your firm.</p>
+
+    {% crispy form %}
+
+  {% endif %}
+
+  <p>You are using {{ cpa_count }} out of {{ max_cpa }} firm accounts allowed under your
+    <a href="{% url 'plan' %}">current plan.</a>
+  </p>
 
 {% endblock %}

@@ -17,7 +17,7 @@ from django.views.generic.base import View, ContextMixin
 from tempfile import NamedTemporaryFile
 
 from av_account.models import AvUser
-from av_account.utils import CPARequiredMixin
+from av_account.utils import CPARequiredMixin, StripeMixin
 from av_core.views import AbstractTableView
 from av_returns.models import Return, Expense
 from av_uploads.models import S3File
@@ -155,7 +155,7 @@ class InviteForm(forms.ModelForm):
         self.helper.add_input(Submit('submit', 'Invite'))
 
 
-class ClientInviteView(CPARequiredMixin, FormView):
+class ClientInviteView(CPARequiredMixin, FormView, StripeMixin):
     form_class = InviteForm
     template_name = 'av_clients/invite.html'
     success_url = reverse_lazy('invite')
@@ -168,6 +168,16 @@ class ClientInviteView(CPARequiredMixin, FormView):
         messages.success(self.request, 'Invitation sent to {}.'.format(user.email))
         follow(self.request.user, user, actor_only=False)
         return super(ClientInviteView, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(ClientInviteView, self).get_context_data(**kwargs)
+    
+        plan = self.get_subscription().plan
+    
+        context['client_count'] = self.request.user.client_count()
+        context['max_client'] = int(plan.metadata.max_client)
+    
+        return context
 
 
 class UploadFileForm(forms.Form):
@@ -238,7 +248,7 @@ def generate_users(file_name, request):
     return users
 
 
-class ClientImportView(CPARequiredMixin, FormView):
+class ClientImportView(CPARequiredMixin, FormView, StripeMixin):
     form_class = UploadFileForm
     template_name = 'av_clients/import.html'
     success_url = reverse_lazy('preview')
@@ -254,6 +264,16 @@ class ClientImportView(CPARequiredMixin, FormView):
         self.request.session['import_file'] = temp.name
 
         return super(ClientImportView, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(ClientImportView, self).get_context_data(**kwargs)
+    
+        plan = self.get_subscription().plan
+    
+        context['client_count'] = self.request.user.client_count()
+        context['max_client'] = int(plan.metadata.max_client)
+    
+        return context
 
 
 class ClientImportPreView(CPARequiredMixin, FormView):

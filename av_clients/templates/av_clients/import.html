@@ -7,37 +7,49 @@
 
   <h1 class="h1">Import {% if users %}Preview{% endif %}</h1>
 
-  {% if users %}
-    <table class="table">
-      <thead class="thead-light">
-      <tr>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Email</th>
-        <th>Note</th>
-      </tr>
-      </thead>
-      {% for user in users %}
-        <tr {% if user.existing or user.malformed or user.duplicate %}class="text-danger"{% endif %}>
-          <td>{{ user.first_name }}</td>
-          <td>{{ user.last_name }}</td>
-          <td>{{ user.email }}</td>
-          <td>
-            {% if user.existing %}Previously imported{% endif %}
-            {% if user.malformed %}Incorrect format{% endif %}
-            {% if user.duplicate %}Duplicate entry{% endif %}
-          </td>
-        </tr>
-      {% endfor %}
-    </table>
+  {% if client_count >= max_client %}
+
+    <p>You have reached your client account limit.</p>
+
   {% else %}
-    <p>Upload a CSV file, without a header row, formatted like this:</p>
-    <div class="pb-4 px-4 text-secondary">
-      <code>First Name, Last Name, Email Address</code>
-    </div>
+
+    {% if users %}
+      <table class="table">
+        <thead class="thead-light">
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Email</th>
+          <th>Note</th>
+        </tr>
+        </thead>
+        {% for user in users %}
+          <tr {% if user.existing or user.malformed or user.duplicate %}class="text-danger"{% endif %}>
+            <td>{{ user.first_name }}</td>
+            <td>{{ user.last_name }}</td>
+            <td>{{ user.email }}</td>
+            <td>
+              {% if user.existing %}Previously imported{% endif %}
+              {% if user.malformed %}Incorrect format{% endif %}
+              {% if user.duplicate %}Duplicate entry{% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+    {% else %}
+      <p>Upload a CSV file, without a header row, formatted like this:</p>
+      <div class="pb-4 px-4 text-secondary">
+        <code>First Name, Last Name, Email Address</code>
+      </div>
+
+    {% endif %}
+
+    {% crispy form %}
 
   {% endif %}
 
-  {% crispy form %}
+  <p>You are using {{ client_count }} out of {{ max_client }} client accounts allowed under your
+    <a href="{% url 'plan' %}">current plan.</a>
+  </p>
 
 {% endblock %}

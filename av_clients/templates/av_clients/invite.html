@@ -7,6 +7,20 @@
 
   <h1 class="h1">Invite</h1>
 
-  {% crispy form %}
+  {% if client_count >= max_client %}
+
+    <p>You have reached your client account limit.</p>
+
+  {% else %}
+
+    <p>Use the form below to invite a new client to your portal.</p>
+
+    {% crispy form %}
+
+  {% endif %}
+
+  <p>You are using {{ client_count }} out of {{ max_client }} client accounts allowed under your
+    <a href="{% url 'plan' %}">current plan.</a>
+  </p>
 
 {% endblock %}

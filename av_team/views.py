@@ -6,7 +6,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, FormView, UpdateView, DetailView, DeleteView
 
 from av_account.models import AvUser, Firm
-from av_account.utils import CPAAdminRequiredMixin, UserViewMixin
+from av_account.utils import CPAAdminRequiredMixin, UserViewMixin, StripeMixin
 from av_team.forms import InviteForm, DetailForm, TeamSettingsForm
 from av_utils.utils import SimpleFormMixin
 
@@ -63,7 +63,7 @@ class TeamDeleteView(CPAAdminRequiredMixin, UserViewMixin, DeleteView):
         return super(TeamDeleteView, self).delete(request)
     
 
-class TeamInviteView(CPAAdminRequiredMixin, FormView):
+class TeamInviteView(CPAAdminRequiredMixin, FormView, StripeMixin):
     form_class = InviteForm
     template_name = 'av_team/invite.html'
     success_url = reverse_lazy('team-invite')
@@ -79,6 +79,16 @@ class TeamInviteView(CPAAdminRequiredMixin, FormView):
         messages.success(self.request, 'Invitation sent to {} with {} permissions.'.format(user.email, group))
         follow(self.request.user, user, actor_only=False)
         return super(TeamInviteView, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(TeamInviteView, self).get_context_data(**kwargs)
+        
+        plan = self.get_subscription().plan
+
+        context['cpa_count'] = self.request.user.cpa_count()
+        context['max_cpa'] = int(plan.metadata.max_cpa)
+        
+        return context
 
 
 class TeamActivityView(CPAAdminRequiredMixin, UserViewMixin, DetailView):
