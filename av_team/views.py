@@ -1,3 +1,4 @@
+from actstream import action
 from actstream.actions import follow
 from django.contrib import messages
 from django.contrib.auth.models import Group
@@ -59,7 +60,13 @@ class TeamDeleteView(CPAAdminRequiredMixin, UserViewMixin, DeleteView):
 
     def delete(self, request, *args, **kwargs):
         user = self.get_user()
-        messages.success(self.request, 'Deleted {} {} ({}).'.format(user.first_name, user.last_name, user.email))
+
+        # add to activity stream, but omit target as target will be deleted, removing the action
+        verb = 'deleted {} {} ({}).'.format(user.first_name, user.last_name, user.email)
+        action.send(self.request.user, verb=verb, target=None)
+
+        messages.success(self.request, verb.capitalize())
+        
         return super(TeamDeleteView, self).delete(request)
     
 
