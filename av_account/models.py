@@ -238,7 +238,11 @@ class AvUser(Person, AbstractBaseUser, PermissionsMixin):
             return reverse_lazy('client-detail', args=[self.email])
 
     def get_stream_name(self):
-        return self.__str__()
+        name = self.__str__()
+        if name:
+            return name
+        else:
+            return self.email
 
     def get_stream_url(self):
         return self.get_absolute_url()
