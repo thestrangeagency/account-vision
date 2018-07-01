@@ -31,12 +31,12 @@ urlpatterns = [
 
     url(
         regex=r'^(?P<username>[\w.@+-]+)/(?P<year>[0-9]{4})/spouse/$',
-        view=ClientDetailReturnView.as_view(),
+        view=ClientDetailReturnView.as_view(template_name='av_clients/spouse.html'),
         name='client-detail-return-spouse',
     ),
     url(
         regex=r'^(?P<username>[\w.@+-]+)/(?P<year>[0-9]{4})/dependents/$',
-        view=ClientDetailReturnView.as_view(),
+        view=ClientDetailReturnView.as_view(template_name='av_clients/dependents.html'),
         name='client-detail-return-dependents',
     ),
     url(
@@ -51,7 +51,7 @@ urlpatterns = [
     ),
     url(
         regex=r'^(?P<username>[\w.@+-]+)/(?P<year>[0-9]{4})/returns/$',
-        view=ClientDetailReturnView.as_view(),
+        view=ClientDetailReturnView.as_view(template_name='av_clients/downloads.html'),
         name='client-detail-return-returns',
     ),
 

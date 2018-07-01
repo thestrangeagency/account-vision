@@ -1,0 +1,16 @@
+{% extends 'av_clients/return.html' %}
+
+{% load django_bootstrap_breadcrumbs table %}
+
+{% block breadcrumbs %}
+  {{ block.super }}
+  {% breadcrumb "Uploads" "client-detail-return-uploads" year %}
+{% endblock %}
+
+{% block content %}
+
+  <h1 class="h1">Uploads</h1>
+
+  {% table object_list fields %}
+
+{% endblock %}

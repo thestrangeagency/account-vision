@@ -1,0 +1,16 @@
+{% extends 'av_clients/return.html' %}
+
+{% load django_bootstrap_breadcrumbs table %}
+
+{% block breadcrumbs %}
+  {{ block.super }}
+  {% breadcrumb "Tax Return" "client-detail-return-returns" year %}
+{% endblock %}
+
+{% block content %}
+
+  <h1 class="h1">Upload prepared returns and vouchers</h1>
+
+  <div id="upload-manager" data-year="{{ year }}" data-target="{{ client.id }}"></div>
+
+{% endblock %}

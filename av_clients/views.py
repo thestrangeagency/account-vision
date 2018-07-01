@@ -117,6 +117,7 @@ class ClientDetailReturnView(AbstractClientReturnView, DetailView):
 
 
 class ClientDetailUploadsView(AbstractClientReturnView, AbstractTableView):
+    template_name = 'av_clients/uploads.html'
     model = S3File
     fields = [
         {
@@ -139,6 +140,7 @@ class ClientDetailUploadsView(AbstractClientReturnView, AbstractTableView):
 
 
 class ClientDetailExpensesView(AbstractClientReturnView, AbstractTableView):
+    template_name = 'av_clients/expenses.html'
     model = Expense
     fields = [
         {

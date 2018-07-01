@@ -4,7 +4,7 @@
 
 {% block breadcrumbs %}
   {{ block.super }}
-  {% breadcrumb year "return" year %}
+  {% breadcrumb year 'client-detail-return' client.email year %}
 {% endblock %}
 
 {% block tabs %}
@@ -66,85 +66,23 @@
 
 {% block content %}
 
-  {% url 'client-detail-return-expenses' client.email year as expenses %}
-  {% url 'client-detail-return-uploads' client.email year as uploads %}
-  {% url 'client-detail-return-spouse' client.email year as spouse %}
-  {% url 'client-detail-return-dependents' client.email year as dependents %}
-  {% url 'client-detail-return-returns' client.email year as returns %}
+  <h1 class="h1">Tax Year {{ year }}</h1>
 
-  {% if request.get_full_path == expenses %}
-    <h1 class="h1">Expenses</h1>
-    {% table object_list fields %}
-    <button class="btn btn-primary">Export</button>
-  {% endif %}
-
-  {% if request.get_full_path == uploads %}
-    <h1 class="h1">Uploads</h1>
-    {% table object_list fields %}
-  {% endif %}
-
-  {% if request.get_full_path == spouse %}
-    <h1 class="h1">Spouse</h1>
-    <table class="table dictionary-table mt-4">
-      <tbody>
-      <tr>
-        <td>Last name</td>
-        <td>{{ return.spouse.last_name }}</td>
-      </tr>
-      <tr>
-        <td>First name</td>
-        <td>{{ return.spouse.first_name }}</td>
-      </tr>
-      <tr>
-        <td>Middle name</td>
-        <td>{{ return.spouse.middle_name }}</td>
-      </tr>
-      <tr>
-        <td>Date of birth</td>
-        <td>{{ return.spouse.dob|date:'SHORT_DATE_FORMAT' }}</td>
-      </tr>
-      <tr>
-        <td>Social Security Number</td>
-        <td>{{ return.spouse.ssn }}</td>
-      </tr>
-      </tbody>
-    </table>
-  {% endif %}
-
-  {% if request.get_full_path == dependents %}
-    <h1 class="h1">Dependents</h1>
-    {% for person in return.dependent_set.all %}
-      <h4 class="h4">{{ person.get_relationship_display }}</h4>
-      <table class="table dictionary-table mt-4">
-        <tbody>
-        <tr>
-          <td>Last name</td>
-          <td>{{ person.last_name }}</td>
-        </tr>
-        <tr>
-          <td>First name</td>
-          <td>{{ person.first_name }}</td>
-        </tr>
-        <tr>
-          <td>Middle name</td>
-          <td>{{ person.middle_name }}</td>
-        </tr>
-        <tr>
-          <td>Date of birth</td>
-          <td>{{ person.dob|date:'SHORT_DATE_FORMAT' }}</td>
-        </tr>
-        <tr>
-          <td>Social Security Number</td>
-          <td>{{ person.ssn }}</td>
-        </tr>
-        </tbody>
-      </table>
-    {% endfor %}
-  {% endif %}
-
-  {% if request.get_full_path == returns %}
-    <h1 class="h1">Upload prepared returns and vouchers</h1>
-    <div id="upload-manager" data-year="{{ year }}" data-target="{{ client.id }}"></div>
-  {% endif %}
+  <table class="table dictionary-table mt-4">
+    <tbody>
+    <tr>
+      <td>Filing status</td>
+      <td>{{ return.get_filing_status_display }}</td>
+    </tr>
+    <tr>
+      <td>Is dependent</td>
+      <td>{{ return.is_dependent }}</td>
+    </tr>
+    <tr>
+      <td>County</td>
+      <td>{{ return.county }}</td>
+    </tr>
+    </tbody>
+  </table>
 
 {% endblock %}
