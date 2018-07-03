@@ -1,4 +1,5 @@
 import urllib
+from unittest.mock import patch
 
 from django.contrib import auth
 from django.contrib.auth.models import Group
@@ -9,16 +10,23 @@ from rest_framework import status
 
 from av_account.models import AvUser, Firm
 from av_core import settings
+from av_utils.stripe import *
 
 
 class TeamTestCase(TestCase):
     def setUp(self):
+        # stripe mocks
+        metadata = MetaData('Proprietor', 'email', 1, 100)
+        plan = Plan('plan_xxx', metadata)
+        subscription = Subscription('sub_xxx', plan)
+        self.customer = Customer('cus_xxx', Items([subscription]))
+        
         self.password = 'password'
         
         self.firm = Firm(
             name='acme'
         )
-        self.firm.stripe_id = 'bogus'
+        self.firm.stripe_id = self.customer.id
         self.firm.is_paid = True
         self.firm.save()
         
@@ -138,7 +146,10 @@ class TeamTestCase(TestCase):
         self.login_cpa()
         self.try_non_admin(url)
 
-    def test_invite(self):
+    @patch("stripe.Customer.retrieve")
+    def test_invite(self, retrieve_mock):
+        retrieve_mock.return_value = self.customer
+        
         url = reverse('team-invite')
         data = {
             'email': 'a@a.com',
@@ -169,7 +180,10 @@ class TeamTestCase(TestCase):
         response = self.client.get(url)
         self.assertNotContains(response, 'delete')
 
-    def test_can_delete_other(self):
+    @patch("stripe.Customer.retrieve")
+    def test_can_delete_other(self, retrieve_mock):
+        retrieve_mock.return_value = self.customer
+
         # invite a new user
         url = reverse('team-invite')
         data = {

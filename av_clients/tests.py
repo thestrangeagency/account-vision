@@ -1,4 +1,5 @@
 import urllib
+from unittest.mock import patch
 
 from django.contrib import auth
 from django.core import mail
@@ -13,17 +14,24 @@ from av_clients.views import UploadFileForm
 from av_core import settings
 from av_returns.models import Return, Expense
 from av_uploads.models import S3File
+from av_utils.stripe import *
 
 
 class ImportTestCase(TestCase):
 
     def setUp(self):
+        # stripe mocks
+        metadata = MetaData('Proprietor', 'email', 1, 100)
+        plan = Plan('plan_xxx', metadata)
+        subscription = Subscription('sub_xxx', plan)
+        self.customer = Customer('cus_xxx', Items([subscription]))
+        
         self.password = 'aT%In<Yo'
 
         self.firm = Firm(
             name='acme'
         )
-        self.firm.stripe_id = 'bogus'
+        self.firm.stripe_id = self.customer.id
         self.firm.is_paid = True
         self.firm.save()
         
@@ -59,7 +67,10 @@ class ImportTestCase(TestCase):
         form = UploadFileForm(files=file_dict)
         self.assertTrue(form.is_valid())
 
-    def test_no_extension(self):
+    @patch("stripe.Customer.retrieve")
+    def test_no_extension(self, retrieve_mock):
+        retrieve_mock.return_value = self.customer
+        
         self.login()
 
         file = open('av_clients/test_files/plain')
@@ -68,7 +79,10 @@ class ImportTestCase(TestCase):
         form = response.context['form']
         self.assertFalse(form.is_valid())
 
-    def test_ok(self):
+    @patch("stripe.Customer.retrieve")
+    def test_ok(self, retrieve_mock):
+        retrieve_mock.return_value = self.customer
+        
         self.login()
         mail.outbox = []
 
@@ -90,7 +104,10 @@ class ImportTestCase(TestCase):
         # ensure invitation emails were sent
         self.assertEqual(len(mail.outbox), 2)
 
-    def test_bad_order(self):
+    @patch("stripe.Customer.retrieve")
+    def test_bad_order(self, retrieve_mock):
+        retrieve_mock.return_value = self.customer
+        
         self.login()
 
         file = open('av_clients/test_files/bad_order.csv')
@@ -103,7 +120,10 @@ class ImportTestCase(TestCase):
 
         self.assertContains(response, 'sent to 0')
 
-    def test_bad_delimiter(self):
+    @patch("stripe.Customer.retrieve")
+    def test_bad_delimiter(self, retrieve_mock):
+        retrieve_mock.return_value = self.customer
+        
         self.login()
 
         file = open('av_clients/test_files/bad_delimiter.csv')
@@ -116,7 +136,10 @@ class ImportTestCase(TestCase):
 
         self.assertContains(response, 'sent to 0')
 
-    def test_unicode(self):
+    @patch("stripe.Customer.retrieve")
+    def test_unicode(self, retrieve_mock):
+        retrieve_mock.return_value = self.customer
+        
         self.login()
         mail.outbox = []
 
@@ -132,7 +155,10 @@ class ImportTestCase(TestCase):
         # ensure invitation emails were sent
         self.assertEqual(len(mail.outbox), 2)
 
-    def test_quotes(self):
+    @patch("stripe.Customer.retrieve")
+    def test_quotes(self, retrieve_mock):
+        retrieve_mock.return_value = self.customer
+        
         self.login()
         mail.outbox = []
 
@@ -150,7 +176,10 @@ class ImportTestCase(TestCase):
         # ensure invitation emails were sent
         self.assertEqual(len(mail.outbox), 1)
 
-    def test_dupes(self):
+    @patch("stripe.Customer.retrieve")
+    def test_dupes(self, retrieve_mock):
+        retrieve_mock.return_value = self.customer
+        
         self.login()
         mail.outbox = []
 
