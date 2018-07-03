@@ -9,27 +9,27 @@
 
 <html>
 {% block head %}
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-  <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
-  <link rel="stylesheet" href="{% static 'css/fontawesome-all.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/fontawesome-all.min.css' %}">
 
-  <!-- favicon -->
+    <!-- favicon -->
 
-  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicon/apple-touch-icon.png' %}">
-  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon/favicon-32x32.png' %}">
-  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon/favicon-16x16.png' %}">
-  <link rel="manifest" href="{% static 'favicon/site.webmanifest' %}">
-  <link rel="mask-icon" href="{% static 'favicon/safari-pinned-tab.svg' %}" color="#5bbad5">
-  <link rel="shortcut icon" href="{% static 'favicon/favicon.ico' %}">
-  <meta name="apple-mobile-web-app-title" content="Account Vision">
-  <meta name="application-name" content="Account Vision">
-  <meta name="msapplication-TileColor" content="#da532c">
-  <meta name="msapplication-config" content="{% static 'favicon/browserconfig.xml' %}">
-  <meta name="theme-color" content="#ffffff">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicon/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'favicon/site.webmanifest' %}">
+    <link rel="mask-icon" href="{% static 'favicon/safari-pinned-tab.svg' %}" color="#5bbad5">
+    <link rel="shortcut icon" href="{% static 'favicon/favicon.ico' %}">
+    <meta name="apple-mobile-web-app-title" content="Account Vision">
+    <meta name="application-name" content="Account Vision">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="{% static 'favicon/browserconfig.xml' %}">
+    <meta name="theme-color" content="#ffffff">
 
-</head>
+  </head>
 {% endblock head %}
 <body class={% block body_styles %}tx-body{% endblock body_styles %}>
 {% block header %}
@@ -111,12 +111,14 @@
         </li>
       </ul>
       <div class={% block footer_address_class %}"tx-footer__address"{% endblock footer_address_class %}>
-        Logged in as {{ user.email }}
-        {% block trial %}
-          {% if user.trial_days_left > 0 %}
-            <span class="tx-trial-left">-- {{ user.trial_days_left }} days left in your trial</span>
-          {% endif %}
-        {% endblock trial %}
+        {% if user.is_authenticated %}
+          Logged in as {{ user.email }}
+          {% block trial %}
+            {% if user.trial_days_left > 0 %}
+              <span class="tx-trial-left">-- {{ user.trial_days_left }} days left in your trial</span>
+            {% endif %}
+          {% endblock trial %}
+        {% endif %}
       </div>
       <div class={% block footer_badge_class %}"ml-auto rounded bg-white px-2 py-1"{% endblock footer_badge_class %}>
         {% if debug %}
