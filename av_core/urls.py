@@ -62,10 +62,9 @@ urlpatterns = [
     url(r'^firm/', include('av_team.urls')),
     url(r'^payment/', include('av_payment.urls')),
 
-    url(r'^legal/$', TemplateView.as_view(template_name='legal.html'), name='legal'),
-    url(r'^security/$', TemplateView.as_view(template_name='security.html'), name='security'),
+    url(r'^terms/$', TemplateView.as_view(template_name='terms.html'), name='legal'),
+    url(r'^privacy/$', TemplateView.as_view(template_name='privacy.html'), name='privacy'),
     url(r'^contact/$', ContactView.as_view(), name='contact'),
-    url(r'^faq/$', TemplateView.as_view(template_name='faq.html'), name='faq'),
 
     url(r'^api/', include('rest_framework.urls', namespace='api')),
     url(r'^api/', include(router.urls)),

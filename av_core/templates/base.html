@@ -93,21 +93,21 @@
       <div class="tx-footer__copyright">&copy; 2018 Account Vision</div>
       <ul class="tx-footer__navbar-nav">
         <li class="tx-footer__nav-item">
-          <a href="{% url 'security' %}" class="tx-footer__nav-link">Security</a>
+          <a href="{% url 'legal' %}" class="tx-footer__nav-link">Terms</a>
         </li>
         <li class="tx-footer__nav-item">
-          <a href="{% url 'legal' %}" class="tx-footer__nav-link">Legal</a>
+          <a href="{% url 'privacy' %}" class="tx-footer__nav-link">Privacy</a>
         </li>
         {% comment %}
           <li class="tx-footer__nav-item">
-            <a href="{% url 'privacy' %}" class="tx-footer__nav-link">Privacy</a>
+            <a href="{% url 'security' %}" class="tx-footer__nav-link">Security</a>
+          </li>
+          <li class="tx-footer__nav-item">
+            <a href="{% url 'faq' %}" class="tx-footer__nav-link">FAQ</a>
           </li>
         {% endcomment %}
         <li class="tx-footer__nav-item">
           <a href="{% url 'contact' %}" class="tx-footer__nav-link">Contact</a>
-        </li>
-        <li class="tx-footer__nav-item">
-          <a href="{% url 'faq' %}" class="tx-footer__nav-link">FAQ</a>
         </li>
       </ul>
       <div class={% block footer_address_class %}"tx-footer__address"{% endblock footer_address_class %}>
