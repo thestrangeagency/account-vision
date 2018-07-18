@@ -3,8 +3,12 @@
 {% block content_title %}Account Ready{% endblock content_title %}
 
 {% block modal_content %}
+  <p>You're all set up!</p>
   <p>Use the button below to go to your Account Vision home page.</p>
-  {{ block.super }}
-  <a class="btn btn-primary" href="{% url 'home' %}">OK</a>
+
+  <p class="text-center">
+    <a class="btn btn-primary" href="{% url 'home' %}">OK</a>
+  </p>
+
 {%  endblock modal_content %}
 
