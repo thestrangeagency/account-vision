@@ -4,7 +4,7 @@
   {{ block.super }}
 
   <p {% include "av_emails/p_style_snippet.html" %}>
-    New message. Please log in to your account <a href="{{ site_url }}{% url 'messages_inbox' %}">HERE</a>.
+    You have received a new message. Please visit our site to <a href="{{ site_url }}{% url 'messages_inbox' %}">view your messages</a>.
   </p>
 
 {% endblock content %}

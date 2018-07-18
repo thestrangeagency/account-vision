@@ -3,6 +3,6 @@
 {% block content %}
 
   <p {% include "av_emails/p_style_snippet.html" %}>
-    It looks like your CPA has completed and uploaded your 2017 tax return. Please login to <a href="{{ site_url }}{% url 'return' year %}">review your return</a> and provide permission to e-file your federal and state return.</p>
+    Your CPA has completed and uploaded your tax return. Please <a href="{{ site_url }}{% url 'return' year %}">review your return</a> and give us permission to e-file it.</p>
 
 {% endblock content %}
