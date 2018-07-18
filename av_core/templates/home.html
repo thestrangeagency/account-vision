@@ -66,7 +66,6 @@
       </div>
 
       <div class="row justify-content-center">
-
         <div class="tx-feature offset-md-2 col-md-10">
           <div class="tx-feature__icon text-center">
             <i class="fas fa-users fa-3x"></i>
@@ -74,8 +73,9 @@
           <h2>Clients at a glance.</h2>
           <p>Quickly access contact, spouse, and dependent info.</p>
         </div>
+      </div>
 
-
+      <div class="row justify-content-center">
         <div class="tx-feature offset-md-2 col-md-10">
           <div class="tx-feature__icon text-center">
             <i class="fas fa-address-card fa-3x"></i>
@@ -83,8 +83,9 @@
           <h2>No Data entry.</h2>
           <p>Your clients can enter their own data using simple forms.</p>
         </div>
+      </div>
 
-
+      <div class="row justify-content-center">
         <div class="tx-feature offset-md-2 col-md-10">
           <div class="tx-feature__icon text-center">
             <i class="far fa-envelope fa-3x"></i>
@@ -92,8 +93,9 @@
           <h2>Threaded messaging.</h2>
           <p>Conveniently keep client all of your client communications in one place.</p>
         </div>
+      </div>
 
-
+      <div class="row justify-content-center">
         <div class="tx-feature offset-md-2 col-md-10">
           <div class="tx-feature__icon text-center">
             <i class="fas fa-th-list fa-3x"></i>
@@ -101,8 +103,9 @@
           <h2>Expenses made easy.</h2>
           <p>Your clients can create and maintain a list of common expenses.</p>
         </div>
+      </div>
 
-
+      <div class="row justify-content-center">
         <div class="tx-feature offset-md-2 col-md-10">
           <div class="tx-feature__icon text-center">
             <i class="far fa-file-alt fa-3x"></i>
@@ -110,8 +113,9 @@
           <h2>Document sharing.</h2>
           <p>Clients can post and download documents, images, and spreadsheets.</p>
         </div>
+      </div>
 
-
+      <div class="row justify-content-center">
         <div class="tx-feature offset-md-2 col-md-10">
           <div class="tx-feature__icon text-center">
             <i class="fas fa-lock fa-3x"></i>
@@ -119,8 +123,9 @@
           <h2>Top grade security.</h2>
           <p>Your files are stored secured with 256-bit Advanced Encryption Standard.</p>
         </div>
+      </div>
 
-
+      <div class="row justify-content-center">
         <div class="tx-feature offset-md-2 col-md-10">
           <div class="tx-feature__icon text-center">
             <i class="fas fa-comment-alt fa-3x"></i>
@@ -128,8 +133,9 @@
           <h2>Activity feed.</h2>
           <p>Easily review what your clients have posted or modified.</p>
         </div>
+      </div>
 
-
+      <div class="row justify-content-center">
         <div class="tx-feature offset-md-2 col-md-10">
           <div class="tx-feature__icon text-center">
             <i class="fas fa-list-ul fa-3x"></i>
@@ -137,19 +143,21 @@
           <h2>Activity logs.</h2>
           <p>Client and firm activity is logged for an additional layer of security.</p>
         </div>
+      </div>
 
-
-        {% comment %}
-        <div class="tx-feature offset-md-2 col-md-10">
-          <div class="tx-feature__icon text-center">
-            <i class="fas fa-users fa-3x"></i>
+      {% comment %}
+        <div class="row justify-content-center">
+          <div class="tx-feature offset-md-2 col-md-10">
+            <div class="tx-feature__icon text-center">
+              <i class="fas fa-users fa-3x"></i>
+            </div>
+            <h2>Multiple users.</h2>
+            <p>Share access with your partners or employees.</p>
           </div>
-          <h2>Multiple users.</h2>
-          <p>Share access with your partners or employees.</p>
         </div>
-        {% endcomment %}
+      {% endcomment %}
 
-
+      <div class="row justify-content-center">
         <div class="tx-feature offset-md-2 col-md-10">
           <div class="tx-feature__icon text-center">
             <i class="fas fa-mobile-alt fa-3x"></i>
@@ -157,84 +165,84 @@
           <h2>Mobile access.</h2>
           <p>All application features are built for access via mobile device.</p>
         </div>
-
       </div>
+
     </div>
   </div>
 
   {% comment %}
-  {% get_flatpages as flatpages %}
+    {% get_flatpages as flatpages %}
 
-  <div class="tx-home__flatpages tx-full-width">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-4">
-          <h5 class="tx-home__flatpages__header h6">
-            About
-          </h5>
-          <ul class="tx-home__flatpages__list list-unstyled">
-            {% for page in flatpages %}
+    <div class="tx-home__flatpages tx-full-width">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4">
+            <h5 class="tx-home__flatpages__header h6">
+              About
+            </h5>
+            <ul class="tx-home__flatpages__list list-unstyled">
+              {% for page in flatpages %}
+                <li class="tx-home__flatpages__item">
+                  <a class="tx-home__flatpages__link" href="{{ page.url }}">{{ page.title }}</a>
+                </li>
+              {% endfor %}
               <li class="tx-home__flatpages__item">
-                <a class="tx-home__flatpages__link" href="{{ page.url }}">{{ page.title }}</a>
+                <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
               </li>
-            {% endfor %}
-            <li class="tx-home__flatpages__item">
-              <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
-            </li>
-            <li class="tx-home__flatpages__item">
-              <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
-            </li>
-            <li class="tx-home__flatpages__item">
-              <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
-            </li>
-          </ul>
-        </div>
-        <div class="col-md-4">
-          <h5 class="tx-home__flatpages__header h6">
-            Tips
-          </h5>
-          <ul class="tx-home__flatpages__list list-unstyled">
-            <li class="tx-home__flatpages__item">
-              <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
-            </li>
-            <li class="tx-home__flatpages__item">
-              <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
-            </li>
-            <li class="tx-home__flatpages__item">
-              <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
-            </li>
-            <li class="tx-home__flatpages__item">
-              <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
-            </li>
-            <li class="tx-home__flatpages__item">
-              <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
-            </li>
-          </ul>
-        </div>
-        <div class="col-md-4">
-          <h5 class="tx-home__flatpages__header h6">
-            Help
-          </h5>
-          <ul class="tx-home__flatpages__list list-unstyled">
-            <li class="tx-home__flatpages__item">
-              <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
-            </li>
-            <li class="tx-home__flatpages__item">
-              <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
-            </li>
-            <li class="tx-home__flatpages__item">
-              <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
-            </li>
-            <li class="tx-home__flatpages__item">
-              <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
-            </li>
-            <li class="tx-home__flatpages__item">
-              <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
-            </li>
-          </ul>
+              <li class="tx-home__flatpages__item">
+                <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
+              </li>
+              <li class="tx-home__flatpages__item">
+                <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-4">
+            <h5 class="tx-home__flatpages__header h6">
+              Tips
+            </h5>
+            <ul class="tx-home__flatpages__list list-unstyled">
+              <li class="tx-home__flatpages__item">
+                <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
+              </li>
+              <li class="tx-home__flatpages__item">
+                <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
+              </li>
+              <li class="tx-home__flatpages__item">
+                <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
+              </li>
+              <li class="tx-home__flatpages__item">
+                <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
+              </li>
+              <li class="tx-home__flatpages__item">
+                <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-4">
+            <h5 class="tx-home__flatpages__header h6">
+              Help
+            </h5>
+            <ul class="tx-home__flatpages__list list-unstyled">
+              <li class="tx-home__flatpages__item">
+                <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
+              </li>
+              <li class="tx-home__flatpages__item">
+                <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
+              </li>
+              <li class="tx-home__flatpages__item">
+                <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
+              </li>
+              <li class="tx-home__flatpages__item">
+                <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
+              </li>
+              <li class="tx-home__flatpages__item">
+                <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
-  </div>
   {% endcomment %}
 {% endblock content %}
