@@ -1,1 +1,16 @@
-your account has been disabled
+{% extends 'base-modal.html' %}
+
+{% block breadcrumbs %}
+{% endblock %}
+
+{% block content_title %}
+  Inactive Account
+{% endblock content_title %}
+
+{% block modal_content %}
+
+  <p>This account is not currently active.</p>
+
+  <p>You can <a href="{% url 'logout' %}">sign out</a> to try another login, or <a href="{% url 'contact' %}">contact us</a> for help.</p>
+
+{% endblock modal_content %}
