@@ -149,13 +149,10 @@ class FirmView(VerifiedAndTrustedRequiredMixin, FormView):
         """
         continue to next step if user already has a firm
         """
-        user = request.user
-        if user.is_authenticated:
-            try:
-                firm = user.firm
-            except Firm.DoesNotExist:
-                return super(FirmView, self).dispatch(request, *args, **kwargs)
-        return redirect(self.success_url)
+        if request.user.firm is None:
+            return super(FirmView, self).dispatch(request, *args, **kwargs)
+        else:
+            return redirect(self.success_url)
 
     def form_valid(self, form):
         firm = form.save(commit=False)
