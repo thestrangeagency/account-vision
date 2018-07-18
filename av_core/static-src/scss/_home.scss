@@ -38,6 +38,28 @@
   }
 }
 
+.tx-home__features {
+  padding: 2.375rem 0 0;
+
+  @include from-breakpoint(lg) {
+    padding: 2.375rem 0 3.25rem;
+  }
+}
+
+.tx-feature {
+  padding-bottom: 40px;
+  width: 100%;
+
+  p {
+    font-size: 1.375rem;
+  }
+}
+
+.tx-feature__icon {
+  float: left;
+  padding-right: 10px;
+}
+
 .tx-home__testimonials {
   padding: 3.25rem 0 0;
 

@@ -1,14 +1,14 @@
 NAV_MENU_LEFT = [
-    {
-        "name": "Features",
-        "url": "features",
-        "validators": ["menu_generator.validators.is_anonymous"],
-    },
-    {
-        "name": "Pricing",
-        "url": "pricing",
-        "validators": ["menu_generator.validators.is_anonymous"],
-    },
+    # {
+    #     "name": "Features",
+    #     "url": "features",
+    #     "validators": ["menu_generator.validators.is_anonymous"],
+    # },
+    # {
+    #     "name": "Pricing",
+    #     "url": "pricing",
+    #     "validators": ["menu_generator.validators.is_anonymous"],
+    # },
     {
         "name": "Tax Years",
         "url": "returns",
