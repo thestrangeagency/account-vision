@@ -11,6 +11,10 @@
 
   <h1 class="h1">Dependents</h1>
 
+  {% if not return.dependent_set.all %}
+    <p>Once {{ client }} enters dependents, they will be listed here.</p>
+  {% endif %}
+
   {% for person in return.dependent_set.all %}
 
       <h4 class="h4">{{ person.get_relationship_display }}</h4>

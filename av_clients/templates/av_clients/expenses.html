@@ -11,6 +11,8 @@
 
   <h1 class="h1">Expenses</h1>
 
+  <p>Expenses posted by {{ client }} {% if object_list %}are shown{% else %}will appear{% endif %} below.</p>
+
   {% table object_list fields %}
 
   {% comment %}

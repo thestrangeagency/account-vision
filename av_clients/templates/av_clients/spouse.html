@@ -11,6 +11,8 @@
 
   <h1 class="h1">Spouse</h1>
 
+  {% if return.spouse %}
+
   <table class="table dictionary-table mt-4">
     <tbody>
     <tr>
@@ -35,5 +37,11 @@
     </tr>
     </tbody>
   </table>
+
+  {% else %}
+
+    <p>Once {{ client }} enters a spouse, spousal info will be appear here.</p>
+
+  {% endif %}
 
 {% endblock %}
