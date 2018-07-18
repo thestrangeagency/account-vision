@@ -55,7 +55,8 @@ class Return(TimeStampedModel):
         return "{} {} ({}) {}".format(self.user.first_name, self.user.last_name, self.user.email, self.year)
 
     def is_frozen(self):
-        return self.return_status != self.DRAFT
+        # return self.return_status != self.DRAFT
+        return False
 
     @classmethod
     def year_choices(cls):

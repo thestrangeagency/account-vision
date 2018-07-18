@@ -164,7 +164,7 @@ export default class CustomExpenseManager extends React.Component {
     return (
       <div>
         {expenses && expenses.length === 0 && !frozen &&
-          <p>Looks like you don&apos;t have any custom expenses yet. Click below to add one.</p>
+          <p>It looks like you don&apos;t have any expenses yet. Click below to add one.</p>
         }
         {expenses && expenses.length > 0 &&
           <ul className="list-group mb-4">

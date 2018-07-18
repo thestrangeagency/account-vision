@@ -10,7 +10,7 @@
 {% block content %}
   <h1 class="h1">Uploads</h1>
 
-  <p>Files shared with your CPA.</p>
+  <p>Share files with {{ user.firm }} by uploading them here.</p>
 
   {% if frozen %}
     <div id="upload-manager" data-year="{{ year }}" data-frozen="1"></div>
