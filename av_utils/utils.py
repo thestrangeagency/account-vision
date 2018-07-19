@@ -54,7 +54,7 @@ class FormActivityMixin(FormView):
         for field in form.changed_data:
             verb = 'updated {} on'.format(form[field].label.lower())
             action.send(self.request.user, verb=verb, target=form.instance)
-            logger.info('action: {} {} {}'.format(self.request.user, verb, form.instance))
+            logger.info('action: {}, {}, {}'.format(self.request.user, verb, form.instance))
         return super(FormActivityMixin, self).form_valid(form)
 
 

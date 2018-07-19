@@ -10,32 +10,32 @@ from av_returns.models import Return, Dependent, Spouse, Expense
 def return_post_save(sender, instance, created, *args, **kwargs):
     verb = 'updated'
     action.send(instance.user, verb=verb, target=instance)
-    logger.info('action: {} {} {}'.format(instance.user, verb, instance))
+    logger.info('action: {}, {}, {}'.format(instance.user, verb, instance))
 
 
 @receiver(post_save, sender=Spouse)
 def spouse_post_save(sender, instance, created, *args, **kwargs):
     verb = 'updated'
     action.send(instance.tax_return.user, verb=verb, target=instance)
-    logger.info('action: {} {} {}'.format(instance.tax_return.user, verb, instance))
+    logger.info('action: {}, {}, {}'.format(instance.tax_return.user, verb, instance))
 
 
 @receiver(post_save, sender=Dependent)
 def dependent_post_save(sender, instance, created, *args, **kwargs):
     verb = 'updated'
     action.send(instance.tax_return.user, verb=verb, target=instance)
-    logger.info('action: {} {} {}'.format(instance.tax_return.user, verb, instance))
+    logger.info('action: {}, {}, {}'.format(instance.tax_return.user, verb, instance))
 
 
 @receiver(post_delete, sender=Dependent)
 def dependent_post_delete(sender, instance, *args, **kwargs):
     verb = 'deleted a dependent'
     action.send(instance.tax_return.user, verb=verb, target=instance)
-    logger.info('action: {} {} {}'.format(instance.tax_return.user, verb, instance))
+    logger.info('action: {}, {}, {}'.format(instance.tax_return.user, verb, instance))
 
 
 @receiver(post_save, sender=Expense)
 def expense_post_save(sender, instance, created, *args, **kwargs):
     verb = 'updated'
     action.send(instance.tax_return.user, verb=verb, target=instance)
-    logger.info('action: {} {} {}'.format(instance.tax_return.user, verb, instance))
+    logger.info('action: {}, {}, {}'.format(instance.tax_return.user, verb, instance))

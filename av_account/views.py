@@ -51,6 +51,8 @@ class RegistrationView(FormView):
         group = Group.objects.get(name='admin')
         user.groups.add(group)
 
+        logger.info('action: {}, {}'.format(user, 'created cpa'))
+
         # automatically log in
         password = self.request.POST.get('password1', None)
         authenticated = authenticate(
@@ -306,7 +308,7 @@ class SelfDeleteView(FullyVerifiedRequiredMixin, DeleteView):
         # add to activity stream, but omit target as target will be deleted, removing the action
         verb = 'deleted {} {} ({}).'.format(user.first_name, user.last_name, user.email)
         action.send(self.request.user, verb=verb, target=None)
-        logger.info('action: {} {}'.format(self.request.user, verb))
+        logger.info('action: {}, {}'.format(self.request.user, verb))
         
         messages.success(self.request, verb.capitalize())
         return super(DeleteView, self).delete(request)
