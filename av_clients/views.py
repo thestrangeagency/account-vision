@@ -14,7 +14,7 @@ from django.db.models.functions import Lower
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, FormView, DetailView, DeleteView
-from django.views.generic.base import View, ContextMixin
+from django.views.generic.base import View, ContextMixin, logger
 from tempfile import NamedTemporaryFile
 
 from av_account.models import AvUser
@@ -96,6 +96,7 @@ class ClientDeleteView(CPARequiredMixin, UserViewMixin, DeleteView):
         # add to activity stream, but omit target as target will be deleted, removing the action
         verb = 'deleted {} {} ({}).'.format(user.first_name, user.last_name, user.email)
         action.send(self.request.user, verb=verb, target=None)
+        logger.info('action: {} {}'.format(self.request.user, verb))
         
         messages.success(self.request, verb.capitalize())
         return super(ClientDeleteView, self).delete(request)

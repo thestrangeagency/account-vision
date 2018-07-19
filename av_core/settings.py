@@ -186,7 +186,7 @@ else:
     ]
     DEFAULT_HTTP_PROTOCOL = 'https'
 
-LOG_LEVEL = 'INFO' if DEBUG else 'WARN'
+LOG_LEVEL = 'INFO' if DEBUG and not TESTING else 'WARN'
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,

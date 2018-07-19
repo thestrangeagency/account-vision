@@ -8,6 +8,8 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import FormView
 
+from av_core import logger
+
 
 class TimeStampedModel(models.Model):
     date_created = models.DateTimeField(_('date created'), default=timezone.now)
@@ -52,6 +54,7 @@ class FormActivityMixin(FormView):
         for field in form.changed_data:
             verb = 'updated {} on'.format(form[field].label.lower())
             action.send(self.request.user, verb=verb, target=form.instance)
+            logger.info('action: {} {} {}'.format(self.request.user, verb, form.instance))
         return super(FormActivityMixin, self).form_valid(form)
 
 
