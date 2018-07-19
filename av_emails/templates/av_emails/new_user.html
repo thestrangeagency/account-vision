@@ -1,7 +1,17 @@
 {% extends 'av_emails/base.html' %}
 
 {% block content %}
+
   <p {% include "av_emails/p_style_snippet.html" %}>
     Welcome to the Account Vision client portal site!
   </p>
+
+  <p {% include "av_emails/p_style_snippet.html" %}>
+    A new account for {{ user.email }} has been created.
+  </p>
+
+  <p {% include "av_emails/p_style_snippet.html" %}>
+    If you have any questions or comments, please feel free to <a href="{{ site_url }}{% url 'contact' %}">get in touch</a>.
+  </p>
+
 {% endblock content %}
