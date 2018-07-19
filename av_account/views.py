@@ -1,6 +1,7 @@
 import datetime
 
 import stripe
+from actstream import action
 from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.contrib.auth import login
@@ -13,7 +14,7 @@ from django.shortcuts import redirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.urls import reverse_lazy
-from django.views.generic import FormView
+from django.views.generic import FormView, DeleteView
 from django.views.generic import ListView
 from django.views.generic import TemplateView
 from django_agent_trust import revoke_other_agents
@@ -290,6 +291,24 @@ class EditView(FullyVerifiedRequiredMixin, FormView):
     def form_valid(self, form):
         form.save()
         return super(EditView, self).form_valid(form)
+
+
+class SelfDeleteView(FullyVerifiedRequiredMixin, DeleteView):
+    model = AvUser
+    success_url = reverse_lazy('clients')
+
+    def get_object(self, queryset=None):
+        return self.request.user
+    
+    def delete(self, request, *args, **kwargs):
+        user = request.user
+        
+        # add to activity stream, but omit target as target will be deleted, removing the action
+        verb = 'deleted {} {} ({}).'.format(user.first_name, user.last_name, user.email)
+        action.send(self.request.user, verb=verb, target=None)
+        
+        messages.success(self.request, verb.capitalize())
+        return super(DeleteView, self).delete(request)
 
 
 class PlanView(FullRequiredMixin, TemplateView, StripeMixin):

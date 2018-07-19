@@ -76,6 +76,11 @@ urlpatterns = [
         name='edit',
     ),
     url(
+        regex=r'^delete/$',
+        view=SelfDeleteView.as_view(),
+        name='client-self-delete',
+    ),
+    url(
         regex=r'^plan/$',
         view=PlanView.as_view(),
         name='plan',
