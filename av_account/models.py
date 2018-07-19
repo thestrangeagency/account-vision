@@ -244,6 +244,12 @@ class AvUser(Person, AbstractBaseUser, PermissionsMixin):
         else:
             return self.email
 
+    def __str__(self):
+        if self.first_name and self.last_name:
+            return self.get_full_name()
+        else:
+            return self.email
+
     def get_stream_url(self):
         return self.get_absolute_url()
 
