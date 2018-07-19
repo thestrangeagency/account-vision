@@ -1,25 +1,56 @@
-[{
-	"model": "av_account.securityquestion",
-	"pk": 1,
-	"fields": {
-		"question": "What is your favorite food?"
-	}
-}, {
-	"model": "av_account.securityquestion",
-	"pk": 2,
-	"fields": {
-		"question": "What is your favorite book?"
-	}
-}, {
-	"model": "av_account.securityquestion",
-	"pk": 3,
-	"fields": {
-		"question": "What is your favorite animal?"
-	}
-}, {
-	"model": "av_account.securityquestion",
-	"pk": 4,
-	"fields": {
-		"question": "What is your favorite place?"
-	}
-}]
+[
+  {
+    "model": "av_account.securityquestion",
+    "fields": {
+      "question": "What street did you grow up on?"
+    }
+  },
+  {
+    "model": "av_account.securityquestion",
+    "fields": {
+      "question": "What is the name of your first grade teacher?"
+    }
+  },
+  {
+    "model": "av_account.securityquestion",
+    "fields": {
+      "question": "What was the make of your first car?"
+    }
+  },
+  {
+    "model": "av_account.securityquestion",
+    "fields": {
+      "question": "What is your favorite movie?"
+    }
+  },
+  {
+    "model": "av_account.securityquestion",
+    "fields": {
+      "question": "What is your favorite song?"
+    }
+  },
+  {
+    "model": "av_account.securityquestion",
+    "fields": {
+      "question": "In what city did your mother and father meet?"
+    }
+  },
+  {
+    "model": "av_account.securityquestion",
+    "fields": {
+      "question": "What were the last four digits of your childhood telephone number?"
+    }
+  },
+  {
+    "model": "av_account.securityquestion",
+    "fields": {
+      "question": "What was the name of your first pet?"
+    }
+  },
+  {
+    "model": "av_account.securityquestion",
+    "fields": {
+      "question": "What is your mother's maiden name?"
+    }
+  }
+]
