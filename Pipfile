@@ -27,6 +27,7 @@ python-dotenv = "*"
 "psycopg2-binary" = "*"
 freezegun = "*"
 django-activity-stream = "*"
+phonenumbers = "*"
 
 [requires]
 python_version = "3.6"
