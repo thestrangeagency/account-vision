@@ -163,7 +163,7 @@ DATABASES['default'].update(db_from_env)
 
 if os.environ.get('CI'):
     DATABASES['default']['TEST'] = db_from_env
-    TEST_RUNNER = 'utils.heroku_test_runner.HerokuDiscoverRunner'
+    TEST_RUNNER = 'av_utils.heroku_test_runner.HerokuDiscoverRunner'
 
 if DEBUG:
     AUTH_PASSWORD_VALIDATORS = []
