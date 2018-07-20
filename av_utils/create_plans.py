@@ -44,7 +44,7 @@ stripe.Plan.create(
     metadata=metadata_a,
     nickname="A Yearly",
     product="prod_av",
-    trial_period_days=14,
+    trial_period_days=15,
 )
 
 stripe.Plan.create(
@@ -55,7 +55,7 @@ stripe.Plan.create(
     metadata=metadata_a,
     nickname="A Monthly",
     product="prod_av",
-    trial_period_days=14,
+    trial_period_days=15,
 )
 
 stripe.Plan.create(
@@ -66,7 +66,7 @@ stripe.Plan.create(
     metadata=metadata_b,
     nickname="B Yearly",
     product="prod_av",
-    trial_period_days=14,
+    trial_period_days=15,
 )
 stripe.Plan.create(
     amount=11700,
@@ -76,7 +76,7 @@ stripe.Plan.create(
     metadata=metadata_b,
     nickname="B Monthly",
     product="prod_av",
-    trial_period_days=14,
+    trial_period_days=15,
 )
 
 stripe.Plan.create(
@@ -87,7 +87,7 @@ stripe.Plan.create(
     metadata=metadata_c,
     nickname="C Yearly",
     product="prod_av",
-    trial_period_days=14,
+    trial_period_days=15,
 )
 
 stripe.Plan.create(
@@ -98,5 +98,5 @@ stripe.Plan.create(
     metadata=metadata_c,
     nickname="C Monthly",
     product="prod_av",
-    trial_period_days=14,
+    trial_period_days=15,
 )
