@@ -7,5 +7,6 @@ db.sqlite3
 /.idea
 node_modules
 av_core/static/js
-av_core/static/css
 .eslintcache
+/av_core/static/css/base.css
+/av_core/static/css/base.css.map
