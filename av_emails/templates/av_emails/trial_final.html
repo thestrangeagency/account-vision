@@ -1,0 +1,17 @@
+{% extends 'av_emails/base.html' %}
+
+{% block content %}
+
+  <p {% include "av_emails/p_style_snippet.html" %}>
+    Your Account Vision trial has come to an end.
+  </p>
+
+  <p {% include "av_emails/p_style_snippet.html" %}>
+    If you do nothing, we will automatically enroll you in the {{ plan }} plan, based on your current usage. You will be billed ${{ amount }} per month. You can also <a href="{{ site_url }}{% url 'plan' %}">change to a yearly plan</a> for a great discount.
+   </p>
+
+  <p {% include "av_emails/p_style_snippet.html" %}>
+    We hope you are satisfied with what you've seen so far, but please let us know if there is anything we can do to make your Account Vision experience better. If you would like to cancel your subscription, please <a href="{{ site_url }}{% url 'contact' %}">contact us</a> before your trial ends.
+  </p>
+
+{% endblock content %}

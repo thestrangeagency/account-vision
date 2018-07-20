@@ -5,7 +5,7 @@ from django.core.management.base import BaseCommand
 
 from av_account.models import Communications, Firm
 from av_core import settings
-from av_emails.utils import send_trial_end_email
+from av_emails.utils import send_trial_end_email, send_trial_final_email
 
 
 class Command(BaseCommand):
@@ -56,26 +56,50 @@ class Command(BaseCommand):
                     # may need to email the boss
                     boss = firm.boss
 
+                    self.stdout.write('Firm {} has {} trial days left.'.format(firm, firm.trial_days_left()))
+
                     # look up past communications to see if we've already emailed about an ending trial
                     comms, created = Communications.objects.get_or_create(user=boss)
-                    
+
+                    # get usage counts
+                    cpa_count = firm.cpa_count()
+                    client_count = firm.client_count()
+
+                    # figure out candidate plan based on usage
+                    plan = plan_a
+                    if cpa_count > int(plan_a.metadata.max_cpa) or client_count > int(plan_a.metadata.max_client):
+                        plan = plan_b
+                        if cpa_count > int(plan_b.metadata.max_cpa) or client_count > int(plan_b.metadata.max_client):
+                            plan = plan_c
+                    plan.amount = round(plan.amount / 100)
+
+                    # send 3 day warning
                     if firm.trial_days_left() <= 3 and comms.trial_end_reminders < 1:
-                        # get usage counts
-                        cpa_count = firm.cpa_count()
-                        client_count = firm.client_count()
-                        
-                        # figure out candidate plan based on usage
-                        plan = plan_a
-                        if cpa_count > int(plan_a.metadata.max_cpa) or client_count > int(plan_a.metadata.max_client):
-                            plan = plan_b
-                            if cpa_count > int(plan_b.metadata.max_cpa) or client_count > int(plan_b.metadata.max_client):
-                                plan = plan_c
-                        plan.amount = round(plan.amount/100)
-                        
+                        # email warning to cpa
                         send_trial_end_email(boss, plan.metadata.name, plan.amount)
-                        
+    
                         # record that email was sent
                         comms.trial_end_reminders = comms.trial_end_reminders + 1
+                        comms.save()
+
+                    self.stdout.write('  current interval: {}'.format(subscription.plan.interval))
+
+                    # change plan before trial end and send notice, only if user didn't switch to a yearly plan already
+                    if firm.trial_days_left() < 1 and comms.trial_change_notice < 1 and subscription.plan.interval != 'year':
+                        # email warning to cpa
+                        send_trial_final_email(boss, plan.metadata.name, plan.amount)
+
+                        # change customer plan
+                        stripe.Subscription.modify(subscription.id,
+                                                   cancel_at_period_end=False,
+                                                   items=[{
+                                                       'id': subscription['items']['data'][0].id,
+                                                       'plan': plan.id,
+                                                   }]
+                                                   )
+    
+                        # record that email was sent
+                        comms.trial_change_notice = comms.trial_change_notice + 1
                         comms.save()
 
         self.stdout.write(self.style.SUCCESS('Updated %s firms.' % count))

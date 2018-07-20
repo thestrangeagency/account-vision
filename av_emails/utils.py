@@ -131,6 +131,15 @@ def send_trial_end_email(user, plan, amount):
         template='av_emails/trial_end.html',
     )
 
+
+def send_trial_final_email(user, plan, amount):
+    send_email(
+        subject='Your Account Vision Trial',
+        recipient=user.email,
+        context={'user': user, 'plan': plan, 'amount': amount},
+        template='av_emails/trial_final.html',
+    )
+
 # ------------------------------------------------------------------------------------------
 
 

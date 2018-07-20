@@ -381,6 +381,7 @@ class Communications(models.Model):
     agreed_terms = models.DateTimeField('date agreed to terms', null=True)
     registration_reminders = models.IntegerField(default=0)
     trial_end_reminders = models.IntegerField(default=0)
+    trial_change_notice = models.IntegerField(default=0)
 
 
 class Bank(models.Model):
