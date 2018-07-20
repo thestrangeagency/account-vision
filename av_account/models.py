@@ -138,10 +138,10 @@ class AvUser(Person, AbstractBaseUser, PermissionsMixin):
             return self.is_active
 
     def trial_time_left(self):
-        return self.firm.trial_time_left()
+        return self.firm.trial_time_left() if self.is_cpa else None
 
     def trial_days_left(self):
-        return self.firm.trial_days_left()
+        return self.firm.trial_days_left() if self.is_cpa else None
     
     def cpa_count(self):
         return self.firm.cpa_count()
