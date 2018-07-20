@@ -162,7 +162,7 @@ class AccountTestCase(TestCase):
         url = reverse('logout')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, settings.LOGOUT_REDIRECT_URL)
+        self.assertRedirects(response, settings.LOGOUT_REDIRECT_URL, fetch_redirect_response=False)
         user = auth.get_user(self.client)
         assert not user.is_authenticated()
 

@@ -130,7 +130,7 @@ class TeamTestCase(TestCase):
         url = reverse('team-detail', args=[self.cpa.email])
         data = {
             'last_name': 'x',
-            'role': 1,
+            'role': self.group.id,
         }
         self.login_cpa()
         
@@ -154,7 +154,7 @@ class TeamTestCase(TestCase):
         data = {
             'email': 'a@a.com',
             'last_name': 'y',
-            'role': 1,
+            'role': self.group.id,
         }
         
         self.try_anonymous(url)
@@ -189,7 +189,7 @@ class TeamTestCase(TestCase):
         data = {
             'email': 'a@a.com',
             'last_name': 'y',
-            'role': 1,
+            'role': self.group.id,
         }
     
         self.try_anonymous(url)
