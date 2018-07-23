@@ -8,9 +8,13 @@
 {% block content_class %}container{% endblock content_class %}
 
 {% block content %}
+
+  <!-- *************************************************** hero ********************************************* -->
+
   <div class="tx-home__hero tx-full-width">
     <div class="container">
-      <h1 class="h1 tx-home__hero-header">Sign up now<br/> for your free 14-day trial!</h1>
+      <h1 class="tx-home__logo">Account Vision</h1>
+      <h1 class="h1 tx-home__hero-header">Cloud-based client portal for accountants.<br/>Free trial, launch in minutes!</h1>
       {% if not user.is_authenticated %}
         <a href="{% url 'register' %}" class="btn btn-primary">
           Free Trial
@@ -18,15 +22,19 @@
       {% endif %}
     </div>
   </div>
+
+  <!-- *************************************************** sub hero ********************************************* -->
+
   <div class="tx-home__subhero tx-full-width">
     <div class="container">
-      <h2 class="h3 tx-home__subhero__header">Account Vision is your client portal in the cloud.</h2>
+      <h2 class="h3 tx-home__subhero__header">Nothing to configure. Just sign up and invite your clients.</h2>
     </div>
   </div>
+
+  <!-- *************************************************** pricing ********************************************* -->
+
   <div class="tx-steps tx-full-width">
     <div class="container">
-
-      <!-- ****************************** pricing ****************************** -->
 
       <div class="card-deck mb-3 text-center">
 
@@ -54,9 +62,12 @@
 
       </div>
 
+      <h5 class="h5 text-center">For additional capacity or customizations <a href="{{ site_url }}{% url 'contact' %}">contact us</a> for pricing.</h5>
 
     </div>
   </div>
+
+  <!-- *************************************************** features ********************************************* -->
 
   <div class="tx-home__features tx-full-width">
     <div class="container">
