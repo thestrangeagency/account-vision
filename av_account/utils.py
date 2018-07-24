@@ -114,13 +114,34 @@ class StripeMixin(View):
     
     def change_plan(self, plan_id):
         subscription = self.get_subscription()
+        old_plan = subscription.plan
+        new_plan = stripe.Plan.retrieve(plan_id)
+
+        prorate = False
+
+        # prorate if moving up from a monthly plan
+        # and prorate if moving up from a yearly plan to a yearly plan
+        if old_plan.amount < new_plan.amount:
+            prorate = True
+
+        # prorate if moving up from a yearly plan to a monthly plan
+        if old_plan.interval == 'yearly' and old_plan.amount / 12 < new_plan.amount:
+            prorate = True
+
         stripe.Subscription.modify(subscription.id,
                                    cancel_at_period_end=False,
                                    items=[{
                                        'id': subscription['items']['data'][0].id,
                                        'plan': plan_id,
-                                   }]
+                                   }],
+                                   prorate=prorate
                                    )
+
+        # generate invoice iff moving up from a yearly to another yearly
+        if old_plan.interval == 'yearly' and new_plan.interval == 'yearly' and old_plan.amount < new_plan.amount:
+            stripe.Invoice.create(
+                customer=subscription.customer,
+            )
 
 
 class StripePlansMixin(ContextMixin, StripeMixin):
