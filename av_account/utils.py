@@ -120,12 +120,15 @@ class StripeMixin(View):
         prorate = False
 
         # prorate if moving up from a monthly plan
+        if old_plan.interval == 'monthly' and old_plan.amount < new_plan.amount:
+            prorate = True
+
         # and prorate if moving up from a yearly plan to a yearly plan
-        if old_plan.amount < new_plan.amount:
+        if old_plan.interval == 'yearly' and new_plan.interval == 'yearly' and old_plan.amount < new_plan.amount:
             prorate = True
 
         # prorate if moving up from a yearly plan to a monthly plan
-        if old_plan.interval == 'yearly' and old_plan.amount / 12 < new_plan.amount:
+        if old_plan.interval == 'yearly' and new_plan.interval == 'monthly' and old_plan.amount / 12 < new_plan.amount:
             prorate = True
 
         stripe.Subscription.modify(subscription.id,
