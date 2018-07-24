@@ -8,7 +8,7 @@ from django.views.generic.base import ContextMixin
 from ipware.ip import get_ip
 
 from av_account.models import AvUser
-from av_core import settings
+from av_core import settings, logger
 from av_emails.utils import send_untrusted_device_email
 
 
@@ -140,11 +140,16 @@ class StripeMixin(View):
                                    prorate=prorate
                                    )
 
+        verb = 'changed plan from {} to {} with prorate {}'.format(old_plan.id, new_plan.id, prorate)
+        logger.info('action: {}, {}'.format(self.request.user, verb))
+
         # generate invoice iff moving up from a yearly to another yearly
         if old_plan.interval == 'yearly' and new_plan.interval == 'yearly' and old_plan.amount < new_plan.amount:
             stripe.Invoice.create(
                 customer=subscription.customer,
             )
+
+        logger.info('action: {}, {}'.format(self.request.user, 'generated invoice due to plan change'))
 
 
 class StripePlansMixin(ContextMixin, StripeMixin):
