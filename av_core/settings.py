@@ -36,7 +36,7 @@ if not DEBUG:
     SECURE_CONTENT_TYPE_NOSNIFF = True
     SECURE_BROWSER_XSS_FILTER = True
     X_FRAME_OPTIONS = 'DENY'
-    ALLOWED_HOSTS = ['acvi-stage.herokuapp.com', 'acvi.herokuapp.com']
+    ALLOWED_HOSTS = ['acvi-stage.herokuapp.com', 'acvi.herokuapp.com', 'account.vision']
 else:
     ALLOWED_HOSTS = ['*']
 
