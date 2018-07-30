@@ -176,12 +176,10 @@ export default class CustomExpenseManager extends React.Component {
                     {expense.notes && !frozen &&
                       <span className="">
                         <button
-                          className="expense-manager__expense__button"
+                          className="expense-manager__expense__button far fa-sticky-note fa-lg"
                           onClick={() => this.onClickEdit(index)}
                           type="button"
-                        >
-                          <i className="far fa-sticky-note fa-lg" />
-                        </button>
+                        />
                       </span>
                     }
                   </span>
@@ -189,19 +187,15 @@ export default class CustomExpenseManager extends React.Component {
                   {!frozen &&
                   <span className="col-4 text-right text-nowrap px-0">
                     <button
-                      className="expense-manager__expense__button"
+                      className="expense-manager__expense__button far fa-edit fa-lg"
                       onClick={() => this.onClickEdit(index)}
                       type="button"
-                    >
-                      <i className="far fa-edit fa-lg" />
-                    </button>
+                    />
                     <button
-                      className="expense-manager__expense__button text-danger-light"
+                      className="expense-manager__expense__button text-danger-light far fa-times-circle fa-lg"
                       onClick={() => this.onClickDelete(index)}
                       type="button"
-                    >
-                      <i className="far fa-times-circle fa-lg" />
-                    </button>
+                    />
                   </span>
                   }
                 </div>
