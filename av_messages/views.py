@@ -67,7 +67,7 @@ class MessageReplyView(FullRequiredMixin, MessageView):
         return {
             'body': self.format_quote(parent.sender, parent.body),
             'subject': self.subject_template % {'subject': parent.subject},
-            'recipient': [parent.sender.id, ]
+            'recipient': parent.sender.id,
         }
 
     def format_quote(self, sender, body):
