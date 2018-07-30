@@ -1,5 +1,36 @@
 {% extends 'base.html' %}
 
+{% load inbox %}
+
+{% inbox_count as count %}
+
 {% block content %}
-  Hi client!
+
+  <h1 class="h1">{{ user }}</h1>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-sm">
+        <h1 class="h1">{{ client.first_name }} {{ client.last_name }}</h1>
+
+        <h4 class="h4">Messages</h4>
+        <p>You have {{ count }} new <a href="{% url 'messages_redirect' %}">message{{ count|pluralize }}</a>.</p>
+
+        <h4 class="h4">Tax Years</h4>
+        <ul>
+          {% for return in tax_years %}
+            <li>
+              <a href="{% url 'return' return.year %}">{{ return.year }}</a>
+            </li>
+          {% empty %}
+            <li>Visit the <a href="{% url 'returns' %}">tax years</a> page to add a new tax year.</li>
+          {% endfor %}
+        </ul>
+
+      </div>
+      <div class="col-sm">
+      </div>
+    </div>
+  </div>
+
 {% endblock content %}

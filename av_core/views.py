@@ -3,6 +3,7 @@ from django.shortcuts import redirect
 from django.views.generic import TemplateView, ListView
 
 from av_account.utils import StripePlansMixin, ClientRequiredMixin, CPARequiredMixin
+from av_returns.models import Return
 
 
 class HomeView(TemplateView, StripePlansMixin):
@@ -19,6 +20,11 @@ class HomeView(TemplateView, StripePlansMixin):
 
 class ClientHomeView(ClientRequiredMixin, TemplateView):
     template_name = 'home_client.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ClientHomeView, self).get_context_data(**kwargs)
+        context['tax_years'] = Return.objects.filter(user=self.request.user)
+        return context
 
 
 class CpaHomeView(CPARequiredMixin, TemplateView):

@@ -1,14 +1,32 @@
 {% extends 'base.html' %}
 
-{% load activity_tags action %}
+{% load activity_tags action inbox %}
+
+{% inbox_count as count %}
 
 {% block content %}
-  Hi cpa!
 
-  <ul>
-    {% for action in stream|slice:":25" %}
-      <li>{% action action %}</li>
-    {% endfor %}
-  </ul>
+  <h1 class="h1">{{ user.firm }}</h1>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-sm">
+        <h1 class="h1">{{ client.first_name }} {{ client.last_name }}</h1>
+
+        <h4 class="h4">Messages</h4>
+        <p>You have {{ count }} new <a href="{% url 'messages_redirect' %}">message{{ count|pluralize }}</a>.</p>
+
+        <h4 class="h4">Recent Activity</h4>
+        <ul>
+          {% for action in stream|slice:":25" %}
+            <li>{% action action %}</li>
+          {% endfor %}
+        </ul>
+
+      </div>
+      <div class="col-sm">
+      </div>
+    </div>
+  </div>
 
 {% endblock content %}
