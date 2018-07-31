@@ -2,10 +2,10 @@ import sys
 
 import dj_database_url
 import os
+import raven
 from django.urls import reverse_lazy
-from os.path import join
 from dotenv import load_dotenv, find_dotenv
-
+from os.path import join
 
 # Optionally store env vars in a .env file
 load_dotenv(find_dotenv(), verbose=True)
@@ -334,3 +334,13 @@ STRIPE_DEFAULT_PLAN = STRIPE_PLANS['monthly']['c']
 NOTIFICATION_NUMBERS = (
     '+13106663912',
 )
+
+SENTRY_DSN = os.getenv('SENTRY_DSN')
+if SENTRY_DSN:
+    RAVEN_CONFIG = {
+        'dsn': SENTRY_DSN,
+        'release': raven.fetch_git_sha(os.path.abspath(os.pardir)),
+    }
+    INSTALLED_APPS = INSTALLED_APPS + [
+        'raven.contrib.django.raven_compat',
+    ]
