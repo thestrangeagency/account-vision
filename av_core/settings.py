@@ -339,7 +339,6 @@ SENTRY_DSN = os.getenv('SENTRY_DSN')
 if SENTRY_DSN:
     RAVEN_CONFIG = {
         'dsn': SENTRY_DSN,
-        'release': raven.fetch_git_sha(os.path.abspath(os.pardir)),
     }
     INSTALLED_APPS = INSTALLED_APPS + [
         'raven.contrib.django.raven_compat',
