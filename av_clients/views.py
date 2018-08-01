@@ -25,13 +25,29 @@ from av_uploads.models import S3File
 from av_utils.utils import get_object_or_None
 
 
-def order_by_lower(x):
-    return Lower({
+def order_by_lower(sort, desc):
+    """
+    creates ordering function
+    note that postgres cannot handle ORDER BY LOWER("av_account_avuser"."date_created") or LOWER("av_account_avuser"."is_verified")
+    :param sort: sort field choice
+    :param desc: descending?
+    :return: ordering function
+    """
+    if sort == 'reg':
+        order = 'is_verified' if desc == 'no' else '-is_verified'
+
+    field = {
         'last': 'last_name',
         'first': 'first_name',
         'email': 'email',
-        'reg': 'is_verified',
-    }.get(x))
+    }.get(sort)
+
+    if field:
+        order = Lower(field) if desc == 'no' else Lower(field).desc()
+    else:
+        order = 'date_created'
+
+    return order
 
 
 class ClientListView(CPARequiredMixin, ListView):
@@ -41,11 +57,7 @@ class ClientListView(CPARequiredMixin, ListView):
     def get_queryset(self):
         sort = self.request.GET.get('sort')
         desc = self.request.GET.get('desc')
-        if sort:
-            order = order_by_lower(sort) if desc == 'no' else order_by_lower(sort).desc()
-        else:
-            order = 'date_created'  # postgres cannot handle ORDER BY LOWER("av_account_avuser"."date_created")
-        return AvUser.objects.filter(firm=self.request.user.firm, is_cpa=False).order_by(order)
+        return AvUser.objects.filter(firm=self.request.user.firm, is_cpa=False).order_by(order_by_lower(sort, desc))
 
     def get_context_data(self, **kwargs):
         context = super(ClientListView, self).get_context_data(**kwargs)
@@ -56,10 +68,10 @@ class ClientListView(CPARequiredMixin, ListView):
 
 class AbstractClientView(CPARequiredMixin, ContextMixin, View):
     template_name = 'av_clients/return.html'
-    
+
     def get_user(self):
         return get_object_or_404(AvUser, email=self.kwargs['username'], firm=self.request.user.firm)
-    
+
     def get_context_data(self, **kwargs):
         context = super(AbstractClientView, self).get_context_data(**kwargs)
         context['client'] = self.get_user()
@@ -69,10 +81,10 @@ class AbstractClientView(CPARequiredMixin, ContextMixin, View):
 class AbstractClientReturnView(AbstractClientView):
     def get_year(self):
         return self.kwargs.get('year', None)
-    
+
     def get_return(self):
         return get_object_or_404(Return, year=self.get_year(), user=self.get_user())
-    
+
     def get_context_data(self, **kwargs):
         context = super(AbstractClientReturnView, self).get_context_data(**kwargs)
         # even though we have object.year, we need this for breadcrumbs to work
@@ -84,7 +96,7 @@ class AbstractClientReturnView(AbstractClientView):
 class ClientDetailView(AbstractClientView, DetailView):
     model = AvUser
     template_name = 'av_clients/detail.html'
-    
+
     def get_object(self, queryset=None):
         return self.get_user()
 
@@ -92,18 +104,18 @@ class ClientDetailView(AbstractClientView, DetailView):
 class ClientDeleteView(CPARequiredMixin, UserViewMixin, DeleteView):
     model = AvUser
     success_url = reverse_lazy('clients')
-    
+
     def delete(self, request, *args, **kwargs):
         user = self.get_user()
-        
+
         # add to activity stream, but omit target as target will be deleted, removing the action
         verb = 'deleted {} {} ({}).'.format(user.first_name, user.last_name, user.email)
         action.send(self.request.user, verb=verb, target=None)
         logger.info('action: {}, {}'.format(self.request.user, verb))
-        
+
         messages.success(self.request, verb.capitalize())
         return super(ClientDeleteView, self).delete(request)
-    
+
 
 class ClientActivityView(AbstractClientView, DetailView):
     model = AvUser
@@ -138,7 +150,7 @@ class ClientDetailUploadsView(AbstractClientReturnView, AbstractTableView):
             'field': 'type',
         },
     ]
-    
+
     def get_queryset(self):
         return S3File.objects.filter(user=self.get_user(), tax_return=self.get_return(), uploaded=True)
 
@@ -160,7 +172,7 @@ class ClientDetailExpensesView(AbstractClientReturnView, AbstractTableView):
             'field': 'notes',
         },
     ]
-    
+
     def get_queryset(self):
         return Expense.objects.filter(tax_return=self.get_return())
 
@@ -193,12 +205,12 @@ class ClientInviteView(CPARequiredMixin, FormView, StripeMixin):
 
     def get_context_data(self, **kwargs):
         context = super(ClientInviteView, self).get_context_data(**kwargs)
-    
+
         plan = self.get_subscription().plan
-    
+
         context['client_count'] = self.request.user.client_count()
         context['max_client'] = int(plan.metadata.max_client)
-    
+
         return context
 
 
@@ -252,7 +264,7 @@ def generate_users(file_name, request):
                 email=email,
                 firm=request.user.firm,
             )
-            
+
             existing = get_object_or_None(AvUser, email=user.email)
             if existing is not None:
                 setattr(user, 'existing', True)
@@ -289,12 +301,12 @@ class ClientImportView(CPARequiredMixin, FormView, StripeMixin):
 
     def get_context_data(self, **kwargs):
         context = super(ClientImportView, self).get_context_data(**kwargs)
-    
+
         plan = self.get_subscription().plan
-    
+
         context['client_count'] = self.request.user.client_count()
         context['max_client'] = int(plan.metadata.max_client)
-    
+
         return context
 
 
