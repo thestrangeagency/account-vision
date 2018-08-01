@@ -25,13 +25,13 @@ from av_uploads.models import S3File
 from av_utils.utils import get_object_or_None
 
 
-def order_by(x):
+def order_by_lower(x):
     return Lower({
         'last': 'last_name',
         'first': 'first_name',
         'email': 'email',
         'reg': 'is_verified',
-    }.get(x, 'date_created'))
+    }.get(x))
 
 
 class ClientListView(CPARequiredMixin, ListView):
@@ -41,7 +41,10 @@ class ClientListView(CPARequiredMixin, ListView):
     def get_queryset(self):
         sort = self.request.GET.get('sort')
         desc = self.request.GET.get('desc')
-        order = order_by(sort) if desc == 'no' else order_by(sort).desc()
+        if sort:
+            order = order_by_lower(sort) if desc == 'no' else order_by_lower(sort).desc()
+        else:
+            order = 'date_created'  # postgres cannot handle ORDER BY LOWER("av_account_avuser"."date_created")
         return AvUser.objects.filter(firm=self.request.user.firm, is_cpa=False).order_by(order)
 
     def get_context_data(self, **kwargs):
