@@ -310,7 +310,7 @@ class ClientImportView(CPARequiredMixin, FormView, StripeMixin):
         return context
 
 
-class ClientImportPreView(CPARequiredMixin, FormView):
+class ClientImportPreView(CPARequiredMixin, FormView, StripeMixin):
     form_class = CommitUploadForm
     template_name = 'av_clients/import.html'
     success_url = reverse_lazy('import')
@@ -355,5 +355,10 @@ class ClientImportPreView(CPARequiredMixin, FormView):
         if len(context['users']) == 0:
             context['form'] = None
             messages.error(self.request, 'Nothing to import.')
+
+        plan = self.get_subscription().plan
+
+        context['client_count'] = self.request.user.client_count()
+        context['max_client'] = int(plan.metadata.max_client)
 
         return context
