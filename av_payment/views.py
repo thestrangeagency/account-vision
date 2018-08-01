@@ -36,7 +36,7 @@ class TermsView(VerifiedAndTrustedRequiredMixin, FormView):
         comms, created = Communications.objects.get_or_create(user=self.request.user)
         comms.agreed_terms = timezone.now()
         comms.save()
-        self.request.session['discount'] = form.get_discount()
+        self.request.session['coupon'] = form.get_coupon()
         self.request.session['code'] = form.cleaned_data.get('code')
         return super(TermsView, self).form_valid(form)
 
@@ -71,12 +71,17 @@ class CheckoutView(VerifiedAndTrustedRequiredMixin, TemplateView):
         if customer.subscriptions.total_count != 0:
             logger.error('Creating a customer %s that already has a subscription!', customer.id)
 
+        # check coupon
+        if not self.request.session['coupon']:
+            self.request.session['coupon'] = None
+
         # subscribe customer to default plan
         try:
             subscription = stripe.Subscription.create(
                 customer=customer.id,
                 items=[{'plan': settings.STRIPE_DEFAULT_PLAN}],
                 trial_from_plan=True,
+                coupon=self.request.session['coupon'],
             )
 
         except stripe.error.StripeError as e:

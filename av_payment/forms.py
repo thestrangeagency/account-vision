@@ -9,10 +9,7 @@ class TermsForm(Form):
     terms = BooleanField(required=False)
     code = CharField(label='Discount Code', required=False)
     codes = {
-        'tax1': 400,
-        'tax2': 400,
-        'tax3': 400,
-        'tax4': 400,
+        'early': 'early_bird',
     }
 
     def __init__(self, *args, **kwargs):
@@ -38,7 +35,7 @@ class TermsForm(Form):
         else:
             return self.cleaned_data.get('terms')
 
-    def get_discount(self):
+    def get_coupon(self):
         code = self.cleaned_data.get('code')
         if code in self.codes:
             return self.codes[code]
