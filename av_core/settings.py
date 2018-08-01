@@ -54,7 +54,7 @@ DEFAULT_FROM_EMAIL = 'Account Vision <no-reply@account.vision>'
 SERVER_EMAIL = 'info@account.vision'
 
 ADMINS = [('Lucas', 'lucas@strange.agency')]
-DEFAULT_CONTACT = os.environ.get("DEFAULT_CONTACT", 'lucas@strange.agency')
+DEFAULT_CONTACT = os.environ.get("DEFAULT_CONTACT", 'info@account.vision')
 
 # Application definition
 
