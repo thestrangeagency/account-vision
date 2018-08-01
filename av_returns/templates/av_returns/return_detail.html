@@ -70,8 +70,5 @@ django_bootstrap_breadcrumbs fails with object.year, so had to add 'year' to con
 
 {% block content %}
   <h1 class="h1">Tax Year {{ object.year }}</h1>
-
-  <p class="tx-returns__text mt-4">Return status: <span class="tx-returns__status-text">{{ object.get_return_status_display }}</span></p>
-
   {% crispy form %}
 {% endblock content %}
