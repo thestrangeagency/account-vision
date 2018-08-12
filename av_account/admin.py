@@ -73,8 +73,8 @@ class UserAdmin(BaseUserAdmin):
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
-    list_display = ('email', 'is_staff', 'is_cpa',)
-    list_filter = ('is_staff', 'groups__name')
+    list_display = ('email', 'is_staff', 'is_cpa', 'is_email_verified', 'trial_days_left')
+    list_filter = ('is_staff', 'is_cpa', 'is_email_verified', 'groups__name')
 
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
     # overrides get_fieldsets to use this attribute when creating a user.
@@ -82,7 +82,7 @@ class UserAdmin(BaseUserAdmin):
         (None, {
             'classes': ('wide',),
             'fields': ('email', 'password1', 'password2')}
-        ),
+         ),
     )
     formfield_overrides = {
         models.PositiveIntegerField: {'widget': forms.NumberInput},
@@ -107,6 +107,11 @@ class UserAdmin(BaseUserAdmin):
         return fieldsets
 
 
+class FirmAdmin(admin.ModelAdmin):
+    
+    list_display = ('__str__', 'is_paid', 'trial_end', 'trial_days_left', 'cpa_count', 'client_count')
+
+
 admin.site.register(AvUser, UserAdmin)
 admin.site.register(SecurityQuestion)
-admin.site.register(Firm)
+admin.site.register(Firm, FirmAdmin)
