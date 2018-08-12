@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% load django_bootstrap_breadcrumbs static %}
+
+{% block breadcrumbs %}
+  {{ block.super }}
+  {% breadcrumb "Features" "features" %}
+{% endblock %}
+
+{% block content %}
+  <h1 class="pb-4">Account Vision Features</h1>
+  
+  <div class="container">
+
+    <div class="row pt-3">
+      <div class="col-md-8 col-lg-6 pb-5">
+        <img srcset="{% static 'img/screens/info.png' %} 1x, {% static 'img/screens/info@2x.png' %} 2x" />
+      </div>
+      <div class="col-md-4 col-lg-6">
+        <h4>Client Info at a Glance</h4>
+        <p>Quickly find your client's contact information, return status, and other vitals. Spouse and dependent info is provided as well. And the best part? Your client can easily fill in his or her own info, saving you time and effort.</p>
+      </div>
+    </div>
+
+    <div class="row pt-5">
+      <div class="col-md-4 col-lg-6">
+        <h4>Document Sharing Made Easy</h4>
+        <p>Your clients can upload forms, photos, spreadsheets, and other documents through a simple web interface. No more hunting through emails looking for a lost document. Moreover, your clients' files are stored encrypted with industry standard 256-bit AES.</p>
+      </div>
+      <div class="col-md-8 col-lg-6 pb-5">
+        <img srcset="{% static 'img/screens/uploads.png' %} 1x, {% static 'img/screens/uploads@2x.png' %} 2x" />
+      </div>
+    </div>
+
+    <div class="row pt-5">
+      <div class="col-md-8 col-lg-6 pb-5">
+        <img srcset="{% static 'img/screens/expenses.png' %} 1x, {% static 'img/screens/expenses@2x.png' %} 2x" />
+      </div>
+      <div class="col-md-4 col-lg-6">
+        <h4>Expenses Tamed and Organized</h4>
+        <p>Let your clients enter and update a list of expenses. Nothing gets lost, and everything is available in one convenient location.</p>
+      </div>
+    </div>
+
+    <div class="row pt-5">
+      <div class="col-md-4 col-lg-6">
+        <h4>Secure Messaging</h4>
+        <p>Unlike many email services, our secure messaging system protects your client information. Keep communications threaded by client, for quick and easy access.</p>
+      </div>
+      <div class="col-md-8 col-lg-6 pb-5">
+        <img srcset="{% static 'img/screens/messages.png' %} 1x, {% static 'img/screens/messages@2x.png' %} 2x" />
+      </div>
+    </div>
+
+  </div>
+
+{% endblock %}

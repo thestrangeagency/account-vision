@@ -53,6 +53,7 @@ urlpatterns = [
     url(r'^dashboard/$', CpaHomeView.as_view(), name='cpa-home'),
     url(r'^home/$', ClientHomeView.as_view(), name='client-home'),
 
+    # apps
     url(r'^account/', include('av_account.urls')),
     url(r'^profile/', include('av_profile.urls')),
     url(r'^clients/', include('av_clients.urls')),
@@ -62,17 +63,24 @@ urlpatterns = [
     url(r'^firm/', include('av_team.urls')),
     url(r'^payment/', include('av_payment.urls')),
 
+    # header
+    url(r'^features/$', TemplateView.as_view(template_name='features.html'), name='features'),
+
+    # footer
     url(r'^terms/$', TemplateView.as_view(template_name='terms.html'), name='legal'),
     url(r'^privacy/$', TemplateView.as_view(template_name='privacy.html'), name='privacy'),
     url(r'^contact/$', ContactView.as_view(), name='contact'),
 
+    # drf api
     url(r'^api/', include('rest_framework.urls', namespace='api')),
     url(r'^api/', include(router.urls)),
 
+    # image upload api
     url(r'^api/uploads/params$', UploadParamsView.as_view(), name='upload_params'),
     url(r'^api/uploads/signature$', UploadSignatureView.as_view(), name='upload_signature'),
     url(r'^api/uploads/complete', UploadCompleteView.as_view(), name='upload_complete'),
 
+    # admin etc.
     url(r'^admin/', admin.site.urls),
     url(r'^login_redirect/$', login_redirect, name='login_redirect'),
     url(r'^force_trust/$', force_trust, name='force_trust'),
