@@ -89,7 +89,7 @@ def send_payment_email(user):
 
 def send_abandoned_email(user):
     send_email(
-        subject='You\'re So Close!',
+        subject='Almost Ready!',
         recipient=user.email,
         context={'user': user},
         template='av_emails/abandoned.html',

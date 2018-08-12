@@ -2,18 +2,19 @@ from datetime import timedelta
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.management.base import BaseCommand
+from django.db.models import Q
 from django.utils import timezone
 
-from account.models import TaxUser, Communications
-from emails.utils import send_abandoned_email
+from av_account.models import AvUser, Communications
+from av_emails.utils import send_abandoned_email
 
 
 class Command(BaseCommand):
     help = 'Emails abandoned registrations'
 
     def handle(self, *args, **options):
-        # find users who registered but have not paid in 24 hrs
-        users = TaxUser.objects.filter(is_paid=False, date_created__lt=timezone.now() + timedelta(-1))
+        # find users who registered but have not paid in 2 days
+        users = AvUser.objects.filter(Q(firm__stripe_id=None) | Q(firm=None), date_created__lt=timezone.now() + timedelta(-2))
         self.stdout.write('Found %s abandoned registrations.' % len(users))
 
         count = 0

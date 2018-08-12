@@ -2,7 +2,14 @@
 
 {% block content %}
   <p {% include "av_emails/p_style_snippet.html" %}>
-    It looks like you haven't finished your Account Vision registration. You can finish it <a href="{{ site_url }}{% url 'terms' %}">here</a>.
+    Uh oh! It looks like you haven't finished your Account Vision registration. You can quickly finish it <a href="{{ site_url }}{% url 'terms' %}">here</a>.
   </p>
 
+  <p {% include "av_emails/p_style_snippet.html" %}>
+    You'll need to enter a credit card number, but we won't bill you until your trial ends, and we'll send you a reminder before we do so.
+  </p>
+
+  <p {% include "av_emails/p_style_snippet.html" %}>
+    If you have any questions about the site or registration process, please don't hesitate to <a href="{{ site_url }}{% url 'contact' %}">contact us</a>. We'd be happy to address your questions or concerns.
+  </p>
 {% endblock content %}
