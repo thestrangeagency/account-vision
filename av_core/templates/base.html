@@ -8,43 +8,43 @@
 {% endblock %}
 
 <html>
-{% block head %}
-  <head>
-    <title>Account Vision</title>
+<head>
+  <title>Account Vision</title>
 
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-32152832-4"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-32152832-4"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
 
-      gtag('config', 'UA-32152832-4');
-      gtag('config', 'AW-1033596388');
-    </script>
+    gtag('config', 'UA-32152832-4');
+    gtag('config', 'AW-1033596388');
+  </script>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-    <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
-    <link rel="stylesheet" href="{% static 'css/fontawesome-all.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
+  <link rel="stylesheet" href="{% static 'css/fontawesome-all.min.css' %}">
 
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:600" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:600" rel="stylesheet">
 
-    <!-- favicon -->
+  <!-- favicon -->
 
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicon/apple-touch-icon.png' %}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon/favicon-32x32.png' %}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon/favicon-16x16.png' %}">
-    <link rel="manifest" href="{% static 'favicon/site.webmanifest' %}">
-    <link rel="mask-icon" href="{% static 'favicon/safari-pinned-tab.svg' %}" color="#5bbad5">
-    <link rel="shortcut icon" href="{% static 'favicon/favicon.ico' %}">
-    <meta name="apple-mobile-web-app-title" content="Account Vision">
-    <meta name="application-name" content="Account Vision">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="msapplication-config" content="{% static 'favicon/browserconfig.xml' %}">
-    <meta name="theme-color" content="#ffffff">
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicon/apple-touch-icon.png' %}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon/favicon-32x32.png' %}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon/favicon-16x16.png' %}">
+  <link rel="manifest" href="{% static 'favicon/site.webmanifest' %}">
+  <link rel="mask-icon" href="{% static 'favicon/safari-pinned-tab.svg' %}" color="#5bbad5">
+  <link rel="shortcut icon" href="{% static 'favicon/favicon.ico' %}">
+  <meta name="apple-mobile-web-app-title" content="Account Vision">
+  <meta name="application-name" content="Account Vision">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="msapplication-config" content="{% static 'favicon/browserconfig.xml' %}">
+  <meta name="theme-color" content="#ffffff">
 
-  </head>
-{% endblock head %}
+  {% block head %}
+  {% endblock head %}
+</head>
 <body class={% block body_styles %}tx-body{% endblock body_styles %}>
 {% block header %}
   <nav class="{% block nav_styles %}{% endblock nav_styles %} navbar navbar-dark navbar-expand-md pt-0 pb-0">

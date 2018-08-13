@@ -1,5 +1,24 @@
 {% extends 'base-modal-form.html' %}
 
+{% block head %}
+  {{ block.super }}
+  <script>
+    gtag('event', 'conversion', {'send_to': 'AW-1033596388/c12tCN-wtIcBEOTb7ewD'});
+  </script>
+
+  <!-- Reddit Conversion Pixel -->
+  <script>
+    var now = Date.now();
+    var i = new Image();
+    i.src = "https://alb.reddit.com/snoo.gif?q=CAAHAAABAAoACQAAABO9viS0AA==&s=DO6BDa-mwktjkrv_nv_QHWSjNbG76CO-V6Lm4aI7Rq0=&ts=" + now;
+  </script>
+  <noscript>
+    <img height="1" width="1" style="display:none"
+         src="https://alb.reddit.com/snoo.gif?q=CAAHAAABAAoACQAAABO9viS0AA==&s=DO6BDa-mwktjkrv_nv_QHWSjNbG76CO-V6Lm4aI7Rq0="/>
+  </noscript>
+  <!-- End Reddit Conversion Pixel -->
+{% endblock head %}
+
 {% block content_title %}
   Welcome
 {% endblock %}
@@ -11,9 +30,5 @@
   <p class="text-center pt-3">
     <a href="{% url 'clients' %}" class="btn btn-primary">Clients</a>
   </p>
-
-  <script>
-    gtag('event', 'conversion', {'send_to': 'AW-1033596388/c12tCN-wtIcBEOTb7ewD'});
-  </script>
 
 {% endblock %}
