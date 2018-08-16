@@ -45,11 +45,11 @@ class Firm(TimeStampedModel):
                 return timezone.now() < self.trial_end
 
     def trial_time_left(self):
-        return self.trial_end - timezone.now()
+        return self.trial_end - timezone.now() if self.trial_end is not None else None
 
     def trial_days_left(self):
         time_left = self.trial_time_left()
-        return time_left.days
+        return time_left.days if self.trial_end is not None else None
 
     def cpa_count(self):
         return AvUser.objects.filter(firm=self, is_cpa=True).count()
