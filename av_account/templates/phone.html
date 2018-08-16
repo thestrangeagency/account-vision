@@ -1,3 +1,9 @@
 {% extends 'base-modal-form.html' %}
 
 {% block content_title %}Account Verification{% endblock content_title %}
+
+{% block modal_content %}
+  <p>We use your phone number strictly for two-factor authentication. We'll text you a code that you'll verify on the next page.</p>
+  <p>No late-night phone calls, we promise!</p>
+  {{ block.super }}
+{% endblock modal_content %}

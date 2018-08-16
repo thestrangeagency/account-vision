@@ -1,3 +1,9 @@
 {% extends 'base-modal-form.html' %}
 
 {% block content_title %}Your Firm's Name{% endblock content_title %}
+
+{% block modal_content %}
+  <p>Enter the name of your firm as you would like it to appear on the pages your clients visit.</p>
+  <p>Of course you may change this later.</p>
+  {{ block.super }}
+{% endblock modal_content %}
