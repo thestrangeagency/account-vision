@@ -15,9 +15,9 @@ from ipware.ip import get_ip
 from phonenumber_field.modelfields import PhoneNumberField
 from twilio.rest import Client
 
-from av_core import logger
 from av_core import settings
-from av_emails.utils import send_verification_email, send_invitation_email, send_team_invitation_email
+from av_emails.utils import send_verification_email, send_invitation_email, send_team_invitation_email, \
+    send_untrusted_device_email
 from av_utils.utils import TimeStampedModel
 
 
@@ -192,28 +192,29 @@ class AvUser(Person, AbstractBaseUser, PermissionsMixin):
         else:
             return self.groups.filter(name='associate').exists()
 
-    def send_verification_code(self):
-        if self.phone is None or self.phone is '':
-            logger.error('Attempted to send verification without a phone number')
-            return
-
+    def send_verification_code(self, request):
         # create verification code
         self.verification_code = ''.join([choice(string.ascii_uppercase + string.digits) for _ in range(4)])
         self.is_verified = False
         self.save()
 
-        # send sms
-        account_sid = settings.TWILIO_ACCOUNT_SID
-        auth_token = settings.TWILIO_AUTH_TOKEN
-        from_number = settings.TWILIO_FROM_NUMBER
+        if self.phone is None or self.phone is '':
+            # no phone number, so this must be an access attempt from an untrusted device
+            # send an email with verification code
+            send_untrusted_device_email(self, get_ip(request))
+        else:
+            # send sms
+            account_sid = settings.TWILIO_ACCOUNT_SID
+            auth_token = settings.TWILIO_AUTH_TOKEN
+            from_number = settings.TWILIO_FROM_NUMBER
 
-        client = Client(account_sid, auth_token)
+            client = Client(account_sid, auth_token)
 
-        client.messages.create(
-            to="+{}{}".format(self.phone.country_code, self.phone.national_number),
-            from_=from_number,
-            body="Your Account Vision verification code is: " + self.verification_code
-        )
+            client.messages.create(
+                to="+{}{}".format(self.phone.country_code, self.phone.national_number),
+                from_=from_number,
+                body="Your Account Vision verification code is: " + self.verification_code
+            )
 
     def generate_email_code(self):
         self.email_verification_code = ''.join([choice(string.ascii_uppercase + string.digits) for _ in range(16)])

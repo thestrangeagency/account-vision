@@ -3,10 +3,12 @@
 {% block content %}
   {{ block.super }}
   <p {% include "av_emails/p_style_snippet.html" %}>
-    Someone has attempted to access your account from an untrusted device with IP address: {{ ip }}.
-
-    If this was you, you may disregard this message.
-
+    We have received an access request from an untrusted device with IP address: {{ ip }}.
+  </p>
+  <p {% include "av_emails/p_style_snippet.html" %}>
+    If this is you, please use the code {{ user.verification_code }} to log in.
+  </p>
+  <p {% include "av_emails/p_style_snippet.html" %}>
     If you suspect suspicious activity, you may <a href="{{ site_url }}{% url 'password_reset' %}">reset your password</a> as a precaution.
   </p>
 {% endblock content %}

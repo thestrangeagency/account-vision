@@ -5,11 +5,9 @@ from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse
 from django.views import View
 from django.views.generic.base import ContextMixin
-from ipware.ip import get_ip
 
 from av_account.models import AvUser
 from av_core import settings, logger
-from av_emails.utils import send_untrusted_device_email
 
 
 class VerifiedAndTrustedRequiredMixin(LoginRequiredMixin):
@@ -20,12 +18,10 @@ class VerifiedAndTrustedRequiredMixin(LoginRequiredMixin):
         user = request.user
         if user.is_authenticated:
             if user.is_2fa and not user.is_verified:
-                # user must have a phone number to be 2fa, so sending a verification code
-                user.send_verification_code()
+                user.send_verification_code(self.request)
                 return redirect_to_login(self.request.get_full_path(), settings.VERIFY_URL, self.get_redirect_field_name())
             if not request.agent.is_trusted:
-                send_untrusted_device_email(user, get_ip(request))
-                user.send_verification_code()
+                user.send_verification_code(self.request)
                 return redirect_to_login(self.request.get_full_path(), settings.VERIFY_URL, self.get_redirect_field_name())
         return super(VerifiedAndTrustedRequiredMixin, self).dispatch(request, *args, **kwargs)
 

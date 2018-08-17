@@ -123,7 +123,7 @@ class RegistrationView(FormView):
 #
 #     def form_valid(self, form):
 #         user = form.save(commit=False)
-#         user.send_verification_code()
+#         user.send_verification_code(self.request)
 #         form.save()
 #         return super(PhoneNumberView, self).form_valid(form)
 #
