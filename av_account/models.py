@@ -15,7 +15,7 @@ from ipware.ip import get_ip
 from phonenumber_field.modelfields import PhoneNumberField
 from twilio.rest import Client
 
-from av_core import settings
+from av_core import settings, logger
 from av_emails.utils import send_verification_email, send_invitation_email, send_team_invitation_email, \
     send_untrusted_device_email
 from av_utils.utils import TimeStampedModel
@@ -202,6 +202,8 @@ class AvUser(Person, AbstractBaseUser, PermissionsMixin):
             # no phone number, so this must be an access attempt from an untrusted device
             # send an email with verification code
             send_untrusted_device_email(self, get_ip(request))
+
+            logger.info('Emailed verification code to user {}'.format(request.user))
         else:
             # send sms
             account_sid = settings.TWILIO_ACCOUNT_SID
@@ -215,6 +217,8 @@ class AvUser(Person, AbstractBaseUser, PermissionsMixin):
                 from_=from_number,
                 body="Your Account Vision verification code is: " + self.verification_code
             )
+
+            logger.info('Texted verification code to user {}'.format(request.user))
 
     def generate_email_code(self):
         self.email_verification_code = ''.join([choice(string.ascii_uppercase + string.digits) for _ in range(16)])
