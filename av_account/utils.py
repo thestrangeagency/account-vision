@@ -18,11 +18,11 @@ class VerifiedAndTrustedRequiredMixin(LoginRequiredMixin):
         user = request.user
         if user.is_authenticated:
             if user.is_2fa and not user.is_verified:
-                user.send_verification_code(self.request)
-                return redirect_to_login(self.request.get_full_path(), settings.VERIFY_URL, self.get_redirect_field_name())
+                user.send_verification_code(request)
+                return redirect_to_login(request.get_full_path(), settings.VERIFY_URL, self.get_redirect_field_name())
             if not request.agent.is_trusted:
-                user.send_verification_code(self.request)
-                return redirect_to_login(self.request.get_full_path(), settings.VERIFY_URL, self.get_redirect_field_name())
+                user.send_verification_code(request)
+                return redirect_to_login(request.get_full_path(), settings.VERIFY_URL, self.get_redirect_field_name())
         return super(VerifiedAndTrustedRequiredMixin, self).dispatch(request, *args, **kwargs)
 
 
