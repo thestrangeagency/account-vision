@@ -12,28 +12,17 @@ from av_core import settings, logger
 from av_emails.utils import send_untrusted_device_email
 
 
-class UserStateRequiredMixin(LoginRequiredMixin):
-    required_user_state = 'none'
-    
-    def render_to_response(self, context, **response_kwargs):
-        context['required_user_state'] = self.required_user_state
-        return super(UserStateRequiredMixin, self).render_to_response(context, **response_kwargs)
-
-
-class VerifiedAndTrustedRequiredMixin(UserStateRequiredMixin):
+class VerifiedAndTrustedRequiredMixin(LoginRequiredMixin):
     """
     Requires phone number to have been verified and device to be trusted
     """
     def dispatch(self, request, *args, **kwargs):
         user = request.user
         if user.is_authenticated:
-            if not user.is_verified:
-                # does user have a phone number yet?
-                if user.phone is None:
-                    return redirect('phone')
-                else:
-                    user.send_verification_code()
-                    return redirect_to_login(self.request.get_full_path(), settings.VERIFY_URL, self.get_redirect_field_name())
+            if user.is_2fa and not user.is_verified:
+                # user must have a phone number to be 2fa, so sending a verification code
+                user.send_verification_code()
+                return redirect_to_login(self.request.get_full_path(), settings.VERIFY_URL, self.get_redirect_field_name())
             if not request.agent.is_trusted:
                 send_untrusted_device_email(user, get_ip(request))
                 user.send_verification_code()
@@ -46,7 +35,6 @@ class FullyVerifiedRequiredMixin(VerifiedAndTrustedRequiredMixin):
     Requires email and phone number to have been verified and device to be trusted
     """
     def dispatch(self, request, *args, **kwargs):
-        self.required_user_state = 'verified phone and email'
         if request.user.is_authenticated:
             if not request.user.is_email_verified:
                 return redirect(reverse('email_verify'))
@@ -58,7 +46,6 @@ class FullRequiredMixin(FullyVerifiedRequiredMixin):
     Ensure the user is a client or is a cpa who has paid or is trialing
     """
     def dispatch(self, request, *args, **kwargs):
-        self.required_user_state = 'ready'
         if request.user.is_authenticated:
             if not request.user.is_full_cred():
                 if request.user.is_cpa:
