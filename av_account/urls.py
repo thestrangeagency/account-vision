@@ -29,11 +29,11 @@ urlpatterns = [
     #     view=VerificationView.as_view(),
     #     name='verification',
     # ),
-    # url(
-    #     regex=r'^firm/$',
-    #     view=FirmView.as_view(),
-    #     name='firm',
-    # ),
+    url(
+        regex=r'^firm/$',
+        view=FirmView.as_view(),
+        name='firm',
+    ),
     url(
         regex=r'^finished/$',
         view=TemplateView.as_view(template_name='cpa_created.html'),

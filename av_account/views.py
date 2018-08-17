@@ -64,7 +64,7 @@ class RegistrationView(FormView):
         if authenticated:
             login(self.request, authenticated)
             user.send_email_verification_code()
-            return redirect(reverse('terms'))
+            return redirect(reverse('firm'))
         else:
             logger.error('Automatic authentication failure.')
 
@@ -73,7 +73,6 @@ class RegistrationView(FormView):
 # - /account/questions/
 # - /account/phone/
 # - /account/verification/
-# - /account/firm/
 #
 
 # class SecurityQuestionsView(LoginRequiredMixin, FormView):
@@ -148,29 +147,29 @@ class RegistrationView(FormView):
 #             return reverse_lazy('firm')
 #         else:
 #             return reverse_lazy('client_created')
-#
-#
-# class FirmView(VerifiedAndTrustedRequiredMixin, FormView):
-#     template_name = 'firm.html'
-#     form_class = FirmForm
-#     success_url = reverse_lazy('terms')
-#
-#     def dispatch(self, request, *args, **kwargs):
-#         """
-#         continue to next step if user already has a firm
-#         """
-#         if request.user.firm is None:
-#             return super(FirmView, self).dispatch(request, *args, **kwargs)
-#         else:
-#             return redirect(self.success_url)
-#
-#     def form_valid(self, form):
-#         firm = form.save(commit=False)
-#         firm.boss = self.request.user
-#         firm.save()
-#         self.request.user.firm = firm
-#         self.request.user.save()
-#         return super(FirmView, self).form_valid(form)
+
+
+class FirmView(VerifiedAndTrustedRequiredMixin, FormView):
+    template_name = 'firm.html'
+    form_class = FirmForm
+    success_url = reverse_lazy('terms')
+
+    def dispatch(self, request, *args, **kwargs):
+        """
+        continue to next step if user already has a firm
+        """
+        if request.user.firm is None:
+            return super(FirmView, self).dispatch(request, *args, **kwargs)
+        else:
+            return redirect(self.success_url)
+
+    def form_valid(self, form):
+        firm = form.save(commit=False)
+        firm.boss = self.request.user
+        firm.save()
+        self.request.user.firm = firm
+        self.request.user.save()
+        return super(FirmView, self).form_valid(form)
 
 
 class InvitationView(FormView):
