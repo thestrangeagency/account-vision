@@ -298,11 +298,8 @@ class EditView(FullyVerifiedRequiredMixin, FormView):
                 user.previous_email = email
                 user.send_email_verification_code()
 
-            if form.cleaned_data.get('is_2fa'):
-                # if 2fa enabled
-                if 'is_2fa' in form.changed_data or 'phone' in form.changed_data:
-                    # if 2fa wasn't enabled before or if phone number changes, let's verify it
-                    user.is_verified = False
+            if 'phone' in form.changed_data:
+                user.is_verified = False
 
         return super(EditView, self).post(request)
 
