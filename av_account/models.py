@@ -128,7 +128,7 @@ class AvUser(Person, AbstractBaseUser, PermissionsMixin):
     is_cpa = models.BooleanField(default=False)
 
     # 2FA via SMS
-    is_2fa = models.BooleanField(default=False)
+    is_2fa = models.BooleanField(verbose_name='enable two-factor authentication', default=False)
     verification_code = models.CharField(max_length=4, null=True, blank=True)
     is_verified = models.BooleanField(default=False)
 
