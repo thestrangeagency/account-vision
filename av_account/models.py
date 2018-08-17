@@ -126,7 +126,17 @@ class AvUser(Person, AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_cpa = models.BooleanField(default=False)
-    
+
+    # 2FA via SMS
+    is_2fa = models.BooleanField(default=False)
+    verification_code = models.CharField(max_length=4, null=True, blank=True)
+    is_verified = models.BooleanField(default=False)
+
+    # email
+    is_email_verified = models.BooleanField(default=False)
+    email_verification_code = models.CharField(max_length=16, null=True, blank=True)
+    previous_email = models.EmailField(verbose_name='previous email address', max_length=255, null=True, blank=True)
+
     # user is fully active, i.e. paid or during a trial in the case of CPA user
     def is_full_cred(self):
         if self.is_cpa:
@@ -148,15 +158,6 @@ class AvUser(Person, AbstractBaseUser, PermissionsMixin):
     
     def client_count(self):
         return self.firm.client_count()
-
-    # 2FA via SMS
-    verification_code = models.CharField(max_length=4, null=True, blank=True)
-    is_verified = models.BooleanField(default=False)
-
-    # email
-    is_email_verified = models.BooleanField(default=False)
-    email_verification_code = models.CharField(max_length=16, null=True, blank=True)
-    previous_email = models.EmailField(verbose_name='previous email address', max_length=255, null=True, blank=True)
 
     objects = AvUserManager()
 
