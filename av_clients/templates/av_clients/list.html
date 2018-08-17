@@ -35,7 +35,7 @@
         <td><a href="{{ client.get_absolute_url }}">{{ client.last_name }}</a></td>
         <td><a href="{{ client.get_absolute_url }}">{{ client.first_name }}</a></td>
         <td><a href="{{ client.get_absolute_url }}">{{ client.email }}</a></td>
-        <td>{% if client.is_verified %} √ {% endif %}</td>
+        <td>{% if client.is_email_verified %} √ {% endif %}</td>
       </tr>
       {% empty %}
       <tr><td>You haven't invited any clients yet.</td></tr>
