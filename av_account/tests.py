@@ -89,10 +89,9 @@ class AccountTestCase(TestCase):
         user = auth.get_user(self.client)
         assert user.is_authenticated()
 
-        # ensure two emails were sent: new account and email confirmation
-        self.assertEqual(len(mail.outbox), 2)
+        # ensure new account email is sent
+        self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].to[0], user_email)
-        self.assertEqual(mail.outbox[1].to[0], user_email)
 
         # ensure verification code works
         self.assertEqual(user.is_email_verified, False)
@@ -164,8 +163,6 @@ class AccountTestCase(TestCase):
         response = self.client.post(url, data)
         # target will redirect because now email needs verification
         self.assertRedirects(response, reverse('edit'), status_code=302, target_status_code=302)
-        # removed verification!
-        # self.assertRedirects(response, reverse('edit'), status_code=302, target_status_code=200)
 
         # ensure confirmation email was sent
         self.assertEqual(len(mail.outbox), 1)
