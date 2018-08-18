@@ -14,21 +14,21 @@ urlpatterns = [
         view=RegistrationView.as_view(),
         name='register',
     ),
-    url(
-        regex=r'^questions/$',
-        view=SecurityQuestionsView.as_view(),
-        name='questions',
-    ),
-    url(
-        regex=r'^phone/$',
-        view=PhoneNumberView.as_view(),
-        name='phone',
-    ),
-    url(
-        regex=r'^verification/$',
-        view=VerificationView.as_view(),
-        name='verification',
-    ),
+    # url(
+    #     regex=r'^questions/$',
+    #     view=SecurityQuestionsView.as_view(),
+    #     name='questions',
+    # ),
+    # url(
+    #     regex=r'^phone/$',
+    #     view=PhoneNumberView.as_view(),
+    #     name='phone',
+    # ),
+    # url(
+    #     regex=r'^verification/$',
+    #     view=VerificationView.as_view(),
+    #     name='verification',
+    # ),
     url(
         regex=r'^firm/$',
         view=FirmView.as_view(),

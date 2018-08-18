@@ -136,7 +136,14 @@ class AccountForm(ModelForm):
 
     class Meta:
         model = AvUser
-        fields = ['email', 'phone']
+        fields = ['email', 'phone', 'is_2fa']
+
+    def clean(self):
+        is_2fa = self.cleaned_data.get('is_2fa')
+        phone = self.cleaned_data.get('phone')
+        if (phone is None or len(phone) == 0) and is_2fa:
+            raise forms.ValidationError('Please enter a valid phone number to enable two factor authentication.')
+        return self.cleaned_data
 
 
 class AccountPasswordChangeForm(PasswordChangeForm):

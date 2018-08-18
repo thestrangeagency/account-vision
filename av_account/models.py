@@ -15,9 +15,9 @@ from ipware.ip import get_ip
 from phonenumber_field.modelfields import PhoneNumberField
 from twilio.rest import Client
 
-from av_core import logger
-from av_core import settings
-from av_emails.utils import send_verification_email, send_invitation_email, send_team_invitation_email
+from av_core import settings, logger
+from av_emails.utils import send_verification_email, send_invitation_email, send_team_invitation_email, \
+    send_untrusted_device_email
 from av_utils.utils import TimeStampedModel
 
 
@@ -126,7 +126,17 @@ class AvUser(Person, AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_cpa = models.BooleanField(default=False)
-    
+
+    # 2FA via SMS
+    is_2fa = models.BooleanField(verbose_name='enable two-factor authentication', default=False)
+    verification_code = models.CharField(max_length=4, null=True, blank=True)
+    is_verified = models.BooleanField(default=False)
+
+    # email
+    is_email_verified = models.BooleanField(default=False)
+    email_verification_code = models.CharField(max_length=16, null=True, blank=True)
+    previous_email = models.EmailField(verbose_name='previous email address', max_length=255, null=True, blank=True)
+
     # user is fully active, i.e. paid or during a trial in the case of CPA user
     def is_full_cred(self):
         if self.is_cpa:
@@ -148,15 +158,6 @@ class AvUser(Person, AbstractBaseUser, PermissionsMixin):
     
     def client_count(self):
         return self.firm.client_count()
-
-    # 2FA via SMS
-    verification_code = models.CharField(max_length=4, null=True, blank=True)
-    is_verified = models.BooleanField(default=False)
-
-    # email
-    is_email_verified = models.BooleanField(default=False)
-    email_verification_code = models.CharField(max_length=16, null=True, blank=True)
-    previous_email = models.EmailField(verbose_name='previous email address', max_length=255, null=True, blank=True)
 
     objects = AvUserManager()
 
@@ -191,28 +192,33 @@ class AvUser(Person, AbstractBaseUser, PermissionsMixin):
         else:
             return self.groups.filter(name='associate').exists()
 
-    def send_verification_code(self):
-        if self.phone is None or self.phone is '':
-            logger.error('Attempted to send verification without a phone number')
-            return
-
+    def send_verification_code(self, request):
         # create verification code
         self.verification_code = ''.join([choice(string.ascii_uppercase + string.digits) for _ in range(4)])
         self.is_verified = False
         self.save()
 
-        # send sms
-        account_sid = settings.TWILIO_ACCOUNT_SID
-        auth_token = settings.TWILIO_AUTH_TOKEN
-        from_number = settings.TWILIO_FROM_NUMBER
+        if self.phone is None or self.phone is '':
+            # no phone number, so this must be an access attempt from an untrusted device
+            # send an email with verification code
+            send_untrusted_device_email(self, get_ip(request))
 
-        client = Client(account_sid, auth_token)
+            logger.info('Emailed verification code to user {}'.format(request.user))
+        else:
+            # send sms
+            account_sid = settings.TWILIO_ACCOUNT_SID
+            auth_token = settings.TWILIO_AUTH_TOKEN
+            from_number = settings.TWILIO_FROM_NUMBER
 
-        client.messages.create(
-            to="+{}{}".format(self.phone.country_code, self.phone.national_number),
-            from_=from_number,
-            body="Your Account Vision verification code is: " + self.verification_code
-        )
+            client = Client(account_sid, auth_token)
+
+            client.messages.create(
+                to="+{}{}".format(self.phone.country_code, self.phone.national_number),
+                from_=from_number,
+                body="Your Account Vision verification code is: " + self.verification_code
+            )
+
+            logger.info('Texted verification code to user {}'.format(request.user))
 
     def generate_email_code(self):
         self.email_verification_code = ''.join([choice(string.ascii_uppercase + string.digits) for _ in range(16)])

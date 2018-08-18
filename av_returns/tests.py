@@ -70,6 +70,7 @@ class ReturnsTestCase(TestCase):
 
     def test_not_verified(self):
         self.user.is_verified = False
+        self.user.is_2fa = True
         self.user.save()
 
         self.login()
@@ -77,15 +78,14 @@ class ReturnsTestCase(TestCase):
         response = self.client.get(url)
         self.assertRedirects(response, "{}?next={}".format(reverse('trust'), url), status_code=302)
 
-    # email verification gate disabled
-    # def test_not_verified_email(self):
-    #     self.user.is_email_verified = False
-    #     self.user.save()
-    #
-    #     self.login()
-    #     url = reverse('return', args=[self.year])
-    #     response = self.client.get(url)
-    #     self.assertRedirects(response, reverse('email_verify'), status_code=302)
+    def test_not_verified_email(self):
+        self.user.is_email_verified = False
+        self.user.save()
+
+        self.login()
+        url = reverse('return', args=[self.year])
+        response = self.client.get(url)
+        self.assertRedirects(response, reverse('email_verify'), status_code=302)
 
 
     def test_spouse(self):

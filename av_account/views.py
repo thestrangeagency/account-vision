@@ -59,103 +59,114 @@ class RegistrationView(FormView):
             username=user.email,
             password=password
         )
-
+        
         # if login worked, continue cpa signup flow
         if authenticated:
             login(self.request, authenticated)
-            user.send_email_verification_code()
-            return redirect(reverse('questions'))
+            return redirect(reverse('firm'))
         else:
             logger.error('Automatic authentication failure.')
 
 
-class SecurityQuestionsView(LoginRequiredMixin, FormView):
-    template_name = 'questions.html'
-    form_class = SecurityQuestionsForm
-    success_url = reverse_lazy('phone')
+# commenting out the following sections for easier onboarding
+# - /account/questions/
+# - /account/phone/
+# - /account/verification/
+#
 
-    def dispatch(self, request, *args, **kwargs):
-        """
-        continue to next step if user already has security questions
-        """
-        user = request.user
-        if user.is_authenticated:
-            try:
-                us = user.usersecurity
-            except UserSecurity.DoesNotExist:
-                return super(SecurityQuestionsView, self).dispatch(request, *args, **kwargs)
-        return redirect(self.success_url)
+# class SecurityQuestionsView(LoginRequiredMixin, FormView):
+#     template_name = 'questions.html'
+#     form_class = SecurityQuestionsForm
+#     success_url = reverse_lazy('phone')
+#
+#     def dispatch(self, request, *args, **kwargs):
+#         """
+#         continue to next step if user already has security questions
+#         """
+#         user = request.user
+#         if user.is_authenticated:
+#             try:
+#                 us = user.usersecurity
+#             except UserSecurity.DoesNotExist:
+#                 return super(SecurityQuestionsView, self).dispatch(request, *args, **kwargs)
+#         return redirect(self.success_url)
+#
+#     def form_valid(self, form):
+#         security = form.save(commit=False)
+#         security.user = self.request.user
+#         # use a custom setter to hash security answers
+#         for i in range(1, 3):
+#             form_answer = form.cleaned_data['answer{}'.format(i)]
+#             security.set_answer(i, form_answer)
+#         security.save()
+#         return super(SecurityQuestionsView, self).form_valid(form)
+#
+#
+# class PhoneNumberView(LoginRequiredMixin, FormView):
+#     template_name = 'phone.html'
+#     form_class = PhoneNumberForm
+#     success_url = reverse_lazy('verification')
+#
+#     def dispatch(self, request, *args, **kwargs):
+#         user = request.user
+#         if user.is_authenticated:
+#             try:
+#                 us = user.usersecurity
+#             except UserSecurity.DoesNotExist:
+#                 return redirect('questions')
+#         return super(PhoneNumberView, self).dispatch(request, *args, **kwargs)
+#
+#     def get_form(self, form_class=None):
+#         user = self.request.user
+#         return self.form_class(instance=user, **self.get_form_kwargs())
+#
+#     def form_valid(self, form):
+#         user = form.save(commit=False)
+#         user.send_verification_code(self.request)
+#         form.save()
+#         return super(PhoneNumberView, self).form_valid(form)
+#
+#
+# class VerificationView(LoginRequiredMixin, FormView):
+#     template_name = 'verification.html'
+#     form_class = VerificationForm
+#
+#     def get_form(self, form_class=None):
+#         return self.form_class(user=self.request.user, **self.get_form_kwargs())
+#
+#     def form_valid(self, form):
+#         self.request.user.is_verified = True
+#         self.request.user.save()
+#         trust_agent(self.request)
+#         return super(VerificationView, self).form_valid(form)
+#
+#     def get_success_url(self):
+#         # a cpa will need to set up a firm, regular users are done here
+#         if self.request.user.is_cpa and self.request.user.firm is None:
+#             return reverse_lazy('firm')
+#         else:
+#             return reverse_lazy('client_created')
 
-    def form_valid(self, form):
-        security = form.save(commit=False)
-        security.user = self.request.user
-        # use a custom setter to hash security answers
-        for i in range(1, 3):
-            form_answer = form.cleaned_data['answer{}'.format(i)]
-            security.set_answer(i, form_answer)
-        security.save()
-        return super(SecurityQuestionsView, self).form_valid(form)
 
-
-class PhoneNumberView(LoginRequiredMixin, FormView):
-    template_name = 'phone.html'
-    form_class = PhoneNumberForm
-    success_url = reverse_lazy('verification')
-
-    def dispatch(self, request, *args, **kwargs):
-        user = request.user
-        if user.is_authenticated:
-            try:
-                us = user.usersecurity
-            except UserSecurity.DoesNotExist:
-                return redirect('questions')
-        return super(PhoneNumberView, self).dispatch(request, *args, **kwargs)
-
-    def get_form(self, form_class=None):
-        user = self.request.user
-        return self.form_class(instance=user, **self.get_form_kwargs())
-
-    def form_valid(self, form):
-        user = form.save(commit=False)
-        user.send_verification_code()
-        form.save()
-        return super(PhoneNumberView, self).form_valid(form)
-
-
-class VerificationView(LoginRequiredMixin, FormView):
-    template_name = 'verification.html'
-    form_class = VerificationForm
-
-    def get_form(self, form_class=None):
-        return self.form_class(user=self.request.user, **self.get_form_kwargs())
-
-    def form_valid(self, form):
-        self.request.user.is_verified = True
-        self.request.user.save()
-        trust_agent(self.request)
-        return super(VerificationView, self).form_valid(form)
-
-    def get_success_url(self):
-        # a cpa will need to set up a firm, regular users are done here
-        if self.request.user.is_cpa and self.request.user.firm is None:
-            return reverse_lazy('firm')
-        else:
-            return reverse_lazy('client_created')
-
-
-class FirmView(VerifiedAndTrustedRequiredMixin, FormView):
+class FirmView(LoginRequiredMixin, FormView):
     template_name = 'firm.html'
     form_class = FirmForm
     success_url = reverse_lazy('terms')
 
     def dispatch(self, request, *args, **kwargs):
         """
-        continue to next step if user already has a firm
+        prevent access after credit card setup, ie onboarding finished
+        not really a security issue, but nicer to block an onboarding screen
         """
-        if request.user.firm is None:
-            return super(FirmView, self).dispatch(request, *args, **kwargs)
-        else:
-            return redirect(self.success_url)
+        user = request.user
+        if user.is_authenticated:
+            if user.firm and user.firm.stripe_id:
+                return redirect(self.success_url)
+        return super(FirmView, self).dispatch(request, *args, **kwargs)
+    
+    def get_form(self, form_class=None):
+        firm = self.request.user.firm
+        return self.form_class(instance=firm, **self.get_form_kwargs())
 
     def form_valid(self, form):
         firm = form.save(commit=False)
@@ -163,6 +174,11 @@ class FirmView(VerifiedAndTrustedRequiredMixin, FormView):
         firm.save()
         self.request.user.firm = firm
         self.request.user.save()
+
+        # we should trust this browser as this is the sign up browser
+        # could not do this in register because "User has no agentsettings."
+        trust_agent(self.request)
+
         return super(FirmView, self).form_valid(form)
 
 
@@ -283,11 +299,18 @@ class EditView(FullyVerifiedRequiredMixin, FormView):
     def post(self, request, *args, **kwargs):
         user = request.user
         email = user.email  # grab email before form changes it
+
         form = self.get_form()
-        if form.is_valid():
-            if form.cleaned_data['email'] != email:
+
+        if form.is_valid() and form.has_changed():
+
+            if 'email' in form.changed_data:
                 user.previous_email = email
                 user.send_email_verification_code()
+
+            if 'phone' in form.changed_data:
+                user.is_verified = False
+
         return super(EditView, self).post(request)
 
     def form_valid(self, form):

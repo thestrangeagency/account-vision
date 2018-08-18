@@ -15,6 +15,7 @@ def send_new_message_email(message):
 
 
 def send_new_user_email(user):
+    user.generate_email_code()
     send_email(
         subject='Welcome to Account Vision!',
         recipient=user.email,
@@ -25,7 +26,7 @@ def send_new_user_email(user):
 
 def send_untrusted_device_email(user, ip):
     send_email(
-        subject='Account Vision untrusted device login',
+        subject='Account Vision verification',
         recipient=user.email,
         context={'user': user, 'ip': ip},
         template='av_emails/untrusted_device.html',
