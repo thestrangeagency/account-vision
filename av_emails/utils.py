@@ -15,6 +15,7 @@ def send_new_message_email(message):
 
 
 def send_new_user_email(user):
+    user.generate_email_code()
     send_email(
         subject='Welcome to Account Vision!',
         recipient=user.email,

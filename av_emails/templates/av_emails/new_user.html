@@ -11,7 +11,16 @@
   </p>
 
   <p {% include "av_emails/p_style_snippet.html" %}>
-    If you have any questions or comments, please feel free to <a href="{{ site_url }}{% url 'contact' %}">get in touch</a>.
+    To complete your Account Vision set up, please use the link below to verify your email address.
+  </p>
+
+  <p {% include "av_emails/p_style_snippet.html" %}>
+    <a href="{{ site_url }}{% url 'confirmation' user.email_verification_code %}">
+      {{ site_url }}{% url 'confirmation' user.email_verification_code %}</a>
+  </p>
+
+  <p {% include "av_emails/p_style_snippet.html" %}>
+    We're working hard to make Account Vision the best client portal online. If you have any questions or comments, please feel free to <a href="{{ site_url }}{% url 'contact' %}">get in touch</a>.
   </p>
 
 {% endblock content %}

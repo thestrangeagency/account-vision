@@ -63,7 +63,6 @@ class RegistrationView(FormView):
         # if login worked, continue cpa signup flow
         if authenticated:
             login(self.request, authenticated)
-            user.send_email_verification_code()
             return redirect(reverse('firm'))
         else:
             logger.error('Automatic authentication failure.')
