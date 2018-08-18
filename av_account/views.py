@@ -59,7 +59,7 @@ class RegistrationView(FormView):
             username=user.email,
             password=password
         )
-
+        
         # if login worked, continue cpa signup flow
         if authenticated:
             login(self.request, authenticated)
@@ -175,6 +175,11 @@ class FirmView(LoginRequiredMixin, FormView):
         firm.save()
         self.request.user.firm = firm
         self.request.user.save()
+
+        # we should trust this browser as this is the sign up browser
+        # could not do this in register because "User has no agentsettings."
+        trust_agent(self.request)
+
         return super(FirmView, self).form_valid(form)
 
 
