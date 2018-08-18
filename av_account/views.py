@@ -149,7 +149,7 @@ class RegistrationView(FormView):
 #             return reverse_lazy('client_created')
 
 
-class FirmView(VerifiedAndTrustedRequiredMixin, FormView):
+class FirmView(LoginRequiredMixin, FormView):
     template_name = 'firm.html'
     form_class = FirmForm
     success_url = reverse_lazy('terms')

@@ -82,9 +82,10 @@ class AccountTestCase(TestCase):
             'password2': self.password,
         }
 
-        response = self.client.post(url, data)
-        self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse('questions'))
+        response = self.client.post(url, data, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(response, reverse('firm'))
+        
         user = auth.get_user(self.client)
         assert user.is_authenticated()
 
@@ -105,8 +106,6 @@ class AccountTestCase(TestCase):
     def test_edit(self):
         self.user.is_verified = True
         self.user.is_email_verified = True
-        self.user.is_onboard = True
-        self.user.is_paid = True
         self.user.save()
 
         mail.outbox = []
@@ -166,156 +165,156 @@ class AccountTestCase(TestCase):
         user = auth.get_user(self.client)
         assert not user.is_authenticated()
 
-    def test_security_anonymous(self):
-        url = reverse('questions')
-        data = {}
-
-        response = self.client.post(url, data)
-        self.assertEqual(response.status_code, 302)
-
-    def test_security(self):
-        self.client.login(username=self.user.email, password=self.password)
-        url = reverse('questions')
-        data = {
-            'question1': self.question1.id,
-            'answer1': 'a',
-            'question2': self.question2.id,
-            'answer2': 'b',
-            'question3': self.question3.id,
-            'answer3': 'c',
-        }
-
-        response = self.client.post(url, data)
-
-        self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse('phone'))
-
-        # ensure answer saved
-        us = UserSecurity.objects.get(user=self.user)
-        self.assertTrue(us.test_answer(1, data['answer1']))
-        self.assertFalse(us.test_answer(1, 'whatever'))
-
-    def test_security_partial(self):
-        self.client.login(username=self.user.email, password=self.password)
-        url = reverse('questions')
-
-        data = {
-            'question1': self.question1.id,
-            'answer1': 'a',
-            'question2': self.question2.id,
-            'answer2': 'b',
-            'question3': self.question3.id,
-            'answer3': 'c',
-        }
-
-        response = self.client.post(url, data)
-        self.assertEqual(response.status_code, 302)
-
-        data = {
-            'question1': self.question1.id,
-            'answer1': 'a',
-            'question2': self.question2.id,
-            'answer2': '••••',
-            'question3': self.question3.id,
-            'answer3': '••••••••',
-        }
-
-        # ensure partial update ok
-        response = self.client.post(url, data)
-        self.assertEqual(response.status_code, 302)
-        us = UserSecurity.objects.get(user=self.user)
-        self.assertTrue(us.test_answer(1, data['answer1']))
-        self.assertFalse(us.test_answer(2, data['answer2']))
-        self.assertTrue(us.test_answer(2, 'b'))
-
-    def test_security_unique(self):
-        self.client.login(username=self.user.email, password=self.password)
-        url = reverse('questions')
-        data = {
-            'question1': self.question1.id,
-            'answer1': 'a',
-            'question2': self.question2.id,
-            'answer2': 'b',
-            'question3': self.question2.id,
-            'answer3': 'c',
-        }
-
-        self.client.post(url, data)
-        self.assertRaises(ValidationError)
-
-    def test_phone_empty(self):
-        url = reverse('phone')
-        data = {
-        }
-
-        self.client.post(url, data)
-        self.assertRaises(ValidationError)
-
-    def test_phone_bad(self):
-        url = reverse('phone')
-        data = {
-            'phone': '3',
-        }
-
-        self.client.post(url, data)
-        self.assertRaises(ValidationError)
-
-    def test_phone(self):
-        # have to answer security questions first or else will get redirected back to security page
-        self.test_security()
-        self.client.logout()
-        
-        url = reverse('phone')
-        data = {
-            'phone': '3106663912',
-        }
-
-        # try anonymous
-        response = self.client.post(url, data)
-        self.assertEqual(response.status_code, status.HTTP_302_FOUND)
-        self.assertRedirects(response, '{}?next={}'.format(settings.LOGIN_URL, url))
-        
-        self.client.login(username=self.user.email, password=self.password)
-
-        response = self.client.post(url, data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_302_FOUND)
-        self.assertRedirects(response, reverse('verification'))
-
-    def test_verification(self):
-        self.user.verification_code = 'zzzz'
-        self.user.save()
-
-        url = reverse('verification')
-        data = {
-            'verification_code': '1234',
-        }
-
-        response = self.client.post(url, data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_302_FOUND)
-        self.assertRedirects(response, '{}?next={}'.format(settings.LOGIN_URL, reverse('verification')))
-
-        self.client.login(username=self.user.email, password=self.password)
-
-        # incorrect code
-        response = self.client.post(url, data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-        # user not yet verified
-        user = AvUser.objects.get(email=self.user.email)
-        self.assertFalse(user.is_verified)
-
-        data = {
-            'verification_code': user.verification_code,
-        }
-
-        # correct code
-        response = self.client.post(url, data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_302_FOUND)
-        self.assertRedirects(response, reverse('client_created'), status_code=302, target_status_code=200)
-
-        # user verified
-        user = AvUser.objects.get(email=self.user.email)
-        self.assertTrue(user.is_verified)
+    # def test_security_anonymous(self):
+    #     url = reverse('questions')
+    #     data = {}
+    #
+    #     response = self.client.post(url, data)
+    #     self.assertEqual(response.status_code, 302)
+    #
+    # def test_security(self):
+    #     self.client.login(username=self.user.email, password=self.password)
+    #     url = reverse('questions')
+    #     data = {
+    #         'question1': self.question1.id,
+    #         'answer1': 'a',
+    #         'question2': self.question2.id,
+    #         'answer2': 'b',
+    #         'question3': self.question3.id,
+    #         'answer3': 'c',
+    #     }
+    #
+    #     response = self.client.post(url, data)
+    #
+    #     self.assertEqual(response.status_code, 302)
+    #     self.assertRedirects(response, reverse('phone'))
+    #
+    #     # ensure answer saved
+    #     us = UserSecurity.objects.get(user=self.user)
+    #     self.assertTrue(us.test_answer(1, data['answer1']))
+    #     self.assertFalse(us.test_answer(1, 'whatever'))
+    #
+    # def test_security_partial(self):
+    #     self.client.login(username=self.user.email, password=self.password)
+    #     url = reverse('questions')
+    #
+    #     data = {
+    #         'question1': self.question1.id,
+    #         'answer1': 'a',
+    #         'question2': self.question2.id,
+    #         'answer2': 'b',
+    #         'question3': self.question3.id,
+    #         'answer3': 'c',
+    #     }
+    #
+    #     response = self.client.post(url, data)
+    #     self.assertEqual(response.status_code, 302)
+    #
+    #     data = {
+    #         'question1': self.question1.id,
+    #         'answer1': 'a',
+    #         'question2': self.question2.id,
+    #         'answer2': '••••',
+    #         'question3': self.question3.id,
+    #         'answer3': '••••••••',
+    #     }
+    #
+    #     # ensure partial update ok
+    #     response = self.client.post(url, data)
+    #     self.assertEqual(response.status_code, 302)
+    #     us = UserSecurity.objects.get(user=self.user)
+    #     self.assertTrue(us.test_answer(1, data['answer1']))
+    #     self.assertFalse(us.test_answer(2, data['answer2']))
+    #     self.assertTrue(us.test_answer(2, 'b'))
+    #
+    # def test_security_unique(self):
+    #     self.client.login(username=self.user.email, password=self.password)
+    #     url = reverse('questions')
+    #     data = {
+    #         'question1': self.question1.id,
+    #         'answer1': 'a',
+    #         'question2': self.question2.id,
+    #         'answer2': 'b',
+    #         'question3': self.question2.id,
+    #         'answer3': 'c',
+    #     }
+    #
+    #     self.client.post(url, data)
+    #     self.assertRaises(ValidationError)
+    #
+    # def test_phone_empty(self):
+    #     url = reverse('phone')
+    #     data = {
+    #     }
+    #
+    #     self.client.post(url, data)
+    #     self.assertRaises(ValidationError)
+    #
+    # def test_phone_bad(self):
+    #     url = reverse('phone')
+    #     data = {
+    #         'phone': '3',
+    #     }
+    #
+    #     self.client.post(url, data)
+    #     self.assertRaises(ValidationError)
+    #
+    # def test_phone(self):
+    #     # have to answer security questions first or else will get redirected back to security page
+    #     self.test_security()
+    #     self.client.logout()
+    #
+    #     url = reverse('phone')
+    #     data = {
+    #         'phone': '3106663912',
+    #     }
+    #
+    #     # try anonymous
+    #     response = self.client.post(url, data)
+    #     self.assertEqual(response.status_code, status.HTTP_302_FOUND)
+    #     self.assertRedirects(response, '{}?next={}'.format(settings.LOGIN_URL, url))
+    #
+    #     self.client.login(username=self.user.email, password=self.password)
+    #
+    #     response = self.client.post(url, data, format='json')
+    #     self.assertEqual(response.status_code, status.HTTP_302_FOUND)
+    #     self.assertRedirects(response, reverse('verification'))
+    #
+    # def test_verification(self):
+    #     self.user.verification_code = 'zzzz'
+    #     self.user.save()
+    #
+    #     url = reverse('verification')
+    #     data = {
+    #         'verification_code': '1234',
+    #     }
+    #
+    #     response = self.client.post(url, data, format='json')
+    #     self.assertEqual(response.status_code, status.HTTP_302_FOUND)
+    #     self.assertRedirects(response, '{}?next={}'.format(settings.LOGIN_URL, reverse('verification')))
+    #
+    #     self.client.login(username=self.user.email, password=self.password)
+    #
+    #     # incorrect code
+    #     response = self.client.post(url, data, format='json')
+    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
+    #
+    #     # user not yet verified
+    #     user = AvUser.objects.get(email=self.user.email)
+    #     self.assertFalse(user.is_verified)
+    #
+    #     data = {
+    #         'verification_code': user.verification_code,
+    #     }
+    #
+    #     # correct code
+    #     response = self.client.post(url, data, format='json')
+    #     self.assertEqual(response.status_code, status.HTTP_302_FOUND)
+    #     self.assertRedirects(response, reverse('client_created'), status_code=302, target_status_code=200)
+    #
+    #     # user verified
+    #     user = AvUser.objects.get(email=self.user.email)
+    #     self.assertTrue(user.is_verified)
 
 
 class AccountAPITestCase(APITestCase):
