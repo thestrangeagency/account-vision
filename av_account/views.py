@@ -154,14 +154,9 @@ class FirmView(VerifiedAndTrustedRequiredMixin, FormView):
     form_class = FirmForm
     success_url = reverse_lazy('terms')
 
-    def dispatch(self, request, *args, **kwargs):
-        """
-        continue to next step if user already has a firm
-        """
-        if request.user.firm is None:
-            return super(FirmView, self).dispatch(request, *args, **kwargs)
-        else:
-            return redirect(self.success_url)
+    def get_form(self, form_class=None):
+        firm = self.request.user.firm
+        return self.form_class(instance=firm, **self.get_form_kwargs())
 
     def form_valid(self, form):
         firm = form.save(commit=False)
