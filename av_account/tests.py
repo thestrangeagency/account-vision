@@ -21,7 +21,7 @@ class AccountTestCase(TestCase):
             email='test@example.com',
             password=self.password,
         )
-        self.user.phone = '(310) 666-3912'
+        # self.user.phone = '(310) 666-3912'
         self.user.save()
 
         self.firm = Firm(
@@ -37,7 +37,7 @@ class AccountTestCase(TestCase):
             password=self.password,
             is_cpa=True,
         )
-        self.cpa.phone = '(310) 666-3912'
+        # self.cpa.phone = '(310) 666-3912'
         self.cpa.firm = self.firm
         self.cpa.save()
 
@@ -160,9 +160,9 @@ class AccountTestCase(TestCase):
             'email': 'new@example.com'
         }
 
-        response = self.client.post(url, data)
+        response = self.client.post(url, data, follow=True)
         # target will redirect because now email needs verification
-        self.assertRedirects(response, reverse('edit'), status_code=302, target_status_code=302)
+        self.assertRedirects(response, reverse('email_verify'))
 
         # ensure confirmation email was sent
         self.assertEqual(len(mail.outbox), 1)
@@ -177,6 +177,150 @@ class AccountTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         user = AvUser.objects.get(email=data['email'])
         self.assertEqual(user.is_email_verified, True)
+
+    def test_edit_add_phone(self):
+        self.user.is_verified = False
+        self.user.is_2fa = False
+        self.user.is_email_verified = True
+        self.user.save()
+        
+        self.login()
+    
+        url = reverse('edit')
+        data = {
+            'email': self.user.email,
+            'phone': '3106663912',
+            'is2fa': False,
+        }
+    
+        response = self.client.post(url, data, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(response, url)
+
+        user = AvUser.objects.get(email=self.user.email)
+        self.assertEqual(user.phone, data['phone'])
+
+    def test_edit_change_phone(self):
+        self.test_edit_add_phone()
+    
+        url = reverse('edit')
+        data = {
+            'email': self.user.email,
+            'phone': '1 (424) 243-6299‬',
+            'is2fa': False,
+        }
+    
+        response = self.client.post(url, data, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(response, url)
+    
+        user = AvUser.objects.get(email=self.user.email)
+        self.assertEqual(user.phone, data['phone'])
+
+    def test_edit_add_phone_2fa(self):
+        self.user.is_verified = False
+        self.user.is_2fa = False
+        self.user.is_email_verified = True
+        self.user.save()
+    
+        self.login()
+    
+        url = reverse('edit')
+        data = {
+            'email': self.user.email,
+            'phone': '3106663912',
+            'is_2fa': True,
+        }
+    
+        response = self.client.post(url, data, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(response, '{}?next={}'.format(settings.VERIFY_URL, url))
+    
+        user = AvUser.objects.get(email=self.user.email)
+        self.assertEqual(user.phone, data['phone'])
+        self.assertTrue(user.is_2fa)
+
+    def test_edit_change_phone_then_2fa(self):
+        self.user.is_verified = True
+        self.user.save()
+        
+        # changing phone should set is_verified to false
+        self.test_edit_change_phone()
+
+        user = AvUser.objects.get(email=self.user.email)
+        
+        url = reverse('edit')
+        data = {
+            'email': user.email,
+            'phone': user.phone,
+            'is_2fa': True,
+        }
+    
+        # turning on 2fa should now redirect to trust view because is_verified is now false
+        response = self.client.post(url, data, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(response, '{}?next={}'.format(settings.VERIFY_URL, url))
+    
+        user = AvUser.objects.get(email=self.user.email)
+        self.assertTrue(user.is_2fa)
+        
+        # submit code
+        url = settings.VERIFY_URL
+        data = {
+            'verification_code': user.verification_code,
+        }
+        
+        response = self.client.post(url, data, follow=True)
+        self.assertEqual(response.status_code, 200)
+        
+        # can turn off 2fa
+
+        url = reverse('edit')
+        data = {
+            'email': user.email,
+            'phone': user.phone,
+            'is_2fa': False,
+        }
+
+        response = self.client.post(url, data, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(response, url)
+        
+        # and on again
+
+        data = {
+            'email': user.email,
+            'phone': user.phone,
+            'is_2fa': True,
+        }
+
+        response = self.client.post(url, data, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(response, url)
+
+    def test_edit_no_phone(self):
+        self.user.is_verified = False
+        self.user.is_2fa = False
+        self.user.is_email_verified = True
+        self.user.save()
+    
+        self.login()
+    
+        url = reverse('edit')
+        data = {
+            'email': self.user.email,
+            'phone': '',
+            'is_2fa': True,
+        }
+    
+        response = self.client.post(url, data, follow=False)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'enter a valid phone number')
+    
+        user = AvUser.objects.get(email=self.user.email)
+        
+        # 2fa should not be enabled without a phone
+        self.assertFalse(user.is_2fa)
 
     def test_login(self):
         url = reverse('login')
