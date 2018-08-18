@@ -322,6 +322,53 @@ class AccountTestCase(TestCase):
         # 2fa should not be enabled without a phone
         self.assertFalse(user.is_2fa)
 
+    def test_2fa(self):
+        self.user.is_verified = False
+        self.user.is_2fa = False
+        self.user.is_email_verified = True
+        self.user.save()
+
+        mail.outbox = []
+        
+        self.client.login(
+            username=self.user.email,
+            password=self.password
+        )
+    
+        url = reverse('edit')
+
+        # get edit page, note: haven't turned on agent trust on login
+        response = self.client.get(url, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(response, '{}?next={}'.format(settings.VERIFY_URL, url))
+        
+        # verification code sent via email
+        self.assertEqual(len(mail.outbox), 1)
+        
+        # turn on 2fa
+        self.user.is_verified = True
+        self.user.is_2fa = True
+        self.user.phone = '3106663912'
+        self.user.save()
+
+        # still haven't turned on agent trust, so should redirect with 2fa now turned on
+        response = self.client.get(url, follow=False)
+        self.assertRedirects(response, '{}?next={}'.format(settings.VERIFY_URL, url))
+
+        # verification code sent via phone this time, so outbox doesn't change
+        self.assertEqual(len(mail.outbox), 1)
+
+        # trust this client
+        self.client.get(reverse('force_trust'))
+
+        # force verify user
+        self.user.is_verified = True
+        self.user.save()
+
+        # get edit page, should load now with 2fa and trust
+        response = self.client.get(url, follow=False)
+        self.assertEqual(response.status_code, 200)
+
     def test_login(self):
         url = reverse('login')
         data = {
