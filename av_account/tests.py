@@ -103,6 +103,51 @@ class AccountTestCase(TestCase):
         user = AvUser.objects.get(email=user_email)
         self.assertEqual(user.is_email_verified, True)
 
+    def test_firm(self):
+        self.test_register()
+        self.client.get(reverse('force_trust'))
+        
+        url = reverse('firm')
+        data = {}
+
+        # empty firm name
+        
+        response = self.client.post(url, data, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(response, reverse('terms'))
+
+        # firm name
+        
+        data = {
+            'name': 'Damage Inc.'
+        }
+
+        response = self.client.post(url, data, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(response, reverse('terms'))
+
+        user = auth.get_user(self.client)
+        firm = user.firm
+
+        self.assertEqual(firm.boss, user)
+        self.assertEqual(firm.name, data['name'])
+
+        # change firm name
+
+        data = {
+            'name': 'Inc. Corp. Ltd.'
+        }
+
+        response = self.client.post(url, data, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(response, reverse('terms'))
+
+        user = auth.get_user(self.client)
+        firm = user.firm
+
+        self.assertEqual(firm.boss, user)
+        self.assertEqual(firm.name, data['name'])
+        
     def test_edit(self):
         self.user.is_verified = True
         self.user.is_email_verified = True
