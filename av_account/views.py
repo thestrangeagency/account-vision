@@ -154,6 +154,17 @@ class FirmView(LoginRequiredMixin, FormView):
     form_class = FirmForm
     success_url = reverse_lazy('terms')
 
+    def dispatch(self, request, *args, **kwargs):
+        """
+        prevent access after credit card setup, ie onboarding finished
+        not really a security issue, but nicer to block an onboarding screen
+        """
+        user = request.user
+        if user.is_authenticated:
+            if user.firm and user.firm.stripe_id:
+                return redirect(self.success_url)
+        return super(FirmView, self).dispatch(request, *args, **kwargs)
+    
     def get_form(self, form_class=None):
         firm = self.request.user.firm
         return self.form_class(instance=firm, **self.get_form_kwargs())
