@@ -12,9 +12,11 @@ from av_uploads.models import S3File
 class UploadAPITestCase(APITestCase):
 
     def setUp(self):
+        self.password = 'aT%In<Yo'
+        
         self.user = AvUser.objects.create_user(
             email='test@example.com',
-            password='password',
+            password=self.password,
         )
         self.user.save()
 
@@ -32,6 +34,13 @@ class UploadAPITestCase(APITestCase):
         )
         self.cpa.save()
 
+    def login(self):
+        self.client.login(
+            username=self.user.email,
+            password=self.password
+        )
+        self.client.get(reverse('force_trust'))
+
     def test_params_protected(self):
         url = reverse('upload_params')
 
@@ -43,7 +52,7 @@ class UploadAPITestCase(APITestCase):
         data = {
         }
 
-        self.client.login(username=self.user.email, password='password')
+        self.login()
 
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -57,7 +66,7 @@ class UploadAPITestCase(APITestCase):
             'destination': ''
         }
 
-        self.client.login(username=self.user.email, password='password')
+        self.login()
 
         response = self.client.post(url, data)
         self.assertIn(response.status_code, (status.HTTP_400_BAD_REQUEST, status.HTTP_404_NOT_FOUND))
@@ -72,7 +81,7 @@ class UploadAPITestCase(APITestCase):
             'year': self.my_return.year,
         }
 
-        self.client.login(username=self.user.email, password='password')
+        self.login()
 
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -88,7 +97,7 @@ class UploadAPITestCase(APITestCase):
         data = {
         }
 
-        self.client.login(username=self.user.email, password='password')
+        self.login()
 
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -100,7 +109,7 @@ class UploadAPITestCase(APITestCase):
             'datetime': '',
         }
 
-        self.client.login(username=self.user.email, password='password')
+        self.login()
 
         response = self.client.post(url, data)
         self.assertIn(response.status_code, (status.HTTP_400_BAD_REQUEST, status.HTTP_404_NOT_FOUND))
@@ -112,7 +121,7 @@ class UploadAPITestCase(APITestCase):
             'datetime': '20080903T205635Z',
         }
 
-        self.client.login(username=self.user.email, password='password')
+        self.login()
 
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -128,7 +137,7 @@ class UploadAPITestCase(APITestCase):
         data = {
         }
 
-        self.client.login(username=self.user.email, password='password')
+        self.login()
 
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -139,7 +148,7 @@ class UploadAPITestCase(APITestCase):
             'object_key': '',
         }
 
-        self.client.login(username=self.user.email, password='password')
+        self.login()
 
         response = self.client.post(url, data)
         self.assertIn(response.status_code, (status.HTTP_400_BAD_REQUEST, status.HTTP_404_NOT_FOUND))
@@ -155,7 +164,7 @@ class UploadAPITestCase(APITestCase):
             'object_key': file.s3_key,
         }
 
-        self.client.login(username=self.user.email, password='password')
+        self.login()
 
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -173,7 +182,7 @@ class UploadAPITestCase(APITestCase):
         self.test_params()
         url = reverse('s3file-list', args=[self.year])
 
-        self.client.login(username=self.user.email, password='password')
+        self.login()
 
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -192,7 +201,8 @@ class UploadAPITestCase(APITestCase):
         }
 
         self.client.login(username=self.cpa.email, password='password')
-
+        self.client.get(reverse('force_trust'))
+        
         user = auth.get_user(self.client)
         assert user.is_authenticated()
 
@@ -201,8 +211,8 @@ class UploadAPITestCase(APITestCase):
 
     def test_cpa_files(self):
         self.test_cpa_params()
-        self.client.login(username=self.user.email, password='password')
-
+        self.login()
+        
         url = reverse('s3file-list', args=[self.year])
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -225,7 +235,7 @@ class UploadAPITestCase(APITestCase):
             'target': self.cpa.id,
         }
 
-        self.client.login(username=self.user.email, password='password')
+        self.login()
 
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -247,7 +257,7 @@ class UploadAPITestCase(APITestCase):
             'description': 'blah',
         }
 
-        self.client.login(username=self.user.email, password='password')
+        self.login()
 
         file = S3File.objects.first()
         url = reverse('s3file-detail', args=[self.year, file.id])
@@ -265,7 +275,8 @@ class UploadAPITestCase(APITestCase):
         }
 
         self.client.login(username=self.cpa.email, password='password')
-
+        self.client.get(reverse('force_trust'))
+        
         file = S3File.objects.first()
         url = reverse('s3file-detail', args=[self.year, file.id])
         response = self.client.patch(url, data)

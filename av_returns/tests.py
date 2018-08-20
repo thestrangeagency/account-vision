@@ -158,9 +158,11 @@ class ReturnsTestCase(TestCase):
 class ExpenseAPITestCase(APITestCase):
 
     def setUp(self):
+        self.password = 'password'
+        
         self.user = AvUser.objects.create_user(
             email='test@example.com',
-            password='password',
+            password=self.password,
         )
         self.user.save()
 
@@ -172,6 +174,13 @@ class ExpenseAPITestCase(APITestCase):
         self.my_return.save()
 
         self.common_expense = get_object_or_None(CommonExpenses, tax_return=self.my_return)
+
+    def login(self):
+        self.client.login(
+            username=self.user.email,
+            password=self.password
+        )
+        self.client.get(reverse('force_trust'))
 
     def test_protected(self):
         url = reverse('commonexpenses-list', args=[self.year])
@@ -233,7 +242,7 @@ class ExpenseAPITestCase(APITestCase):
             'amount': '3.50',
         }
 
-        self.client.login(username=self.user.email, password='password')
+        self.login()
 
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -250,7 +259,7 @@ class ExpenseAPITestCase(APITestCase):
             'amount': '3',
         }
 
-        self.client.login(username=self.user.email, password='password')
+        self.login()
 
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)

@@ -560,6 +560,13 @@ class AccountAPITestCase(APITestCase):
         )
         self.user.save()
 
+    def login(self):
+        self.client.login(
+            username=self.user.email,
+            password=self.password
+        )
+        self.client.get(reverse('force_trust'))
+
     def test_create_account(self):
         """
         no one should be able to create a user
@@ -571,7 +578,7 @@ class AccountAPITestCase(APITestCase):
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
-        self.client.login(username=self.user.email, password=self.password)
+        self.login()
         user = auth.get_user(self.client)
         assert user.is_authenticated()
 
@@ -589,13 +596,16 @@ class AccountAPITestCase(APITestCase):
         response = self.client.patch(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
-        self.client.login(username=self.user.email, password=self.password)
+        self.login()
         user = auth.get_user(self.client)
         assert user.is_authenticated()
 
         response = self.client.patch(url, data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(AvUser.objects.get(email=user.email).first_name, data['first_name'])
+        # self.assertEqual(response.status_code, status.HTTP_200_OK)
+        # self.assertEqual(AvUser.objects.get(email=user.email).first_name, data['first_name'])
+
+        # removed user updates via api, so shouldn't be allowed
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def test_update_other(self):
         """
@@ -614,20 +624,23 @@ class AccountAPITestCase(APITestCase):
         response = self.client.patch(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
-        self.client.login(username=self.user.email, password=self.password)
+        self.login()
         user = auth.get_user(self.client)
         assert user.is_authenticated()
 
         response = self.client.patch(url, data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        # self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+        # removed user updates via api, so shouldn't be allowed
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def test_anonymous(self):
         """
-                no one should be able to create a user
-                """
+        no one should be able to create a user
+        """
         url = reverse('avuser-list')
         response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_update_email(self):
         """
@@ -638,14 +651,17 @@ class AccountAPITestCase(APITestCase):
             'email': 'x@x.com',
         }
 
-        self.client.login(username=self.user.email, password=self.password)
+        self.login()
 
         response = self.client.patch(url, data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        # self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         user = AvUser.objects.get(id=self.user.id)
         self.assertEqual(user.email, self.user.email)
         self.assertNotEqual(user.email, data['email'])
+
+        # removed user updates via api, so shouldn't be allowed
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
     # def test_address(self):
     #     url = reverse('address-list')
