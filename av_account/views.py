@@ -220,7 +220,7 @@ class InvitationView(FormView):
         # if login worked, continue client signup flow
         if authenticated:
             login(self.request, authenticated)
-            return redirect(reverse('questions'))
+            return redirect(reverse('client_created'))
         else:
             logger.error('Automatic authentication failure.')
 
