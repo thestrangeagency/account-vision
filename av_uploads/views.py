@@ -12,7 +12,7 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.utils.datastructures import MultiValueDictKeyError
 from django.views import View
-from rest_framework import permissions, viewsets, serializers
+from rest_framework import viewsets, serializers
 from rest_framework.views import APIView
 
 from av_account.models import AvUser
