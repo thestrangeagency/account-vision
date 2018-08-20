@@ -10,7 +10,7 @@ class ReturnSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Return
-        fields = ('url', 'year', 'filing_status', 'spouse', 'is_dependent', 'is_first_time', 'has_health', 'county')
+        fields = ('url', 'year', 'filing_status', 'spouse', 'is_dependent', 'county')
         read_only_fields = ('year',)
 
     def create(self, validated_data):

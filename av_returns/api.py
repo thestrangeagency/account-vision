@@ -1,6 +1,5 @@
 from rest_framework import viewsets, permissions
 
-from av_returns.models import Return, Spouse, Dependent, Expense, CommonExpenses
 from av_returns.serializers import *
 
 
@@ -8,7 +7,6 @@ class ReturnViewSet(viewsets.ModelViewSet):
     # despite dynamic queryset, leaving queryset here for automatic api basename
     queryset = Return.objects.all()
     serializer_class = ReturnSerializer
-    permission_classes = (permissions.IsAuthenticated,)
     model = Return
     http_method_names = ['post', 'get', 'patch']
 
@@ -19,7 +17,6 @@ class ReturnViewSet(viewsets.ModelViewSet):
 class SpouseViewSet(viewsets.ModelViewSet):
     queryset = Spouse.objects.all()
     serializer_class = SpouseSerializer
-    permission_classes = (permissions.IsAuthenticated,)
     model = Spouse
     http_method_names = ['get', 'patch']
 
@@ -30,7 +27,6 @@ class SpouseViewSet(viewsets.ModelViewSet):
 class DependentViewSet(viewsets.ModelViewSet):
     queryset = Dependent.objects.all()
     serializer_class = DependentSerializer
-    permission_classes = (permissions.IsAuthenticated,)
     model = Dependent
     http_method_names = ['get', 'patch', 'post']
 
@@ -47,7 +43,6 @@ class DependentViewSet(viewsets.ModelViewSet):
 class ExpenseViewSet(viewsets.ModelViewSet):
     queryset = Expense.objects.all()
     serializer_class = ExpenseSerializer
-    permission_classes = (permissions.IsAuthenticated,)
     model = Expense
     http_method_names = ['get', 'patch', 'post', 'delete']
 
@@ -64,7 +59,6 @@ class ExpenseViewSet(viewsets.ModelViewSet):
 class CommonExpenseViewSet(viewsets.ModelViewSet):
     queryset = CommonExpenses.objects.all()
     serializer_class = CommonExpenseSerializer
-    permission_classes = (permissions.IsAuthenticated,)
     model = CommonExpenses
     http_method_names = ['get', 'patch', 'head']
 
