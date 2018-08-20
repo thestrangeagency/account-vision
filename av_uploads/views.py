@@ -23,7 +23,6 @@ from .utils import get_aws_v4_signature, get_aws_v4_signing_key, get_s3direct_de
 
 
 class UploadParamsView(APIView):
-    permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request):
         upload_data = {
@@ -146,7 +145,6 @@ class UploadParamsView(APIView):
 
 
 class UploadSignatureView(APIView):
-    permission_classes = (permissions.IsAuthenticated,)
 
     def post(self, request):
         try:
@@ -166,7 +164,6 @@ class UploadSignatureView(APIView):
 
 
 class UploadCompleteView(APIView):
-    permission_classes = (permissions.IsAuthenticated,)
 
     def post(self, request):
         try:
@@ -213,7 +210,6 @@ class FileSerializer(serializers.HyperlinkedModelSerializer):
 class FileViewSet(viewsets.ModelViewSet):
     queryset = S3File.objects.all()
     serializer_class = FileSerializer
-    permission_classes = (permissions.IsAuthenticated,)
     model = S3File
     http_method_names = ['get', 'patch', 'head', 'delete']
 
@@ -234,7 +230,6 @@ class FileViewSet(viewsets.ModelViewSet):
 class CpaFileViewSet(viewsets.ModelViewSet):
     queryset = S3File.objects.all()
     serializer_class = FileSerializer
-    permission_classes = (permissions.IsAuthenticated,)
     model = S3File
     http_method_names = ['get', 'patch', 'head', 'delete']
 
@@ -253,7 +248,6 @@ class CpaFileViewSet(viewsets.ModelViewSet):
 class DownloadsViewSet(viewsets.ModelViewSet):
     queryset = S3File.objects.all()
     serializer_class = FileSerializer
-    permission_classes = (permissions.IsAuthenticated,)
     model = S3File
     http_method_names = ['get', 'head']
 
