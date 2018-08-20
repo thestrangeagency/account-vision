@@ -25,7 +25,8 @@
   <div class="tx-home__hero tx-full-width">
     <div class="container">
       <h1 class="tx-home__logo">Account Vision</h1>
-      <h1 class="h1 tx-home__hero-header">Cloud-based client portal for accountants.<br/>Free trial, launch in minutes!</h1>
+      <h1 class="h1 tx-home__hero-header">Accounting client portal in the cloud.<br/>Share and communicate securely -
+        while saving time and effort.</h1>
       {% if not user.is_authenticated %}
         <a href="{% url 'register' %}" class="btn btn-primary">
           Free Trial
@@ -190,6 +191,14 @@
       </div>
 
     </div>
+  </div>
+
+  <div class="text-center pb-5">
+    {% if not user.is_authenticated %}
+      <a href="{% url 'register' %}" class="btn btn-primary">
+        Free Trial
+      </a>
+    {% endif %}
   </div>
 
   {% comment %}
