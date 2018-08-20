@@ -5,6 +5,7 @@ from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse
 from django.views import View
 from django.views.generic.base import ContextMixin
+from rest_framework import permissions
 
 from av_account.models import AvUser
 from av_core import settings, logger
@@ -183,3 +184,10 @@ class StripePlansMixin(ContextMixin, StripeMixin):
         context['plans'] = [plan_a, plan_b, plan_c]
         
         return context
+
+
+class AgentTrustPermission(permissions.BasePermission):
+    message = 'Agent not trusted.'
+    
+    def has_permission(self, request, view):
+        return request.agent.is_trusted
