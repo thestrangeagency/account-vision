@@ -1,5 +1,18 @@
 {% extends 'base-modal-form.html' %}
 
+{% block head %}
+  {{ block.super }}
+  {% if not debug %}
+    <script>
+      gtag('event', 'start-registration', {'send_to': 'AW-1033596388/c12tCN-wtIcBEOTb7ewD'});
+    </script>
+
+    <script>
+      fbq('track', 'Lead');
+    </script>
+  {% endif %}
+{% endblock head %}
+
 {% block content_title %}Your Firm's Name{% endblock content_title %}
 
 {% block modal_content %}
