@@ -28,6 +28,7 @@ the rest of our styles
 @import './tabs';
 @import './returns';
 @import './security';
+@import './social';
 @import '../js/shared/file/file';
 @import '../js/expense-manager/custom-expense-manager';
 @import '../js/upload-manager/upload-manager';
@@ -256,3 +257,4 @@ ul {
 .tx-big-list {
   font-size: 1.5rem;
 }
+

@@ -1,13 +1,20 @@
 {% extends 'base.html' %}
 
+{% load capture_tags %}
+
+
 {% block content %}
   <div class="container">
     <div class="row">
 
       <div class="col-md-8">
         <div>
-          <h1 class="h1 pb-2">{% block title %}{% endblock title %}</h1>
+          <h1 class="h1 pb-2">{% capture as title %}{% block title %}{% endblock title %}{% endcapture %}</h1>
         </div>
+
+      <div class="pb-2">
+        {% include "social-sharing.html" with title=title link="{{ request.build_absolute_uri }}" %}
+      </div>
 
         <div>
           {% block body %}{% endblock %}
