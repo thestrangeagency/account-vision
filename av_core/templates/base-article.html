@@ -12,7 +12,7 @@
           <h1 class="h1 pb-2">{% capture as title %}{% block title %}{% endblock title %}{% endcapture %}</h1>
         </div>
 
-      <div class="pb-2">
+      <div class="pb-3">
         {% include "social-sharing.html" with title=title link="{{ request.build_absolute_uri }}" %}
       </div>
 
