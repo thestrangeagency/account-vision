@@ -71,30 +71,6 @@
   width: 72px;
 }
 
-.tx-home__testimonials {
-  padding: 3.25rem 0 0;
-
-  @include from-breakpoint(lg) {
-    padding: 3.25rem 0 2.75rem;
-  }
-}
-
-.tx-testimonial {
-  margin: 0 0 2.5rem;
-
-  @include from-breakpoint(lg) {
-    margin: 0;
-  }
-}
-
-.tx-testimonial__video {
-  margin: 0 0 1.375rem;
-}
-
-.tx-testimonial__header {
-  margin: 0 0 1rem;
-}
-
 .tx-home__flatpages {
   border-top: 1px solid $gray-200;
   padding: 2.375rem 0 0;
@@ -126,3 +102,7 @@
   font-size: 0.875rem;
   text-transform: capitalize;
 }
+
+//.tx-home__articles .card {
+//  background-color: $light-blue;
+//}

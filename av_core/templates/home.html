@@ -201,79 +201,59 @@
     {% endif %}
   </div>
 
-  {% comment %}
-    {% get_flatpages as flatpages %}
+  <div class="tx-home__articles tx-full-width pb-5">
+    <div class="container">
 
-    <div class="tx-home__flatpages tx-full-width">
+      <div class="row justify-content-center">
+        <h2 class="h2 pb-5">Recent Articles</h2>
+      </div>
+
       <div class="container">
         <div class="row">
+
           <div class="col-md-4">
-            <h5 class="tx-home__flatpages__header h6">
-              About
-            </h5>
-            <ul class="tx-home__flatpages__list list-unstyled">
-              {% for page in flatpages %}
-                <li class="tx-home__flatpages__item">
-                  <a class="tx-home__flatpages__link" href="{{ page.url }}">{{ page.title }}</a>
-                </li>
-              {% endfor %}
-              <li class="tx-home__flatpages__item">
-                <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
-              </li>
-              <li class="tx-home__flatpages__item">
-                <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
-              </li>
-              <li class="tx-home__flatpages__item">
-                <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
-              </li>
-            </ul>
+
+            <div class="card" style="width: 18rem;">
+              <div class="card-body">
+                <h5 class="card-title">Benefits of Client Portal Software for Accountants</h5>
+                <p class="card-text">
+                  In an increasingly digitized marketplace, client portals represent a vital point of connection for the modern
+                  accountant&hellip;
+                </p>
+                <a href="{% url 'article_benefits' %}" class="btn btn-info">Read now</a>
+              </div>
+            </div>
+
           </div>
-          <div class="col-md-4">
-            <h5 class="tx-home__flatpages__header h6">
-              Tips
-            </h5>
-            <ul class="tx-home__flatpages__list list-unstyled">
-              <li class="tx-home__flatpages__item">
-                <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
-              </li>
-              <li class="tx-home__flatpages__item">
-                <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
-              </li>
-              <li class="tx-home__flatpages__item">
-                <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
-              </li>
-              <li class="tx-home__flatpages__item">
-                <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
-              </li>
-              <li class="tx-home__flatpages__item">
-                <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
-              </li>
-            </ul>
-          </div>
-          <div class="col-md-4">
-            <h5 class="tx-home__flatpages__header h6">
-              Help
-            </h5>
-            <ul class="tx-home__flatpages__list list-unstyled">
-              <li class="tx-home__flatpages__item">
-                <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
-              </li>
-              <li class="tx-home__flatpages__item">
-                <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
-              </li>
-              <li class="tx-home__flatpages__item">
-                <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
-              </li>
-              <li class="tx-home__flatpages__item">
-                <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
-              </li>
-              <li class="tx-home__flatpages__item">
-                <a class="tx-home__flatpages__link" href="#">{% lorem 3 w random %}</a>
-              </li>
-            </ul>
-          </div>
+
+{#          <div class="col-md-4">#}
+{##}
+{#            <div class="card" style="width: 18rem;">#}
+{#              <div class="card-body">#}
+{#                <h5 class="card-title"></h5>#}
+{#                <p class="card-text">#}
+{#                </p>#}
+{#              </div>#}
+{#            </div>#}
+{##}
+{#          </div>#}
+{##}
+{#          <div class="col-md-4">#}
+{##}
+{#            <div class="card" style="width: 18rem;">#}
+{#              <div class="card-body">#}
+{#                <h5 class="card-title"></h5>#}
+{#                <p class="card-text">#}
+{#                </p>#}
+{#              </div>#}
+{#            </div>#}
+{##}
+{#          </div>#}
+
         </div>
       </div>
+
     </div>
-  {% endcomment %}
+  </div>
+
 {% endblock content %}

@@ -70,7 +70,10 @@ urlpatterns = [
     url(r'^terms/$', TemplateView.as_view(template_name='terms.html'), name='legal'),
     url(r'^privacy/$', TemplateView.as_view(template_name='privacy.html'), name='privacy'),
     url(r'^contact/$', ContactView.as_view(), name='contact'),
-
+    
+    # articles
+    url(r'^article/benefits-of-client-portal-software$', TemplateView.as_view(template_name='article-benefits.html'), name='article_benefits'),
+    
     # drf api
     url(r'^api/', include('rest_framework.urls', namespace='api')),
     url(r'^api/', include(router.urls)),
