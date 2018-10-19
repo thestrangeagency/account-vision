@@ -58,7 +58,6 @@ def do_capture(parser, token):
     
     nodelist = parser.parse(('endcapture',))
     parser.delete_first_token()
-    print('wtf')
     return CaptureNode(nodelist, var, silent)
 
 
@@ -67,13 +66,9 @@ class CaptureNode(Node):
         self.nodelist = nodelist
         self.varname = varname
         self.silent = silent
-        print('wtf2')
     
     def render(self, context):
-        print('hi')
         output = self.nodelist.render(context)
-        print(output)
-        print(self.varname)
         context[self.varname] = output
         if self.silent:
             return ''
