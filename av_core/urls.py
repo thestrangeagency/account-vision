@@ -73,6 +73,8 @@ urlpatterns = [
     
     # articles
     url(r'^article/benefits-of-client-portal-software$', TemplateView.as_view(template_name='article-benefits.html'), name='article_benefits'),
+    url(r'^article/why-a-cloud-solution-is-so-important$', TemplateView.as_view(template_name='article-cloud.html'), name='article_cloud'),
+    url(r'^article/drawbacks-of-email$', TemplateView.as_view(template_name='article-email.html'), name='article_email'),
     
     # drf api
     url(r'^api/', include('rest_framework.urls', namespace='api')),
