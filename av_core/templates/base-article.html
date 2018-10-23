@@ -21,6 +21,29 @@
         </div>
       </div>
 
+      <div class="col-md-4">
+        <div>
+          <h5>Recent Articles</h5>
+        </div>
+        <div>
+          {% url 'article_benefits' as benefits %}
+          {% url 'article_cloud' as cloud %}
+          {% url 'article_email' as email %}
+
+          <ul>
+            {% if request.get_full_path != benefits %}
+              <li class="card-title"><a href="{{ benefits }}">Benefits of Client Portal Software for Accountants</a></li>
+            {% endif %}
+            {% if request.get_full_path != cloud %}
+              <li class="card-title"><a href="{{ cloud }}">Why a Cloud Computing Solution Is So Important</a></li>
+            {% endif %}
+            {% if request.get_full_path != email %}
+              <li class="card-title"><a href="{{ email }}">The The Drawbacks of Email</a></li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+
     </div>
   </div>
 {% endblock %}
