@@ -4,13 +4,15 @@ import stripe
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
+from django.utils.crypto import get_random_string
 from django.views.generic import TemplateView, FormView
 from django.utils import timezone
 
-from av_account.models import Communications, Firm
+from av_account.models import Communications, Firm, AvUser, Address
 from av_account.utils import VerifiedAndTrustedRequiredMixin
 from av_core import settings, logger
 from av_payment.forms import TermsForm
+from av_returns.models import Return, Expense, Spouse, Dependent
 
 
 class TermsView(VerifiedAndTrustedRequiredMixin, FormView):
@@ -96,9 +98,85 @@ class CheckoutView(VerifiedAndTrustedRequiredMixin, TemplateView):
             firm.is_paid = True
             firm.trial_end = datetime.datetime.fromtimestamp(subscription.trial_end, datetime.timezone.utc)
             firm.save()
+            self.create_example_client(self.request.user)
             return redirect(reverse('ready'))
         else:
             return redirect(reverse('error'))
+
+    def create_example_client(self, user):
+        random = get_random_string(16)
+        client = AvUser.objects.create_user(
+            email='{}@example.com'.format(random),
+            password=random,
+        )
+        client.is_verified = True
+        client.is_2fa = False
+        client.is_email_verified = True
+        client.firm = user.firm
+
+        client.is_active = True
+        client.is_staff = False
+        client.is_cpa = False
+
+        client.first_name = 'Client'
+        client.last_name = 'Example'
+        client.middle_name = 'X'
+        client.dob = datetime.datetime.now() - datetime.timedelta(days=30 * 365)
+        client.ssn = '000000000'
+        client.phone = '3105550101'
+
+        address = Address.objects.create(user=client)
+        address.address1 = '808 SW Main St'
+        address.address2 = ''
+        address.city = 'Portland'
+        address.state = 'OR'
+        address.zip = '97204'
+        address.save()
+
+        client.save()
+
+        a_return = Return(
+            user=client,
+            year=datetime.datetime.now().year,
+        )
+        a_return.filing_status = Return.MARRIED_JOINT
+        a_return.save()
+
+        expense = Expense(
+            tax_return=a_return,
+            type='Travel',
+            amount='2000.88',
+            notes='Paris trip'
+        )
+        expense.save()
+
+        expense = Expense(
+            tax_return=a_return,
+            type='Office Supplies',
+            amount='300',
+            notes='Golden stapler'
+        )
+        expense.save()
+
+        spouse = Spouse(
+            tax_return=a_return,
+        )
+        spouse.first_name = 'Spouse'
+        spouse.last_name = 'Example'
+        spouse.middle_name = 'E'
+        spouse.dob = datetime.datetime.now() - datetime.timedelta(days=28 * 365)
+        spouse.ssn = '000000001'
+        spouse.save()
+
+        kid = Dependent(
+            tax_return=a_return,
+        )
+        kid.relationship = Dependent.DAUGHTER
+        kid.first_name = 'Daughter'
+        kid.last_name = 'Example'
+        kid.dob = datetime.datetime.now() - datetime.timedelta(days=8 * 365)
+        kid.ssn = '000000002'
+        kid.save()
 
     def get_context_data(self, **kwargs):
         context = super(CheckoutView, self).get_context_data(**kwargs)
