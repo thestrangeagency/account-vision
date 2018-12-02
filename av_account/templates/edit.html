@@ -13,8 +13,10 @@
     <a href="{% url 'password_change' %}" class="btn btn-warning">Change Password</a>
   </p>
 
-  <p>
-    <a href="{% url 'client-self-delete' %}" class="btn btn-warning">Delete Account</a>
-  </p>
+  {% if not user.is_cpa %}
+    <p>
+      <a href="{% url 'client-self-delete' %}" class="btn btn-warning">Delete Account</a>
+    </p>
+  {% endif %}
 
 {% endblock %}
