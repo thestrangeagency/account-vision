@@ -10,6 +10,7 @@ class TermsForm(Form):
     code = CharField(label='Discount Code', required=False)
     codes = {
         'early': 'early_bird',
+        '2019': 'one_2019',
     }
 
     def __init__(self, *args, **kwargs):
