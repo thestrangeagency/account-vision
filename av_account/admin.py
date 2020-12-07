@@ -3,6 +3,8 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.db import models
+from django.urls import reverse_lazy
+from django.utils.html import format_html
 
 from .models import Address, Firm
 from .models import AvUser
@@ -90,12 +92,20 @@ class UserAdmin(BaseUserAdmin):
     search_fields = ('email',)
     ordering = ('email',)
     filter_horizontal = ()
-    readonly_fields = ('email',)
+    readonly_fields = ('email', 'confirmation_link', 'invitation_link')
+
+    def confirmation_link(self, obj):
+        url = reverse_lazy('confirmation', args=[obj.email_verification_code])
+        return format_html("<a href='{url}'>{url}</a>", url=url)
+
+    def invitation_link(self, obj):
+        url = reverse_lazy('invitation', args=[obj.email_verification_code])
+        return format_html("<a href='{url}'>{url}</a>", url=url)
 
     def get_fieldsets(self, request, obj=None):
         if request.user.is_superuser:
             fieldsets = (
-                (None, {'fields': ('email', 'password', 'firm')}),
+                (None, {'fields': ('email', 'password', 'firm', 'confirmation_link', 'invitation_link', 'verification_code')}),
                 ('Personal info', {'fields': ('first_name', 'last_name', 'middle_name', 'phone', 'ssn', 'dob')}),
                 ('Permissions', {'fields': ('is_staff', 'groups')}),
             )
@@ -108,7 +118,7 @@ class UserAdmin(BaseUserAdmin):
 
 
 class FirmAdmin(admin.ModelAdmin):
-    
+
     list_display = ('__str__', 'is_paid', 'trial_end', 'trial_days_left', 'cpa_count', 'client_count')
 
 
