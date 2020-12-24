@@ -10,22 +10,54 @@
 
   <div class="container">
     <div class="row">
-      <div class="col-sm">
-        <h1 class="h1">{{ client.first_name }} {{ client.last_name }}</h1>
 
+      <div class="col-sm">
+        <div class="card-deck mt-3 mb-5 text-center">
+
+          <div class="card box-shadow">
+            <div class="card-body">
+              <p><i class="fas fa-users fa-3x"></i></p>
+              <p>View and Invite Clients</p>
+              <a class="btn btn-lg btn-secondary" href="{% url 'clients' %}">Clients</a>
+            </div>
+          </div>
+
+          <div class="card box-shadow">
+            <div class="card-body">
+              <p><i class="far fa-envelope fa-3x"></i></p>
+              <p>Send or Receive Messages</p>
+              <a class="btn btn-lg btn-secondary" href="{% url 'messages_redirect' %}">Messages</a>
+            </div>
+          </div>
+
+          <div class="card box-shadow">
+            <div class="card-body">
+              <p><i class="fas fa-user-plus fa-3x"></i></p>
+              <p>View and Invite Firm Members</p>
+              <a class="btn btn-lg btn-secondary" href="{% url 'team' %}">Firm</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+
+      <div class="col-sm">
         <h4 class="h4">Messages</h4>
         <p>You have {{ count }} new <a href="{% url 'messages_redirect' %}">message{{ count|pluralize }}</a>.</p>
+      </div>
 
+      <div class="col-sm">
         <h4 class="h4">Recent Activity</h4>
         <ul>
           {% for action in stream|slice:":25" %}
             <li>{% action action %}</li>
           {% endfor %}
         </ul>
+      </div>
 
-      </div>
-      <div class="col-sm">
-      </div>
     </div>
   </div>
 
