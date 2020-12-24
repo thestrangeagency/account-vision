@@ -9,17 +9,17 @@
 
   {% if cpa_count >= max_cpa %}
 
-    <p>You have reached your firm membership limit.</p>
+    <p>You have reached your team membership limit.</p>
 
   {% else %}
 
-    <p>Use the form below to invite a new member to your firm.</p>
+    <p>Use the form below to invite a new member to your team.</p>
 
     {% crispy form %}
 
   {% endif %}
 
-  <p>You are using {{ cpa_count }} out of {{ max_cpa }} firm accounts allowed under your
+  <p>You are using {{ cpa_count }} out of {{ max_cpa }} team accounts allowed under your
     <a href="{% url 'plan' %}">current plan.</a>
   </p>
 

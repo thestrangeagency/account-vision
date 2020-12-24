@@ -60,7 +60,7 @@ urlpatterns = [
     url(r'^years/', include('av_returns.urls')),
     url(r'^uploads/', include('av_uploads.urls')),
     url(r'^messages/', include('av_messages.urls')),
-    url(r'^firm/', include('av_team.urls')),
+    url(r'^team/', include('av_team.urls')),
     url(r'^payment/', include('av_payment.urls')),
 
     # header
@@ -70,12 +70,12 @@ urlpatterns = [
     url(r'^terms/$', TemplateView.as_view(template_name='terms.html'), name='legal'),
     url(r'^privacy/$', TemplateView.as_view(template_name='privacy.html'), name='privacy'),
     url(r'^contact/$', ContactView.as_view(), name='contact'),
-    
+
     # articles
     url(r'^article/benefits-of-client-portal-software$', TemplateView.as_view(template_name='article-benefits.html'), name='article_benefits'),
     url(r'^article/why-a-cloud-solution-is-so-important$', TemplateView.as_view(template_name='article-cloud.html'), name='article_cloud'),
     url(r'^article/drawbacks-of-email$', TemplateView.as_view(template_name='article-email.html'), name='article_email'),
-    
+
     # drf api
     url(r'^api/', include('rest_framework.urls', namespace='api')),
     url(r'^api/', include(router.urls)),

@@ -4,7 +4,7 @@
 
 {% block breadcrumbs %}
   {{ block.super }}
-  {% breadcrumb "Firm" "team" %}
+  {% breadcrumb "Team" "team" %}
   {% breadcrumb member.get_full_name "team-detail" member.email %}
 {% endblock %}
 
