@@ -13,6 +13,7 @@ class ContactTestCase(TestCase):
             'name': 'x x',
             'subject': 'hi',
             'message': 'there',
+            'robot_test': '8',
         }
 
         self.client.post(reverse('contact'), data)
@@ -23,3 +24,16 @@ class ContactTestCase(TestCase):
 
         contact = Contact.objects.get(email=data['email'])
         self.assertEqual(contact.name, data['name'])
+
+    def test_robot_fail(self):
+        data = {
+            'email': 'x@a.com',
+            'name': 'x x',
+            'subject': 'hi',
+            'message': 'there',
+            'robot_test': '1',
+        }
+
+        self.client.post(reverse('contact'), data)
+
+        self.assertEqual(len(mail.outbox), 0)
